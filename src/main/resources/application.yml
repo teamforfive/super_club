@@ -1,0 +1,48 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /SuperClub
+    session:
+      timeout: 3600s
+spring:
+  application:
+    name: SuperClub
+  datasource:
+    name: Club
+    url: jdbc:mysql://127.0.0.1:3306/clubs?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
+    username: root
+    password: 123456
+    #使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    filters: stat
+    maxActive: 20
+    initial-size: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 30000
+    validationQuery: select'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+
+logging:
+  level:
+    org.springframework: ERROR
+    com.fiveofteam.super_club.dao: DEBUG
+    com.fiveofteam.super_club.controller: DEBUG
+    #    com.fiveofteam.super_club.cofig: info
+    #    org.fiveofteam.super_club.dao=DEBUG
+    org.mybatis.com.*: info
+    file: logs/SuperClub.log
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: com.fiveofteam.super_club.pojo
+
+#    myConfig:
+#      sessionInfo: sessionInfo
+#      sessionPrefix: SHIRO_SESSION_ID
+#      imagePath: /page/image/

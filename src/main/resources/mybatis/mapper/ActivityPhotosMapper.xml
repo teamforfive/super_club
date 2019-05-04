@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fiveofteam.super_club.dao.ActivityPhotosMapper">
+  <resultMap id="BaseResultMap" type="com.fiveofteam.super_club.pojo.ActivityPhotos">
+    <id column="uu_id" jdbcType="VARCHAR" property="uuId" />
+    <result column="ap_name" jdbcType="VARCHAR" property="apName" />
+    <result column="ap_url" jdbcType="VARCHAR" property="apUrl" />
+    <result column="ap_type" jdbcType="TINYINT" property="apType" />
+    <result column="ap_sort" jdbcType="INTEGER" property="apSort" />
+    <result column="activity_id" jdbcType="VARCHAR" property="activityId" />
+    <result column="ap_status" jdbcType="BIT" property="apStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uu_id, ap_name, ap_url, ap_type, ap_sort, activity_id, ap_status, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from activity_photos
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from activity_photos
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.ActivityPhotos">
+    insert into activity_photos (uu_id, ap_name, ap_url, 
+      ap_type, ap_sort, activity_id, 
+      ap_status, create_time)
+    values (#{uuId,jdbcType=VARCHAR}, #{apName,jdbcType=VARCHAR}, #{apUrl,jdbcType=VARCHAR}, 
+      #{apType,jdbcType=TINYINT}, #{apSort,jdbcType=INTEGER}, #{activityId,jdbcType=VARCHAR}, 
+      #{apStatus,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.ActivityPhotos">
+    insert into activity_photos
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uuId != null">
+        uu_id,
+      </if>
+      <if test="apName != null">
+        ap_name,
+      </if>
+      <if test="apUrl != null">
+        ap_url,
+      </if>
+      <if test="apType != null">
+        ap_type,
+      </if>
+      <if test="apSort != null">
+        ap_sort,
+      </if>
+      <if test="activityId != null">
+        activity_id,
+      </if>
+      <if test="apStatus != null">
+        ap_status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uuId != null">
+        #{uuId,jdbcType=VARCHAR},
+      </if>
+      <if test="apName != null">
+        #{apName,jdbcType=VARCHAR},
+      </if>
+      <if test="apUrl != null">
+        #{apUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="apType != null">
+        #{apType,jdbcType=TINYINT},
+      </if>
+      <if test="apSort != null">
+        #{apSort,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null">
+        #{activityId,jdbcType=VARCHAR},
+      </if>
+      <if test="apStatus != null">
+        #{apStatus,jdbcType=BIT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fiveofteam.super_club.pojo.ActivityPhotos">
+    update activity_photos
+    <set>
+      <if test="apName != null">
+        ap_name = #{apName,jdbcType=VARCHAR},
+      </if>
+      <if test="apUrl != null">
+        ap_url = #{apUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="apType != null">
+        ap_type = #{apType,jdbcType=TINYINT},
+      </if>
+      <if test="apSort != null">
+        ap_sort = #{apSort,jdbcType=INTEGER},
+      </if>
+      <if test="activityId != null">
+        activity_id = #{activityId,jdbcType=VARCHAR},
+      </if>
+      <if test="apStatus != null">
+        ap_status = #{apStatus,jdbcType=BIT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fiveofteam.super_club.pojo.ActivityPhotos">
+    update activity_photos
+    set ap_name = #{apName,jdbcType=VARCHAR},
+      ap_url = #{apUrl,jdbcType=VARCHAR},
+      ap_type = #{apType,jdbcType=TINYINT},
+      ap_sort = #{apSort,jdbcType=INTEGER},
+      activity_id = #{activityId,jdbcType=VARCHAR},
+      ap_status = #{apStatus,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fiveofteam.super_club.dao.ActivityCommentsMapper">
+  <resultMap id="BaseResultMap" type="com.fiveofteam.super_club.pojo.ActivityComments">
+    <id column="uu_id" jdbcType="VARCHAR" property="uuId" />
+    <result column="ua_id" jdbcType="VARCHAR" property="uaId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="activity_id" jdbcType="VARCHAR" property="activityId" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="child_id" jdbcType="INTEGER" property="childId" />
+    <result column="comment_status" jdbcType="BIT" property="commentStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uu_id, ua_id, content, activity_id, parent_id, child_id, comment_status, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from activity_comments
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from activity_comments
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.ActivityComments">
+    insert into activity_comments (uu_id, ua_id, content, 
+      activity_id, parent_id, child_id, 
+      comment_status, create_time)
+    values (#{uuId,jdbcType=VARCHAR}, #{uaId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{activityId,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{childId,jdbcType=INTEGER}, 
+      #{commentStatus,jdbcType=BIT}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.ActivityComments">
+    insert into activity_comments
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uuId != null">
+        uu_id,
+      </if>
+      <if test="uaId != null">
+        ua_id,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="activityId != null">
+        activity_id,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="childId != null">
+        child_id,
+      </if>
+      <if test="commentStatus != null">
+        comment_status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uuId != null">
+        #{uuId,jdbcType=VARCHAR},
+      </if>
+      <if test="uaId != null">
+        #{uaId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="activityId != null">
+        #{activityId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="childId != null">
+        #{childId,jdbcType=INTEGER},
+      </if>
+      <if test="commentStatus != null">
+        #{commentStatus,jdbcType=BIT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fiveofteam.super_club.pojo.ActivityComments">
+    update activity_comments
+    <set>
+      <if test="uaId != null">
+        ua_id = #{uaId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="activityId != null">
+        activity_id = #{activityId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="childId != null">
+        child_id = #{childId,jdbcType=INTEGER},
+      </if>
+      <if test="commentStatus != null">
+        comment_status = #{commentStatus,jdbcType=BIT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fiveofteam.super_club.pojo.ActivityComments">
+    update activity_comments
+    set ua_id = #{uaId,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      activity_id = #{activityId,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      child_id = #{childId,jdbcType=INTEGER},
+      comment_status = #{commentStatus,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </update>
+</mapper>

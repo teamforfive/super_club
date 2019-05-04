@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fiveofteam.super_club.dao.ActivityOrganizerMapper">
+  <resultMap id="BaseResultMap" type="com.fiveofteam.super_club.pojo.ActivityOrganizer">
+    <id column="uu_id" jdbcType="VARCHAR" property="uuId" />
+    <result column="organizer_name" jdbcType="VARCHAR" property="organizerName" />
+    <result column="activity_id" jdbcType="VARCHAR" property="activityId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uu_id, organizer_name, activity_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from activity_organizer
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from activity_organizer
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.ActivityOrganizer">
+    insert into activity_organizer (uu_id, organizer_name, activity_id
+      )
+    values (#{uuId,jdbcType=VARCHAR}, #{organizerName,jdbcType=VARCHAR}, #{activityId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.ActivityOrganizer">
+    insert into activity_organizer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uuId != null">
+        uu_id,
+      </if>
+      <if test="organizerName != null">
+        organizer_name,
+      </if>
+      <if test="activityId != null">
+        activity_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uuId != null">
+        #{uuId,jdbcType=VARCHAR},
+      </if>
+      <if test="organizerName != null">
+        #{organizerName,jdbcType=VARCHAR},
+      </if>
+      <if test="activityId != null">
+        #{activityId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fiveofteam.super_club.pojo.ActivityOrganizer">
+    update activity_organizer
+    <set>
+      <if test="organizerName != null">
+        organizer_name = #{organizerName,jdbcType=VARCHAR},
+      </if>
+      <if test="activityId != null">
+        activity_id = #{activityId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fiveofteam.super_club.pojo.ActivityOrganizer">
+    update activity_organizer
+    set organizer_name = #{organizerName,jdbcType=VARCHAR},
+      activity_id = #{activityId,jdbcType=VARCHAR}
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </update>
+</mapper>

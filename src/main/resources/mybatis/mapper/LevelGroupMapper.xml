@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fiveofteam.super_club.dao.LevelGroupMapper">
+  <resultMap id="BaseResultMap" type="com.fiveofteam.super_club.pojo.LevelGroup">
+    <id column="uu_id" jdbcType="VARCHAR" property="uuId" />
+    <result column="lg_clubid" jdbcType="VARCHAR" property="lgClubid" />
+    <result column="lg_levelid" jdbcType="VARCHAR" property="lgLevelid" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uu_id, lg_clubid, lg_levelid, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from level_group
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from level_group
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.LevelGroup">
+    insert into level_group (uu_id, lg_clubid, lg_levelid, 
+      update_time)
+    values (#{uuId,jdbcType=VARCHAR}, #{lgClubid,jdbcType=VARCHAR}, #{lgLevelid,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.LevelGroup">
+    insert into level_group
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uuId != null">
+        uu_id,
+      </if>
+      <if test="lgClubid != null">
+        lg_clubid,
+      </if>
+      <if test="lgLevelid != null">
+        lg_levelid,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uuId != null">
+        #{uuId,jdbcType=VARCHAR},
+      </if>
+      <if test="lgClubid != null">
+        #{lgClubid,jdbcType=VARCHAR},
+      </if>
+      <if test="lgLevelid != null">
+        #{lgLevelid,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fiveofteam.super_club.pojo.LevelGroup">
+    update level_group
+    <set>
+      <if test="lgClubid != null">
+        lg_clubid = #{lgClubid,jdbcType=VARCHAR},
+      </if>
+      <if test="lgLevelid != null">
+        lg_levelid = #{lgLevelid,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fiveofteam.super_club.pojo.LevelGroup">
+    update level_group
+    set lg_clubid = #{lgClubid,jdbcType=VARCHAR},
+      lg_levelid = #{lgLevelid,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </update>
+</mapper>
