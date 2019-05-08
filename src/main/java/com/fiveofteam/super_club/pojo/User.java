@@ -1,5 +1,7 @@
 package com.fiveofteam.super_club.pojo;
 
+import org.springframework.data.annotation.Id;
+
 import java.util.Date;
 
 public class User {

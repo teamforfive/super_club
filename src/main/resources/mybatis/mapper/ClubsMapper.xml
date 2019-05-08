@@ -15,6 +15,10 @@
     <result column="club_create_id" jdbcType="VARCHAR" property="clubCreateId" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+  <resultMap id="ClubListNameResultMap" type="com.fiveofteam.super_club.pojo.Clubs">
+    <id column="uu_id" jdbcType="VARCHAR" property="uuId" />
+    <result column="clubs_name" jdbcType="VARCHAR" property="clubsName" />
+  </resultMap>
   <sql id="Base_Column_List">
     uu_id, clubs_name, parent_id, child_id, club_code, club_profile, club_location, club_status, 
     club_tel, club_logo, club_create_id, create_time
@@ -25,6 +29,27 @@
     from clubs
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </select>
+  <!--查询所有社团信息-->
+  <select id="selectAllClub"  resultMap="BaseResultMap">
+    select
+    uu_id,clubs_name,club_logo
+    from clubs
+  </select>
+  <!--查询社团LOGO路径-->
+  <select id="selectClubLogoByPrimaryKey"  resultMap="BaseResultMap">
+    select
+    uu_id,club_logo
+    from clubs
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </select>
+  <!--查询指定社团名称-->
+  <select id="selectClubNameByName"  resultMap="BaseResultMap">
+    select
+    uu_id
+    from clubs
+    where clubs_name = #{uuId,jdbcType=VARCHAR}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from clubs
     where uu_id = #{uuId,jdbcType=VARCHAR}
@@ -174,4 +199,15 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </update>
+  <!--更新社团信息-->
+  <update id="updateClubInfo" parameterType="com.fiveofteam.super_club.pojo.Clubs">
+    update clubs
+    set clubs_name = #{clubsName,jdbcType=VARCHAR},
+      club_profile = #{clubProfile,jdbcType=VARCHAR},
+      club_location = #{clubLocation,jdbcType=VARCHAR},
+      club_tel = #{clubTel,jdbcType=VARCHAR},
+      club_logo = #{clubLogo,jdbcType=VARCHAR}
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </update>
+
 </mapper>

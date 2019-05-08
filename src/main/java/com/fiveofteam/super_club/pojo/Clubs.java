@@ -3,6 +3,7 @@ package com.fiveofteam.super_club.pojo;
 import java.util.Date;
 
 public class Clubs {
+
     private String uuId;
 
     private String clubsName;

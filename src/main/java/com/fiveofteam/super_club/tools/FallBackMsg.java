@@ -7,7 +7,15 @@ import java.util.Map;
 public enum FallBackMsg implements BaseEnum<FallBackMsg,String> {
     //注册失败！发生未知错误！
     SignFail("400","注册失败!"),
-    SignOk("200","注册成功！");
+    SignOk("200","注册成功！"),
+    ResultFail("400","查询失败！"),
+    ResultOk("200","查询成功！"),
+    AddFail("400","创建失败！"),
+    AddOk("200","创建成功！"),
+    UpdateFail("400","更新失败！"),
+    UpdateOk("200","更新成功！");
+
+
     private String value;
     private String displayName;
     static Map<String,FallBackMsg> enumMap=new HashMap<>();
