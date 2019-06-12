@@ -30,6 +30,8 @@ public class UserController {
         return jsonResult;
     }
 
+
+
     /**
      * 注册
      *
@@ -52,7 +54,7 @@ public class UserController {
             jsonResult.setMsg(FallBackMsg.SignFail.getDisplayName() + "，真实密码不能为空！");
             return jsonResult;
         }
-        if (user.getUserRealName() == null || user.getUserRealName() == "") {
+        if (user.getUserRealName() == null || user.getUserRealName() == "") {  
             jsonResult.setMsg(FallBackMsg.SignFail.getDisplayName() + "，真实密码不能为空！");
             return jsonResult;
         }

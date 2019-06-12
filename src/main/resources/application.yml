@@ -28,6 +28,9 @@ spring:
     testOnReturn: false
     poolPreparedStatements: true
     maxOpenPreparedStatements: 20
+  # 忽略返回值为null的属性
+  jackson:
+    default-property-inclusion: non_null
 
 logging:
   level:
@@ -46,3 +49,8 @@ mybatis:
 #      sessionInfo: sessionInfo
 #      sessionPrefix: SHIRO_SESSION_ID
 #      imagePath: /page/image/
+
+prop :
+  upload-folder: f://Project/mypicture/
+
+

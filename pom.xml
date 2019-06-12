@@ -59,7 +59,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
+
         </dependency>
         <!--shiro 依赖-->
         <dependency>

@@ -79,4 +79,10 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </update>
+  <!--更新社团级别ID-->
+  <update id="updateLevelByClubId" parameterType="com.fiveofteam.super_club.pojo.LevelGroup">
+    update level_group
+    set  lg_levelid = #{lgLevelid,jdbcType=VARCHAR}
+    where lg_clubid = #{lgClubid,jdbcType=VARCHAR}
+  </update>
 </mapper>
