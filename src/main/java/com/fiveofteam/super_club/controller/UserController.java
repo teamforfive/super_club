@@ -1,6 +1,7 @@
 package com.fiveofteam.super_club.controller;
 
 import com.fiveofteam.super_club.pojo.User;
+import com.fiveofteam.super_club.pojo.bean.UserBean;
 import com.fiveofteam.super_club.service.UserService;
 import com.fiveofteam.super_club.tools.FallBackMsg;
 import com.fiveofteam.super_club.tools.JsonResult;

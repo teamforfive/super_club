@@ -13,11 +13,7 @@ public enum FallBackMsg implements BaseEnum<FallBackMsg, String> {
     AddFail("400","创建失败！"),
     AddOk("200","创建成功！"),
     UpdateFail("400","更新失败！"),
-    UpdateOk("200","更新成功！");
-
-
-    SignFail("400", "注册失败!"),
-    SignOk("200", "注册成功!"),
+    UpdateOk("200","更新成功！"),
     NotNull("400", "不能为空!"),
     SysErrorInfo("500", "系统发生未知错误，请联系管理员!");
     private String value;
