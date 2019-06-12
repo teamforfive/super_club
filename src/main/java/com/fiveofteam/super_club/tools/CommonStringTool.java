@@ -24,4 +24,18 @@ public class CommonStringTool {
         }
         return retArray;
     }
+
+    /**
+     * 判断对象是否为空
+     */
+    public static boolean strIsEmpty(Object o) {
+        if (o == null || "".equals(o)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isEmpty() {
+        return false;
+    }
 }

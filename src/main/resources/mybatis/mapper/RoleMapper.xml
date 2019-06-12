@@ -1,81 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fiveofteam.super_club.dao.RoleMapper">
-  <resultMap id="BaseResultMap" type="com.fiveofteam.super_club.pojo.Role">
-    <id column="uu_id" jdbcType="VARCHAR" property="uuId" />
-    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
-    <result column="role_COMMENT" jdbcType="VARCHAR" property="roleComment" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    uu_id, role_name, role_COMMENT, update_time
+    <resultMap id="BaseResultMap" type="com.fiveofteam.super_club.pojo.Role">
+        <id column="uu_id" jdbcType="VARCHAR" property="uuId"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="role_comment" jdbcType="VARCHAR" property="roleComment"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    uu_id, role_name, role_comment, update_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from role
-    where uu_id = #{uuId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from role
+        where uu_id = #{uuId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectIdByName" parameterType="String" resultType="String">
+        select uu_id from role where
+        <if test="roleName!=null">
+            role_name=#{roleName,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <!--<select id="getRole" parameterType="String" resultType="com.fiveofteam.super_club.pojo.Role">-->
+        <!---->
+    <!--</select>-->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from role
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.Role">
-    insert into role (uu_id, role_name, role_COMMENT, 
+    <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.Role">
+    insert into role (uu_id, role_name, role_comment,
       update_time)
-    values (#{uuId,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, #{roleComment,jdbcType=VARCHAR}, 
+    values (#{uuId,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, #{roleComment,jdbcType=VARCHAR},
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.Role">
-    insert into role
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="uuId != null">
-        uu_id,
-      </if>
-      <if test="roleName != null">
-        role_name,
-      </if>
-      <if test="roleComment != null">
-        role_COMMENT,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="uuId != null">
-        #{uuId,jdbcType=VARCHAR},
-      </if>
-      <if test="roleName != null">
-        #{roleName,jdbcType=VARCHAR},
-      </if>
-      <if test="roleComment != null">
-        #{roleComment,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fiveofteam.super_club.pojo.Role">
-    update role
-    <set>
-      <if test="roleName != null">
-        role_name = #{roleName,jdbcType=VARCHAR},
-      </if>
-      <if test="roleComment != null">
-        role_COMMENT = #{roleComment,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where uu_id = #{uuId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.fiveofteam.super_club.pojo.Role">
+    <!--插入角色集合-->
+    <insert id="insertList" parameterType="list">
+        insert into role (uu_id,role_name,role_comment,update_time)values
+        <foreach collection="list" index="index" item="item" separator=",">
+            (#{item.uuId,jdbcType=VARCHAR},#{item.roleName,jdbcType=VARCHAR},
+            #{item.roleComment,jdbcType=VARCHAR},#{item.updateTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+    <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.Role">
+        insert into role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuId != null">
+                uu_id,
+            </if>
+            <if test="roleName != null">
+                role_name,
+            </if>
+            <if test="roleComment != null">
+                role_comment,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuId != null">
+                #{uuId,jdbcType=VARCHAR},
+            </if>
+            <if test="roleName != null">
+                #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleComment != null">
+                #{roleComment,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fiveofteam.super_club.pojo.Role">
+        update role
+        <set>
+            <if test="roleName != null">
+                role_name = #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleComment != null">
+                role_comment = #{roleComment,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where uu_id = #{uuId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fiveofteam.super_club.pojo.Role">
     update role
     set role_name = #{roleName,jdbcType=VARCHAR},
-      role_COMMENT = #{roleComment,jdbcType=VARCHAR},
+      role_comment = #{roleComment,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </update>
