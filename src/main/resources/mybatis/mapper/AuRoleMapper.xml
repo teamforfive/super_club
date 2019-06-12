@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fiveofteam.super_club.dao.AuRoleMapper">
+    <resultMap id="BaseResultMap" type="com.fiveofteam.super_club.pojo.AuRole">
+        <id column="uu_id" jdbcType="VARCHAR" property="uuId"/>
+        <result column="club_id" jdbcType="VARCHAR" property="clubId"/>
+        <result column="role_id" jdbcType="VARCHAR" property="roleId"/>
+        <result column="au_id" jdbcType="VARCHAR" property="auId"/>
+        <result column="au_type" jdbcType="BIT" property="auType"/>
+        <result column="au_userself_name" jdbcType="VARCHAR" property="auUserselfName"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    uu_id, club_id, role_id, au_id, au_type, au_userself_name, create_time
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from au_role
+        where uu_id = #{uuId,jdbcType=VARCHAR}
+    </select>
+    <!--查询-->
+    <select id="selectByIdAndOragnizeId" parameterType="com.fiveofteam.super_club.pojo.AuRole" resultType="java.lang.Integer">
+        select count(uu_id) from au_role
+        <if test="roleId !=null">
+            where
+            role_id=#{roleId,jdbcType=VARCHAR}
+            <if test="clubId !=null">
+                and club_id=#{clubId,jdbcType=VARCHAR}
+            </if>
+            <if test="auId !=null">
+                and au_id=#{auId,jdbcType=VARCHAR}
+            </if>
+        </if>
+    </select>
+    <!--获取权限列表-->
+    <select id="roleList" parameterType="String" resultType="list">
+        select * from role
+        where uu_id in
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            select role_id from au_role where au_id=#{_parameter}
+        </foreach>
+
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from au_role
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.AuRole">
+    insert into au_role (uu_id, clSub_id, role_id,
+      au_id, au_type, au_userself_name, 
+      create_time)
+    values (#{uuId,jdbcType=VARCHAR}, #{clubId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, 
+      #{auId,jdbcType=VARCHAR}, #{auType,jdbcType=BIT}, #{auUserselfName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+    <!--为用户匹配角色-->
+    <insert id="patchRole" parameterType="com.fiveofteam.super_club.pojo.AuRole">
+        insert into au_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuId != null">
+                uu_id,
+            </if>
+            <if test="clubId != null">
+                club_id,
+            </if>
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="auId != null">
+                au_id,
+            </if>
+            <if test="auType != null">
+                au_type,
+            </if>
+            <if test="auUserselfName != null">
+                au_userself_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuId != null">
+                #{uuId,jdbcType=VARCHAR},
+            </if>
+            <if test="clubId != null">
+                #{clubId,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="auId != null">
+                #{auId,jdbcType=VARCHAR},
+            </if>
+            <if test="auType != null">
+                #{auType,jdbcType=BIT},
+            </if>
+            <if test="auUserselfName != null">
+                #{auUserselfName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.AuRole">
+        insert into au_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuId != null">
+                uu_id,
+            </if>
+            <if test="clubId != null">
+                club_id,
+            </if>
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="auId != null">
+                au_id,
+            </if>
+            <if test="auType != null">
+                au_type,
+            </if>
+            <if test="auUserselfName != null">
+                au_userself_name,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuId != null">
+                #{uuId,jdbcType=VARCHAR},
+            </if>
+            <if test="clubId != null">
+                #{clubId,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="auId != null">
+                #{auId,jdbcType=VARCHAR},
+            </if>
+            <if test="auType != null">
+                #{auType,jdbcType=BIT},
+            </if>
+            <if test="auUserselfName != null">
+                #{auUserselfName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fiveofteam.super_club.pojo.AuRole">
+        update au_role
+        <set>
+            <if test="clubId != null">
+                club_id = #{clubId,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="auId != null">
+                au_id = #{auId,jdbcType=VARCHAR},
+            </if>
+            <if test="auType != null">
+                au_type = #{auType,jdbcType=BIT},
+            </if>
+            <if test="auUserselfName != null">
+                au_userself_name = #{auUserselfName,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where uu_id = #{uuId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fiveofteam.super_club.pojo.AuRole">
+    update au_role
+    set club_id = #{clubId,jdbcType=VARCHAR},
+      role_id = #{roleId,jdbcType=VARCHAR},
+      au_id = #{auId,jdbcType=VARCHAR},
+      au_type = #{auType,jdbcType=BIT},
+      au_userself_name = #{auUserselfName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </update>
+</mapper>

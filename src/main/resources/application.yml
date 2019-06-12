@@ -9,7 +9,7 @@ spring:
     name: SuperClub
   datasource:
     name: Club
-    url: jdbc:mysql://127.0.0.1:3306/clubs?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
+    url: jdbc:mysql://127.0.0.1:3306/clubs?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=GMT
     username: root
     password: 123456
     #使用druid数据源
