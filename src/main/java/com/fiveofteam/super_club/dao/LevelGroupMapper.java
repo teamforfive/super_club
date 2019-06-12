@@ -14,4 +14,11 @@ public interface LevelGroupMapper {
     int updateByPrimaryKeySelective(LevelGroup record);
 
     int updateByPrimaryKey(LevelGroup record);
+
+    /**
+     * 更新社团级别ID
+     * @param levelGroup
+     * @return
+     */
+    int updateLevelByClubId(LevelGroup levelGroup);
 }
