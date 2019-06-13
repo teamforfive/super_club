@@ -9,6 +9,8 @@ public interface AdminMapper {
 
     int insertSelective(Admin record);
 
+    int selectOne(String name);
+
     Admin selectByPrimaryKey(String uuId);
 
     int updateByPrimaryKeySelective(Admin record);

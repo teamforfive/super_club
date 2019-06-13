@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -106,7 +107,7 @@ public class UserController {
      * @Time
      */
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
-    public JsonResult signUp(User user) {
+    public JsonResult signUp(User user,@RequestParam(value ="userType",required=true, defaultValue="true") boolean userType) {
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
         if (user.getUserName() == null || user.getUserName().isEmpty()) {
@@ -123,7 +124,7 @@ public class UserController {
         }
 
         try {
-            jsonResult = userService.signUp(user);
+            jsonResult = userService.signUp(user,userType);
         } catch (Exception e) {
             logger.info(e.getMessage());
             jsonResult.setStatus("500");
