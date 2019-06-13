@@ -18,6 +18,6 @@ public interface ActivityCommentsService {
     /**
      *获取某活动评论
      */
-    JsonResult getCommentsList(ActivityComments activityComments);
+    JsonResult getCommentsList(String id);
 
 }

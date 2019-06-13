@@ -1,6 +1,9 @@
 package com.fiveofteam.super_club.controller;
 
+import com.fiveofteam.super_club.config.NameConfig;
 import com.fiveofteam.super_club.pojo.User;
+import com.fiveofteam.super_club.pojo.bean.SessionInfo;
+import com.fiveofteam.super_club.pojo.bean.UserBean;
 import com.fiveofteam.super_club.service.UserService;
 import com.fiveofteam.super_club.tools.FallBackMsg;
 import com.fiveofteam.super_club.tools.JsonResult;
@@ -14,15 +17,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private NameConfig nameConfig;
     JsonResult jsonResult;
-    private static final Logger logger=LoggerFactory.getLogger(UserController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @RequestMapping(value = "/enter", method = RequestMethod.GET)
     public JsonResult login() {
@@ -44,16 +54,27 @@ public class UserController {
      * @param userBean
      */
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
-    public JsonResult singIn(UserBean userBean) {
+    public JsonResult singIn(UserBean userBean, HttpSession session) {
         jsonResult = new JsonResult();
         Subject subject = SecurityUtils.getSubject();
-        //检验用户是否存在
-        try {
-            // 在认证提交前准备 token（令牌）
-            UsernamePasswordToken token = new UsernamePasswordToken(userBean.getUserName(), userBean.getUserPassword());
-            // 执行认证登陆
-            subject.login(token);
-            //根据权限，指定返回数据
+        if (session != null) {
+            if (!subject.isAuthenticated()) {
+                //检验用户是否存在
+                try {
+                    User user = userService.signIn(userBean);//用户信息查找
+                    SessionInfo sessionInfo = new SessionInfo();
+                    /**验证码、权限列表
+                     * todo
+                     * */
+                    sessionInfo.setUserId(user.getUuId());
+                    sessionInfo.setLoginName(user.getUserName());
+                    String sessionName = nameConfig.sessionInfoName;
+                    // 在认证提交前准备 token（令牌）
+                    UsernamePasswordToken token = new UsernamePasswordToken(userBean.getUserName(), userBean.getUserPassword());
+                    // 执行认证登陆
+                    subject.login(token);
+                    session.setAttribute(sessionName, sessionInfo);
+                    //根据权限，指定返回数据
 //            String role = userMapper.getRole(username);
 //            if ("user".equals(role)) {
 //                return resultMap.success().message("欢迎登陆");
@@ -62,13 +83,16 @@ public class UserController {
 //                return resultMap.success().message("欢迎来到管理员页面");
 //            }
 
-        } catch (Exception e) {
-            logger.info(e.getMessage());
-            jsonResult.setMsg("登录，发生未知错误！");
-            return jsonResult;
+                } catch (Exception e) {
+                    logger.info(e.getMessage());
+                    jsonResult.setMsg("登录，发生未知错误！");
+                    return jsonResult;
+                }
+            }
+            jsonResult.setMsg("登陆成功!");
+            jsonResult.setStatus("200");
         }
-        jsonResult.setMsg("登陆成功!");
-        jsonResult.setStatus("200");
+
         return jsonResult;
     }
 
@@ -76,13 +100,14 @@ public class UserController {
 
     /**
      * 注册
-     *todo 权限
+     * todo 权限
+     *
      * @param user
      * @return JsonResult
      * @Time
      */
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
-    public JsonResult signUp(User user) {
+    public JsonResult signUp(User user,@RequestParam(value ="userType",required=true, defaultValue="true") boolean userType) {
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
         if (user.getUserName() == null || user.getUserName().isEmpty()) {
@@ -99,7 +124,7 @@ public class UserController {
         }
 
         try {
-            jsonResult = userService.signUp(user);
+            jsonResult = userService.signUp(user,userType);
         } catch (Exception e) {
             logger.info(e.getMessage());
             jsonResult.setStatus("500");
@@ -109,7 +134,40 @@ public class UserController {
         return jsonResult;
 
     }
+    /**
+     * 用户退出登录
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping("/logout")
+    public String logout(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
+        JsonResult jsonResult = new JsonResult();
 
+        // SessionInfo sessionInfo = sessionService.getSessionInfo(request);
+        String sessionName = nameConfig.sessionInfoName;
+        Subject currentUser = SecurityUtils.getSubject();
+
+        if (session != null) {
+         //   CookieUtil.removeCookie(response, "companyId");
+            // Session currentSesession = currentUser.getSession();
+
+            if (sessionName != null) {
+                session.removeAttribute(sessionName);
+            }
+            session.isNew();
+            // if(currentSesession!=null) {
+            // currentSesession
+            // currentUser.i
+            // currentSesession.removeAttribute("key");
+            System.out.println("");
+            currentUser.logout();
+            // }
+            // session.invalidate();
+
+        }
+        return "redirect:/page/html/login.html";
+    }
     /**
      * 修改用户信息 todo
      * */

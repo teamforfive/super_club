@@ -1,8 +1,10 @@
 package com.fiveofteam.super_club.service.impl;
 
+import com.fiveofteam.super_club.dao.AdminMapper;
 import com.fiveofteam.super_club.dao.AuRoleMapper;
 import com.fiveofteam.super_club.dao.RoleMapper;
 import com.fiveofteam.super_club.dao.UserMapper;
+import com.fiveofteam.super_club.pojo.Admin;
 import com.fiveofteam.super_club.pojo.AuRole;
 import com.fiveofteam.super_club.pojo.Role;
 import com.fiveofteam.super_club.pojo.User;
@@ -23,6 +25,8 @@ public class UserServiceImpl implements UserService {
     private RoleMapper roleMapper;
     @Autowired
     private AuRoleMapper auRoleMapper;
+    @Autowired
+    private AdminMapper adminMapper;
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     JsonResult jsonResult;
 
@@ -31,12 +35,14 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     @Transactional(readOnly = false, rollbackFor = {Exception.class})
-    public JsonResult signUp(User user) {
+    public JsonResult signUp(User user, boolean userType) {
         jsonResult = new JsonResult();
         String salt;
         String passWord;
         int num;
-
+        if (!userType) {
+            return singUpAdmin(user);//注册管理员
+        }
         //查询用户是否存在
         int userNum = userMapper.selectName(user.getUserRealName());
         if (userNum > 0) {
@@ -69,6 +75,7 @@ public class UserServiceImpl implements UserService {
         auRole.setRoleId(roleId);//插入角色id
         auRole.setClubId("100000");//组织Id\
         auRole.setAuId(user.getUuId());//插入用户Id
+        auRole.setAuType(true);
         auRole.setCreateTime(DateTools.currentTime());
         //查询
         num = auRoleMapper.selectByIdAndOragnizeId(auRole);
@@ -190,4 +197,71 @@ public class UserServiceImpl implements UserService {
         }
         return null;
     }
+
+    /**
+     * 注册管理员
+     */
+    private JsonResult singUpAdmin(User user) {
+        String salt;
+        String passWord;
+        int num = adminMapper.selectOne(user.getUserName());
+        if (num > 0) {
+            jsonResult.setMsg("管理员名已经被使用");
+            jsonResult.setStatus("400");
+            return jsonResult;
+        }
+        Admin admin = new Admin();
+        admin.setAdminName(user.getUserName());
+        admin.setAdminStatus(1);
+        String adminId = CommonStringTool.UUID();//管理员ID
+        admin.setUuId(adminId);
+        //盐值
+        salt = MD5.smallmd5(user.getUserRealName() + user.getUserName() + user.getUserPassword());
+        //密码加密
+        passWord = MD5.md5(salt + user.getUserPassword());
+        admin.setAdminPassword(passWord);
+        admin.setAdminSalt(salt);
+        admin.setAdminCode("100000");//todo
+        int count = adminMapper.insert(admin);
+        if (count < 1) {
+            jsonResult.setStatus("400");
+            jsonResult.setMsg("管理员注册失败！");
+            return jsonResult;
+        }
+
+        //插入管理员角色
+        AuRole auRole = new AuRole();
+        // user.getUuId();
+        String roleId = roleMapper.selectIdByName("admin");
+        if (roleId == null || "".equals(roleId)) {
+            jsonResult.setMsg("角色不存在,请联系管理员!");
+            jsonResult.setStatus("500");
+            return jsonResult;
+        }
+        auRole.setRoleId(roleId);//插入角色id
+        auRole.setClubId("000000");//组织Id
+        auRole.setAuId(adminId);//插入用户Id
+        auRole.setAuType(false);//管理员类型 false
+        auRole.setCreateTime(DateTools.currentTime());
+        //查询
+        num = auRoleMapper.selectByIdAndOragnizeId(auRole);
+        if (num > 0) {
+            jsonResult.setMsg("角色关系已经存在！");
+            jsonResult.setStatus("400");
+            return jsonResult;
+        }
+        auRole.setUuId(CommonStringTool.UUID());//插入该条信息的id
+        //插入权限
+        num = auRoleMapper.patchRole(auRole);
+        if (num == 0) {
+            jsonResult.setMsg("为管理员添加角色不成功!");
+            jsonResult.setStatus("400");
+            return jsonResult;
+        }
+        jsonResult.setMsg(FallBackMsg.SignOk.getDisplayName());
+        jsonResult.setStatus("200");
+
+        return jsonResult;
+    }
+
 }

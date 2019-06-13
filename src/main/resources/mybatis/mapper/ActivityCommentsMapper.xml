@@ -20,6 +20,12 @@
     from activity_comments
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </select>
+  <select id="getCommentsList" parameterType="String"  resultMap="list">
+    select
+    <include refid="Base_Column_List" />
+    from activity_comments
+    where activity_id = #{_parameter,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from activity_comments
     where uu_id = #{uuId,jdbcType=VARCHAR}

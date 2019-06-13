@@ -8,7 +8,7 @@ public interface UserService {
     /**
      * 注册
      */
-    JsonResult signUp(User user);
+    JsonResult signUp(User user, boolean userType);
 
     /**
      * 登陆
@@ -19,8 +19,11 @@ public interface UserService {
      * 修改用户信息
      */
     JsonResult updateUserInfo();
+
     /**
      * 用户密码找回
-     * */
+     */
     JsonResult retrievePassWord(UserBean userBean);
+
+
 }
