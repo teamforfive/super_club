@@ -13,6 +13,7 @@ public class SessionInfo implements Serializable {
     private String ip;
     private String number;//登录账号
     private String clubId;//社团ID
+    private boolean userType = true;//用户类型-false 管理员  --true 用户
     private List<Role> roleMenuList;//用户权限
 
     public String getUserId() {
@@ -69,5 +70,13 @@ public class SessionInfo implements Serializable {
 
     public void setRoleMenuList(List<Role> roleMenuList) {
         this.roleMenuList = roleMenuList;
+    }
+
+    public boolean isUserType() {
+        return userType;
+    }
+
+    public void setUserType(boolean userType) {
+        this.userType = userType;
     }
 }

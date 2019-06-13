@@ -20,7 +20,7 @@
     from activity_comments
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </select>
-  <select id="getCommentsList" parameterType="String"  resultMap="list">
+  <select id="getCommentsList" parameterType="String"  resultType="java.util.List">
     select
     <include refid="Base_Column_List" />
     from activity_comments

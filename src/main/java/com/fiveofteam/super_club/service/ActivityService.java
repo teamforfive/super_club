@@ -7,7 +7,13 @@ public interface ActivityService {
 
     /**
      * 添加活动页面
+     *
      * @return
      */
     JsonResult addArticle(Activity activity);
+
+    /**
+     *获取活动列表
+     */
+    JsonResult getActivityList();
 }

@@ -7,12 +7,15 @@
     </router-link>
     <mt-button icon="more" slot="right"></mt-button>
     </mt-header>
-    <div class="m-title"  v-for="item1 in readclubifo()" :key="item1.clubCreateId">
+    <!-- <div class="m-title"  v-for="item1 in readclubifo()" :key="item1.clubCreateId"> -->
+         <div class="m-title">
         <div class="m-ifo">
-        <img :src="item1.img">
-        <h4>{{item1.name}}</h4>
+        <!-- <img :src="item1.img"> -->
+         <img src="../../src/images/club/01.png">
+        <!-- <h4>{{item1.name}}</h4> -->
+            <h4>ddd</h4>
         <p>广西科技大</p>
-        <span>社团号:<p class="number-p">{{item1.id}}</p></span>
+        <span>社团号:<p class="number-p">5555</p></span>
         </div>
         <span class="join-btn"><p>申请加入</p></span>
     </div>
@@ -46,7 +49,11 @@
                             </div>
                         </div>
                           
-                        <div  class="item1-id"><i></i><span>成员({{membperson}})</span></div>
+                        <div  class="item1-id">
+                            <i></i>
+                        <span>成员({{membperson}})</span>
+                         <span class="join-btn" ><p style="color: #000;">邀请加入</p></span>
+                        </div>
                         <!-- 成员列表 -->
                         <div class="member1" v-for="item in readm()" :key="item.id">
                             <div class="LHotclub">{{item.id}}</div>
@@ -104,31 +111,33 @@
 		            </div>
 		    </div>
 				<div id="item2" class="mui-control-content">
+                    <div class="Mybt">
+                    <!-- <mt-button type="primary" size="normal" plain></mt-button>  -->
+                     <router-link  to="/Edit"><span class="join-btn" ><p style="color: #000;">发布</p></span></router-link>
+                    </div>
 					<ul class="mui-table-view">
 						<li class="mui-table-view-cell">
-							第二个选项卡子项-1
+                            <active></active>
 						</li>
-						<li class="mui-table-view-cell">
-							第二个选项卡子项-2
-						</li>
-						<li class="mui-table-view-cell">
-							第二个选项卡子项-3
-						</li>
+						
 					</ul>
 				</div>
 				<div id="item3" class="mui-control-content">
+                    <div class="Mybt">
+                      <router-link  to="/Edit"><span class="join-btn" ><p style="color: #000;">新增</p></span></router-link>
+                    </div>
                     <div  class="item1-id"><i></i><span>共有n张照片</span></div>
 					<!-- 照片九宫格 -->
                         <div class="mui-content item-img">
                             <ul class="mui-table-view mui-grid-view mui-grid-9">
                                 <li class="mui-table-view-cell mui-media mui-col-xs-4 ">
-                                    <img src="../../src/images/club/01.png"> 
+                                    <img src="../../src/images/club/01.png" preview="0" preview-text="描述文字"> 
                                 </li>
                                 <li class="mui-table-view-cell mui-media mui-col-xs-4 ">
-                                    <img src="../../src/images/club/01.png"> 
+                                    <img src="../../src/images/club/01.png" preview="0" preview-text="描述文字"> 
                                 </li>
                                 <li class="mui-table-view-cell mui-media mui-col-xs-4 ">
-                                    <img src="../../src/images/club/01.png"> 
+                                    <img src="../../src/images/club/01.png" preview="0" preview-text="描述文字"> 
                                 </li>
                             </ul> 
 		                </div>
@@ -142,9 +151,10 @@
 
 </template>
 <script>
-
+import active from "./club-active.vue"
 export default {
 name: 'count',
+components:{active},
   data(){
       return {
             memnum:0,
@@ -250,6 +260,13 @@ this.$ajax.get('http://192.168.1.101:8081/SuperClub/clubs/clubInfo',{params:{id:
 }
 </script>
 <style scoped>
+.mui-table-view:before{
+    height: 0;
+}
+.Mybt {
+  margin: 15px 10px;
+  height: 25px;
+}
 .mui-collapse i{
     position: absolute;
     width: 100%;
@@ -297,9 +314,16 @@ this.$ajax.get('http://192.168.1.101:8081/SuperClub/clubs/clubInfo',{params:{id:
         top: 8px;
         width: 100px;
         height: 30px;
-        background-color: rgba(9, 9, 9, 0.5);
+        background-color: rgba(0, 0, 0, 0.5);
         border-radius: 20px;
       
+    }
+    .item1-id .join-btn{
+          background-color: rgba(171, 166, 166, 0.5);
+    }
+    .mui-control-content .Mybt .join-btn, .Mybt .join-btn{
+        text-align: center;
+           background-color: rgba(171, 166, 166, 0.5);
     }
      .join-btn p{
         line-height: 30px;

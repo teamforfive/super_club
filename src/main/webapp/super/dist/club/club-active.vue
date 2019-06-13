@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1>tt</h1>
+	
 		 <!--<router-link to="/">-->
 		<div class="mui-card" @click="gf">
 			
@@ -32,6 +32,7 @@
 
 <script>
 	export default {
+		name:'active',
 	  methods:{
 		gf(){
 			this.$router.push({path:'/contentClub'});

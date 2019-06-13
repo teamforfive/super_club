@@ -13,7 +13,7 @@ public interface UserService {
     /**
      * 登陆
      */
-    User signIn(UserBean userBean);
+    User signIn(UserBean userBean, boolean userType);
 
     /**
      * 修改用户信息

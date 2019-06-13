@@ -1,5 +1,6 @@
  // 导入处理路径的模块
  var path = require('path');
+ var webpack = require('webpack');
  var htmlWebpackPlugin = require('html-webpack-plugin')
  const VueLoaderPlugin = require('vue-loader/lib/plugin')
  // 导出一个配置对象，将来webpack在启动的时候，会默认来查找webpack.config.js，并读取这个文件中导出的配置对象，来进行打包处理
@@ -27,13 +28,19 @@
         template: path.join(__dirname, './src/index.html'), // 指定模板文件路径
         filename: 'index.html' // 设置生成的内存页面的名称
       }),
-     
+      
+      new webpack.ProvidePlugin({
+        mui:"mui",
+        "window.mui":"mui"
+      }),
       new VueLoaderPlugin()
     ],
     
     resolve: {
       alias: { // 修改 Vue 被导入时候的包的路径
         // "vue$": "vue/dist/vue.js"
+        
+"mui":path.resolve(__dirname,'./src/js/mui.min.js')
       },
 
     }

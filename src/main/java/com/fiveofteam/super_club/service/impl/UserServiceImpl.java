@@ -85,13 +85,14 @@ public class UserServiceImpl implements UserService {
             return jsonResult;
         }
         auRole.setUuId(CommonStringTool.UUID());//插入该条信息的id
-        //插入权限
+        //插入角色
         num = auRoleMapper.patchRole(auRole);
         if (num == 0) {
             jsonResult.setMsg("为用户添加角色不成功!");
             jsonResult.setStatus("400");
             return jsonResult;
         }
+        //权限
         jsonResult.setMsg(FallBackMsg.SignOk.getDisplayName());
         jsonResult.setStatus("200");
 //        } catch (Exception e) {
@@ -104,11 +105,14 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 登录
+     * 用户登录
      */
     @Override
     @Transactional(readOnly = false, rollbackFor = {Exception.class})
-    public User signIn(UserBean userBean) {
+    public User signIn(UserBean userBean, boolean userType) {
+        if(!userType){
+            adminLogin(userBean);
+        }
         User user = null;
         UserBean bean = userBean;
         String passWord = userBean.getUserPassword();
@@ -147,6 +151,9 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    /**
+     * 更新用户信息
+     */
     @Override
     public JsonResult updateUserInfo() {
         return null;
@@ -251,17 +258,24 @@ public class UserServiceImpl implements UserService {
             return jsonResult;
         }
         auRole.setUuId(CommonStringTool.UUID());//插入该条信息的id
-        //插入权限
+        //插入角色
         num = auRoleMapper.patchRole(auRole);
         if (num == 0) {
             jsonResult.setMsg("为管理员添加角色不成功!");
             jsonResult.setStatus("400");
             return jsonResult;
         }
+        //插入权限 todo
         jsonResult.setMsg(FallBackMsg.SignOk.getDisplayName());
         jsonResult.setStatus("200");
 
         return jsonResult;
     }
 
+    /**
+     * 登录管理员
+     */
+    private JsonResult adminLogin(UserBean userBean) {
+        return jsonResult;
+    }
 }

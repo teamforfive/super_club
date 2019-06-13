@@ -80,7 +80,7 @@
             </mt-swipe>
         </div>
         <!-- 底部结束 -->  
-    <router-link  to="/Myclub"> 
+    <router-link  to="/ifoclub"> 
     <font class="boottomf">我的社团</font>
      </router-link>
 </div>
