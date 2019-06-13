@@ -35,10 +35,14 @@ Vue.component(Radio.name, Radio);
 Vue.use(InfiniteScroll);
 Vue.use(Loadmore);
 Vue.prototype.$Indicator=Indicator
+import preview from '../src/js/vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
+Vue.use(preview)
 import './lib/MUI/css/mui.css'
-import './lib/MUI/js/mui.min.js'
+import './js/mui.min'
 
 import './css/club.css'
+
 // 1.3 导入自己的 router.js 路由模块
 import router from './router'
 import club from './club.vue'

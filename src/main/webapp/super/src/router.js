@@ -9,19 +9,22 @@ import Homeclub from '../dist/club/club-home.vue'
 import Mclub from '../dist/club/club-more.vue'
 import Cclub from '../dist/club/club-create.vue'
 import Login from '../dist/club/club-login.vue'
-
+import Edit from '../dist/club/activeEdit.vue'
+import explam from '../dist/club/explam.vue'
 
 // 3. 创建路由对象
 var router = new VueRouter({
   routes: [ // 配置路由规则
-    { path: '/Home',name:'home',component: Homeclub },
+    { path: '/Home',name:"home",component: Homeclub },
     { path: '/Hclub:id',name:"count", component: Hotclub },
     { path: '/Aclub', component: Aclub },
     { path: '/Mclub', component: Mclub },
     { path: '/Cclub', component: Cclub },
     { path: '/Myclub', component: Myclub },
-    { path: '/ifoclub', component: ifoclub },
+    { path: '/ifoclub', component: ifoclub},
+    { path: '/Edit', component: Edit},
     { path: '/', component: Login },
+    { path: '/explam', component: explam },
   ],
   linkActiveClass: 'mui-active' // 覆盖默认的路由高亮的类，默认的类叫做 router-link-active
 })

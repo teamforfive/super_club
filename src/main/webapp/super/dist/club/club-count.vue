@@ -242,7 +242,7 @@ mounted(){
     getnewsinfo1(Id){
             var text=qs.stringify(Id);
             var _this=this;
-        this.$ajax.get('http://192.168.1.100:8081/SuperClub/clubs/clubInfo',{params:{
+        this.$ajax.get('http://localhost:8081/SuperClub/clubs/clubInfo',{params:{
             uuId:Id
         }}
         ).then(function (ifon){

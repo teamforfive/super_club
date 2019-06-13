@@ -1,5 +1,5 @@
 {
     "presets": ["env", "stage-0"],
     "plugins": ["transform-runtime","transform-remove-strict-mode"],
-    "ignore": ["./lib/MUI/js/mui.min.js"]
+    "ignore": ["./src/js/mui.min.js"]
 }

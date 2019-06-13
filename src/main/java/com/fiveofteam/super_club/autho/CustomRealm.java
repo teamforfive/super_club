@@ -63,7 +63,7 @@ public class CustomRealm extends AuthorizingRealm {
         //   logger.info("pass" + password);
 
         //  logger.info("从数据库获取对应的userName:{}", userName + "对应的信息!");
-        User user = userService.signIn(userBean);
+        User user = userService.signIn(userBean,true);
         logger.info("数据查询完毕");
         if (!user.getUserName().equals(userName)) {
             throw new UnknownAccountException("用户不存在!");

@@ -61,7 +61,7 @@ public class UserController {
             if (!subject.isAuthenticated()) {
                 //检验用户是否存在
                 try {
-                    User user = userService.signIn(userBean);//用户信息查找
+                    User user = userService.signIn(userBean,true);//用户信息查找
                     SessionInfo sessionInfo = new SessionInfo();
                     /**验证码、权限列表
                      * todo
