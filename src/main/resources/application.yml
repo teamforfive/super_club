@@ -45,12 +45,12 @@ mybatis:
   mapper-locations: classpath:mybatis/mapper/*.xml
   type-aliases-package: com.fiveofteam.super_club.pojo
 
-#    myConfig:
-#      sessionInfo: sessionInfo
-#      sessionPrefix: SHIRO_SESSION_ID
-#      imagePath: /page/image/
+myConfig:
+  sessionInfo: sessionInfoName
+  sessionPrefix: SHIRO_SESSION_ID
+  imagePath: /page/image/
 
-prop :
+prop:
   upload-folder: f://Project/mypicture/
 
 
