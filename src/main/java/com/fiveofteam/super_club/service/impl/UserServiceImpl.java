@@ -27,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private AuRoleMapper auRoleMapper;
     @Autowired
     private AdminMapper adminMapper;
+
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     JsonResult jsonResult;
 

@@ -4,6 +4,7 @@ import com.fiveofteam.super_club.config.NameConfig;
 import com.fiveofteam.super_club.pojo.User;
 import com.fiveofteam.super_club.pojo.bean.SessionInfo;
 import com.fiveofteam.super_club.pojo.bean.UserBean;
+import com.fiveofteam.super_club.service.SessionService;
 import com.fiveofteam.super_club.service.UserService;
 import com.fiveofteam.super_club.tools.FallBackMsg;
 import com.fiveofteam.super_club.tools.JsonResult;
@@ -31,6 +32,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private NameConfig nameConfig;
+    @Autowired
+    private SessionService sessionService;
     JsonResult jsonResult;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -54,10 +57,13 @@ public class UserController {
      * @param userBean
      */
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
-    public JsonResult singIn(UserBean userBean, HttpSession session) {
+    public JsonResult singIn(UserBean userBean, HttpSession session, HttpServletRequest request) {
         jsonResult = new JsonResult();
+//        SessionInfo sessionInfos= sessionService.getSessionInfo(request);
+//        if(sessionInfos.getLoginName()==userBean.getUserName()){}
         Subject subject = SecurityUtils.getSubject();
         if (session != null) {
+          //  session.getAttribute()
             if (!subject.isAuthenticated()) {
                 UsernamePasswordToken token = new UsernamePasswordToken(userBean.getUserName(), userBean.getUserPassword());
                 //检验用户是否存在
@@ -70,7 +76,6 @@ public class UserController {
                     sessionInfo.setUserId(user.getUuId());
                     sessionInfo.setLoginName(user.getUserName());
                     String sessionName = nameConfig.sessionInfoName;
-                    logger.error(userBean.getUserPassword());
                     // 在认证提交前准备 token（令牌）
 
                     // 执行认证登陆
