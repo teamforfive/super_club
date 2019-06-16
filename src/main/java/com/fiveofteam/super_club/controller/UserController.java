@@ -59,9 +59,10 @@ public class UserController {
         Subject subject = SecurityUtils.getSubject();
         if (session != null) {
             if (!subject.isAuthenticated()) {
+                UsernamePasswordToken token = new UsernamePasswordToken(userBean.getUserName(), userBean.getUserPassword());
                 //检验用户是否存在
                 try {
-                    User user = userService.signIn(userBean,true);//用户信息查找
+                    User user = userService.signIn(userBean, true);//用户信息查找
                     SessionInfo sessionInfo = new SessionInfo();
                     /**验证码、权限列表
                      * todo
@@ -69,8 +70,9 @@ public class UserController {
                     sessionInfo.setUserId(user.getUuId());
                     sessionInfo.setLoginName(user.getUserName());
                     String sessionName = nameConfig.sessionInfoName;
+                    logger.error(userBean.getUserPassword());
                     // 在认证提交前准备 token（令牌）
-                    UsernamePasswordToken token = new UsernamePasswordToken(userBean.getUserName(), userBean.getUserPassword());
+
                     // 执行认证登陆
                     subject.login(token);
                     session.setAttribute(sessionName, sessionInfo);
@@ -97,7 +99,6 @@ public class UserController {
     }
 
 
-
     /**
      * 注册
      * todo 权限
@@ -107,7 +108,7 @@ public class UserController {
      * @Time
      */
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
-    public JsonResult signUp(User user,@RequestParam(value ="userType",required=true, defaultValue="true") boolean userType) {
+    public JsonResult signUp(User user, @RequestParam(value = "userType", required = true, defaultValue = "true") boolean userType) {
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
         if (user.getUserName() == null || user.getUserName().isEmpty()) {
@@ -124,7 +125,7 @@ public class UserController {
         }
 
         try {
-            jsonResult = userService.signUp(user,userType);
+            jsonResult = userService.signUp(user, userType);
         } catch (Exception e) {
             logger.info(e.getMessage());
             jsonResult.setStatus("500");
@@ -134,6 +135,7 @@ public class UserController {
         return jsonResult;
 
     }
+
     /**
      * 用户退出登录
      *
@@ -149,7 +151,7 @@ public class UserController {
         Subject currentUser = SecurityUtils.getSubject();
 
         if (session != null) {
-         //   CookieUtil.removeCookie(response, "companyId");
+            //   CookieUtil.removeCookie(response, "companyId");
             // Session currentSesession = currentUser.getSession();
 
             if (sessionName != null) {
