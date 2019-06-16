@@ -1,34 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fiveofteam.super_club.dao.ActivityMapper">
-  <resultMap id="BaseResultMap" type="com.fiveofteam.super_club.pojo.Activity">
-    <id column="uu_id" jdbcType="VARCHAR" property="uuId" />
-    <result column="activity_club_id" jdbcType="VARCHAR" property="activityClubId" />
-    <result column="activity_title" jdbcType="VARCHAR" property="activityTitle" />
-    <result column="activity_start_time" jdbcType="TIMESTAMP" property="activityStartTime" />
-    <result column="activity_end_time" jdbcType="TIMESTAMP" property="activityEndTime" />
-    <result column="activity_place" jdbcType="VARCHAR" property="activityPlace" />
-    <result column="activity_content" jdbcType="VARCHAR" property="activityContent" />
-    <result column="activity_type" jdbcType="TINYINT" property="activityType" />
-    <result column="activity_status" jdbcType="BIT" property="activityStatus" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.fiveofteam.super_club.pojo.Activity">
+        <id column="uu_id" jdbcType="VARCHAR" property="uuId"/>
+        <result column="activity_club_id" jdbcType="VARCHAR" property="activityClubId"/>
+        <result column="activity_title" jdbcType="VARCHAR" property="activityTitle"/>
+        <result column="activity_start_time" jdbcType="TIMESTAMP" property="activityStartTime"/>
+        <result column="activity_end_time" jdbcType="TIMESTAMP" property="activityEndTime"/>
+        <result column="activity_place" jdbcType="VARCHAR" property="activityPlace"/>
+        <result column="activity_content" jdbcType="VARCHAR" property="activityContent"/>
+        <result column="activity_type" jdbcType="TINYINT" property="activityType"/>
+        <result column="activity_status" jdbcType="BIT" property="activityStatus"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <resultMap id="ActivityInfoListResultMap" type="com.fiveofteam.super_club.pojo.Activity">
+        <id column="uu_id" jdbcType="VARCHAR" property="uuId"/>
+        <result column="activity_club_id" jdbcType="VARCHAR" property="activityClubId"/>
+        <result column="activity_title" jdbcType="VARCHAR" property="activityTitle"/>
+        <result column="activity_start_time" jdbcType="TIMESTAMP" property="activityStartTime"/>
+        <result column="activity_end_time" jdbcType="TIMESTAMP" property="activityEndTime"/>
+        <result column="activity_place" jdbcType="VARCHAR" property="activityPlace"/>
+        <result column="activity_content" jdbcType="VARCHAR" property="activityContent"/>
+        <result column="activity_type" jdbcType="TINYINT" property="activityType"/>
+        <result column="activity_status" jdbcType="BIT" property="activityStatus"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <!--<collection property="A" column="uuId">-->
+
+        <!--</collection>-->
+    </resultMap>
+    <sql id="Base_Column_List">
     uu_id, activity_club_id, activity_title, activity_start_time, activity_end_time, 
     activity_place, activity_content, activity_type, activity_status, update_time, create_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from activity
-    where uu_id = #{uuId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from activity
+        where uu_id = #{uuId,jdbcType=VARCHAR}
+    </select>
+    <!--搜索活动列表-->
+    <select id="getActivityList" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from activity
+        where uu_id = #{uuId,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from activity
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.Activity">
+    <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.Activity">
     insert into activity (uu_id, activity_club_id, activity_title, 
       activity_start_time, activity_end_time, 
       activity_place, activity_content, activity_type, 
@@ -40,116 +64,116 @@
       #{activityStatus,jdbcType=BIT}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.Activity">
-    insert into activity
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="uuId != null">
-        uu_id,
-      </if>
-      <if test="activityClubId != null">
-        activity_club_id,
-      </if>
-      <if test="activityTitle != null">
-        activity_title,
-      </if>
-      <if test="activityStartTime != null">
-        activity_start_time,
-      </if>
-      <if test="activityEndTime != null">
-        activity_end_time,
-      </if>
-      <if test="activityPlace != null">
-        activity_place,
-      </if>
-      <if test="activityContent != null">
-        activity_content,
-      </if>
-      <if test="activityType != null">
-        activity_type,
-      </if>
-      <if test="activityStatus != null">
-        activity_status,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="uuId != null">
-        #{uuId,jdbcType=VARCHAR},
-      </if>
-      <if test="activityClubId != null">
-        #{activityClubId,jdbcType=VARCHAR},
-      </if>
-      <if test="activityTitle != null">
-        #{activityTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="activityStartTime != null">
-        #{activityStartTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="activityEndTime != null">
-        #{activityEndTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="activityPlace != null">
-        #{activityPlace,jdbcType=VARCHAR},
-      </if>
-      <if test="activityContent != null">
-        #{activityContent,jdbcType=VARCHAR},
-      </if>
-      <if test="activityType != null">
-        #{activityType,jdbcType=TINYINT},
-      </if>
-      <if test="activityStatus != null">
-        #{activityStatus,jdbcType=BIT},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fiveofteam.super_club.pojo.Activity">
-    update activity
-    <set>
-      <if test="activityClubId != null">
-        activity_club_id = #{activityClubId,jdbcType=VARCHAR},
-      </if>
-      <if test="activityTitle != null">
-        activity_title = #{activityTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="activityStartTime != null">
-        activity_start_time = #{activityStartTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="activityEndTime != null">
-        activity_end_time = #{activityEndTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="activityPlace != null">
-        activity_place = #{activityPlace,jdbcType=VARCHAR},
-      </if>
-      <if test="activityContent != null">
-        activity_content = #{activityContent,jdbcType=VARCHAR},
-      </if>
-      <if test="activityType != null">
-        activity_type = #{activityType,jdbcType=TINYINT},
-      </if>
-      <if test="activityStatus != null">
-        activity_status = #{activityStatus,jdbcType=BIT},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where uu_id = #{uuId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.fiveofteam.super_club.pojo.Activity">
+    <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.Activity">
+        insert into activity
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuId != null">
+                uu_id,
+            </if>
+            <if test="activityClubId != null">
+                activity_club_id,
+            </if>
+            <if test="activityTitle != null">
+                activity_title,
+            </if>
+            <if test="activityStartTime != null">
+                activity_start_time,
+            </if>
+            <if test="activityEndTime != null">
+                activity_end_time,
+            </if>
+            <if test="activityPlace != null">
+                activity_place,
+            </if>
+            <if test="activityContent != null">
+                activity_content,
+            </if>
+            <if test="activityType != null">
+                activity_type,
+            </if>
+            <if test="activityStatus != null">
+                activity_status,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuId != null">
+                #{uuId,jdbcType=VARCHAR},
+            </if>
+            <if test="activityClubId != null">
+                #{activityClubId,jdbcType=VARCHAR},
+            </if>
+            <if test="activityTitle != null">
+                #{activityTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="activityStartTime != null">
+                #{activityStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="activityEndTime != null">
+                #{activityEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="activityPlace != null">
+                #{activityPlace,jdbcType=VARCHAR},
+            </if>
+            <if test="activityContent != null">
+                #{activityContent,jdbcType=VARCHAR},
+            </if>
+            <if test="activityType != null">
+                #{activityType,jdbcType=TINYINT},
+            </if>
+            <if test="activityStatus != null">
+                #{activityStatus,jdbcType=BIT},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fiveofteam.super_club.pojo.Activity">
+        update activity
+        <set>
+            <if test="activityClubId != null">
+                activity_club_id = #{activityClubId,jdbcType=VARCHAR},
+            </if>
+            <if test="activityTitle != null">
+                activity_title = #{activityTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="activityStartTime != null">
+                activity_start_time = #{activityStartTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="activityEndTime != null">
+                activity_end_time = #{activityEndTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="activityPlace != null">
+                activity_place = #{activityPlace,jdbcType=VARCHAR},
+            </if>
+            <if test="activityContent != null">
+                activity_content = #{activityContent,jdbcType=VARCHAR},
+            </if>
+            <if test="activityType != null">
+                activity_type = #{activityType,jdbcType=TINYINT},
+            </if>
+            <if test="activityStatus != null">
+                activity_status = #{activityStatus,jdbcType=BIT},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where uu_id = #{uuId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fiveofteam.super_club.pojo.Activity">
     update activity
     set activity_club_id = #{activityClubId,jdbcType=VARCHAR},
       activity_title = #{activityTitle,jdbcType=VARCHAR},
