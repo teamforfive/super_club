@@ -4,6 +4,7 @@ import com.fiveofteam.super_club.config.NameConfig;
 import com.fiveofteam.super_club.pojo.User;
 import com.fiveofteam.super_club.pojo.bean.SessionInfo;
 import com.fiveofteam.super_club.pojo.bean.UserBean;
+import com.fiveofteam.super_club.service.SessionService;
 import com.fiveofteam.super_club.service.UserService;
 import com.fiveofteam.super_club.tools.FallBackMsg;
 import com.fiveofteam.super_club.tools.JsonResult;
@@ -31,6 +32,8 @@ public class UserController {
     private UserService userService;
     @Autowired
     private NameConfig nameConfig;
+    @Autowired
+    private SessionService sessionService;
     JsonResult jsonResult;
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -54,14 +57,18 @@ public class UserController {
      * @param userBean
      */
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
-    public JsonResult singIn(UserBean userBean, HttpSession session) {
+    public JsonResult singIn(UserBean userBean, HttpSession session, HttpServletRequest request) {
         jsonResult = new JsonResult();
+//        SessionInfo sessionInfos= sessionService.getSessionInfo(request);
+//        if(sessionInfos.getLoginName()==userBean.getUserName()){}
         Subject subject = SecurityUtils.getSubject();
         if (session != null) {
+          //  session.getAttribute()
             if (!subject.isAuthenticated()) {
+                UsernamePasswordToken token = new UsernamePasswordToken(userBean.getUserName(), userBean.getUserPassword());
                 //检验用户是否存在
                 try {
-                    User user = userService.signIn(userBean,true);//用户信息查找
+                    User user = userService.signIn(userBean, true);//用户信息查找
                     SessionInfo sessionInfo = new SessionInfo();
                     /**验证码、权限列表
                      * todo
@@ -70,7 +77,7 @@ public class UserController {
                     sessionInfo.setLoginName(user.getUserName());
                     String sessionName = nameConfig.sessionInfoName;
                     // 在认证提交前准备 token（令牌）
-                    UsernamePasswordToken token = new UsernamePasswordToken(userBean.getUserName(), userBean.getUserPassword());
+
                     // 执行认证登陆
                     subject.login(token);
                     session.setAttribute(sessionName, sessionInfo);
@@ -97,7 +104,6 @@ public class UserController {
     }
 
 
-
     /**
      * 注册
      * todo 权限
@@ -107,7 +113,7 @@ public class UserController {
      * @Time
      */
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
-    public JsonResult signUp(User user,@RequestParam(value ="userType",required=true, defaultValue="true") boolean userType) {
+    public JsonResult signUp(User user, @RequestParam(value = "userType", required = true, defaultValue = "true") boolean userType) {
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
         if (user.getUserName() == null || user.getUserName().isEmpty()) {
@@ -124,7 +130,7 @@ public class UserController {
         }
 
         try {
-            jsonResult = userService.signUp(user,userType);
+            jsonResult = userService.signUp(user, userType);
         } catch (Exception e) {
             logger.info(e.getMessage());
             jsonResult.setStatus("500");
@@ -134,6 +140,7 @@ public class UserController {
         return jsonResult;
 
     }
+
     /**
      * 用户退出登录
      *
@@ -149,7 +156,7 @@ public class UserController {
         Subject currentUser = SecurityUtils.getSubject();
 
         if (session != null) {
-         //   CookieUtil.removeCookie(response, "companyId");
+            //   CookieUtil.removeCookie(response, "companyId");
             // Session currentSesession = currentUser.getSession();
 
             if (sessionName != null) {
