@@ -25,6 +25,12 @@ public interface ClubsService {
     JsonResult getClubInfo(String uuId);
 
     /**
+     * 查询所有社团信息
+     * @return
+     */
+    JsonResult getClubLists();
+
+    /**
      * 创建社团
      * @param clubs
      * @param file

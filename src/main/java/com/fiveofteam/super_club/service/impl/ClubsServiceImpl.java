@@ -12,6 +12,7 @@ import com.fiveofteam.super_club.tools.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -38,7 +39,7 @@ public class ClubsServiceImpl implements ClubsService {
         jsonResult  = new JsonResult();
             try{
                 Map map = new HashMap();
-                List clubs = clubsMapper.selectAllClub();
+                List clubs = clubsMapper.selectClubList();
                 map.put("data",clubs);
                 jsonResult.setItem(map);
                 jsonResult.setStatus("200");
@@ -63,6 +64,23 @@ public class ClubsServiceImpl implements ClubsService {
         }catch (Exception e ){
             jsonResult.setStatus("400");
             jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName());
+        }
+        return jsonResult;
+    }
+
+    @Override
+    public JsonResult getClubLists(){
+        jsonResult = new JsonResult();
+        try {
+            Map map = new HashMap();
+            List clubslists = clubsMapper.selectClubLists();
+            map.put("data",clubslists);
+            jsonResult.setItem(map);
+            jsonResult.setStatus("200");
+            jsonResult.setMsg(FallBackMsg.ResultOk.getDisplayName() + "，查询所有社团信息成功！");
+        }catch (Exception e){
+            jsonResult.setStatus("400");
+            jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName()  + "，查询所有社团信息失败！");
         }
         return jsonResult;
     }

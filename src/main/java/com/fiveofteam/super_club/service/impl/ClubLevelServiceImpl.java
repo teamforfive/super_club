@@ -1,9 +1,7 @@
 package com.fiveofteam.super_club.service.impl;
 
 import com.fiveofteam.super_club.dao.ClubLevelMapper;
-import com.fiveofteam.super_club.dao.LevelGroupMapper;
 import com.fiveofteam.super_club.pojo.ClubLevel;
-import com.fiveofteam.super_club.pojo.LevelGroup;
 import com.fiveofteam.super_club.service.ClubLevelService;
 import com.fiveofteam.super_club.tools.CommonStringTool;
 import com.fiveofteam.super_club.tools.FallBackMsg;
@@ -74,13 +72,21 @@ public class ClubLevelServiceImpl implements ClubLevelService {
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
         int clubLevelNum  = 0 ;
+        int clubLevelIdNum = 0 ;
         try {
+            //查询级别ID是否存在
+            clubLevelIdNum = clubLevelMapper.selectClubLevelById(clubLevel.getUuId());
+            if (clubLevelIdNum < 1){
+                jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + "，社团级别不存在！");
+                return  jsonResult;
+            }
             //查询级别名称是否存在
             clubLevelNum = clubLevelMapper.selectClubLevelByNameAndId(clubLevel);
             if (clubLevelNum > 0 ){
                 jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + "，社团级别名称已存在！");
                 return  jsonResult;
             }
+
             //设置更新时间------------------------------------------------------
             clubLevel.setUpdateTime(new Timestamp(System.currentTimeMillis()));
             //更新ClubLevel表记录

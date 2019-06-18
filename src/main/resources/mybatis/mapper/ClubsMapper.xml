@@ -30,7 +30,13 @@
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </select>
   <!--查询所有社团信息-->
-  <select id="selectAllClub"  resultMap="BaseResultMap">
+  <select id="selectClubLists"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from clubs
+  </select>
+  <!--查询所有社团列表-->
+  <select id="selectClubList"  resultMap="BaseResultMap">
     select
     uu_id,clubs_name,club_logo
     from clubs

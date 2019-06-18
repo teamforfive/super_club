@@ -13,10 +13,13 @@ public interface ActivityService {
      * @return JsonResult
      */
     @Transactional
-    JsonResult addActivity(Activity activity);
+    JsonResult insertActivity(Activity activity);
 
     /**
-     *获取活动列表
+     * 获取指定社团的活动列表
+     * @param activityClubId
+     * @return
      */
-    JsonResult getActivityList();
+    @Transactional
+    JsonResult selectList(String activityClubId);
 }

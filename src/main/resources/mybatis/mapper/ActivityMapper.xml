@@ -40,12 +40,12 @@
         from activity
         where uu_id = #{uuId,jdbcType=VARCHAR}
     </select>
-    <!--搜索活动列表-->
-    <select id="getActivityList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <!--查询活动列表-->
+    <select id="selectList" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        uu_id,activity_title,activity_status,create_time
         from activity
-        where uu_id = #{uuId,jdbcType=VARCHAR}
+        where activity_club_id = #{activityClubId,jdbcType=VARCHAR}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">

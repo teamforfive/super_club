@@ -6,10 +6,7 @@ import com.fiveofteam.super_club.tools.CommonStringTool;
 import com.fiveofteam.super_club.tools.FallBackMsg;
 import com.fiveofteam.super_club.tools.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 
@@ -26,6 +23,7 @@ public class ActivityController {
      * @param activity
      * @return
      */
+    @CrossOrigin
     @RequestMapping(value = "/addActivity", method = RequestMethod.POST)
     public JsonResult insertActivity(Activity activity) {
         jsonResult = new JsonResult();
@@ -62,12 +60,12 @@ public class ActivityController {
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，活动内容不能为空！");
             return jsonResult;
         }
-        if (null == activity.getActivityType() || activity.getActivityType() > 0){
+        /*if (null == activity.getActivityType() || activity.getActivityType() > 0){
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，活动类型不能为空！");
             return jsonResult;
-        }
+        }*/
         try {
-            activityService.addActivity(activity);
+            jsonResult = activityService.insertActivity(activity);
         } catch (Exception e) {
             jsonResult.setStatus("500");
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，系统错误！");
@@ -78,15 +76,20 @@ public class ActivityController {
     /**
      * 获取活动列表
      */
-    @PostMapping(value = "/getActivityList")
-    public JsonResult getActivityList(String clubId) {
-        if (clubId == null || "".equals(clubId)) {
-
+    @CrossOrigin
+    @RequestMapping(value = "/selectList" ,method = RequestMethod.GET)
+    public JsonResult getActivityList(String activityClubId) {
+        jsonResult = new JsonResult();
+        jsonResult.setStatus("400");
+        if (null == activityClubId || "".equals(activityClubId.trim())){
+            jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName() + "，社团ID不能为空！");
+            return jsonResult;
         }
-
         try {
-
+            jsonResult = activityService.selectList(activityClubId);
         } catch (Exception e) {
+            jsonResult.setStatus("500");
+            jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName() + "，系统错误！");
         }
 
         return jsonResult;

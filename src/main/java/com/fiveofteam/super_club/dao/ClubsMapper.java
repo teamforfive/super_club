@@ -19,10 +19,16 @@ public interface ClubsMapper {
     int updateByPrimaryKey(Clubs record);
 
     /**
-     * 查询所有社团
+     * 查询所有社团列表
      * @return
      */
-    List<Clubs> selectAllClub();
+    List<Clubs> selectClubList();
+
+    /**
+     * 查询所有社团信息
+     * @return
+     */
+    List<Clubs> selectClubLists();
 
     /**
      * 更新社团信息

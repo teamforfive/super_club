@@ -53,6 +53,24 @@ public class ClubsController {
     }
 
     /**
+     * 查询社团列表信息
+     * @return
+     */
+    @CrossOrigin//允许跨域，用于前端测试
+    @RequestMapping(value = "/selectLists" , method = RequestMethod.GET)
+    public JsonResult selectClubLists(){
+        jsonResult = new JsonResult();
+        jsonResult.setStatus("400");
+        try {
+            jsonResult = clubsService.getClubLists();
+        }catch (Exception e){
+            jsonResult.setStatus("500");
+            jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName() + "，系统错误！");
+        }
+        return  jsonResult ;
+    }
+
+    /**
      * 查询社团信息
      * @param uuId
      * @return
