@@ -9,13 +9,31 @@ public interface ClubLevelService {
     /**
      * 创建社团级别
      * @param clubLevel
-     * @return
+     * @return JsonResult
      */
-    JsonResult addClubLevel(ClubLevel clubLevel);
+    @Transactional
+    JsonResult addLevel(ClubLevel clubLevel);
 
     /**
      * 查询社团级别列表
-     * @return
+     * @return JsonResult
      */
-    JsonResult clubLevelList();
+
+    JsonResult getLevelList();
+
+    /**
+     * 更新社团级别
+     * @param clubLevel
+     * @return JsonResult
+     */
+    @Transactional
+    JsonResult updateLevel(ClubLevel clubLevel);
+
+    /**
+     * 删除社团级别
+     * @param clubLevel
+     * @return JsonResult
+     */
+    @Transactional
+    JsonResult deleteLevel(ClubLevel clubLevel);
 }

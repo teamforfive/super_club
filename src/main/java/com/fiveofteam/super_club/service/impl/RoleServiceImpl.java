@@ -57,7 +57,7 @@ public class RoleServiceImpl implements RoleService {
         int num;
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
-        try {
+     //   try {
             List<Role> rolelist = new ArrayList<>();
             for (Role role : list) {
                 role.setUuId(CommonStringTool.UUID());
@@ -69,12 +69,12 @@ public class RoleServiceImpl implements RoleService {
                 jsonResult.setStatus("更新角色列表失败!");
                 return jsonResult;
             }
-        } catch (Exception e) {
+     /*   } catch (Exception e) {
             logger.info(e.getMessage());
             jsonResult.setStatus(FallBackMsg.SysErrorInfo.getValue());
             jsonResult.setMsg(FallBackMsg.SysErrorInfo.getDisplayName());
             return jsonResult;
-        }
+        }*/
 
         return jsonResult;
     }

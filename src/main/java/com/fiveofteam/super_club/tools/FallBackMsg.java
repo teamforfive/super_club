@@ -14,6 +14,8 @@ public enum FallBackMsg implements BaseEnum<FallBackMsg, String> {
     AddOk("200","创建成功！"),
     UpdateFail("400","更新失败！"),
     UpdateOk("200","更新成功！"),
+    DeleteFail("400","删除失败！"),
+    DeleteOk("200","删除成功！"),
     NotNull("400", "不能为空!"),
     SysErrorInfo("500", "系统发生未知错误，请联系管理员!");
     private String value;

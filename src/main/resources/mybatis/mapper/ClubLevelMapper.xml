@@ -20,8 +20,33 @@
     uu_id,cl_name
     from club_level
   </select>
-
+  <!--查询指定社团级别名称数量-->
+  <select id="selectClubLevelByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+    count(uu_id)
+    from club_level
+    where  cl_name = #{clName,jdbcType=VARCHAR}
+  </select>
+  <!--查询指定社团级别名称数量-->
+  <select id="selectClubLevelByNameAndId" parameterType="com.fiveofteam.super_club.pojo.ClubLevel" resultType="java.lang.Integer">
+    select
+    count(uu_id)
+    from club_level
+    where  cl_name = #{clName,jdbcType=VARCHAR} and uu_id != #{uuId,jdbcType=VARCHAR}
+  </select>
+  <!--查询指定社团级别名称数量-->
+  <select id="selectClubLevelById" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+    count(uu_id)
+    from club_level
+    where  uu_id = #{uuId,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from club_level
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </delete>
+  <!--删除指定社团级别-->
+  <delete id="deleteClubLevelById" parameterType="java.lang.String">
     delete from club_level
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </delete>

@@ -5,53 +5,56 @@ import com.fiveofteam.super_club.pojo.Clubs;
 import com.fiveofteam.super_club.pojo.LevelGroup;
 import com.fiveofteam.super_club.tools.JsonResult;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface ClubsService {
 
     /**
-     * 查询校内社团名称列表
+     * 查询社团名称列表
      * @return
      */
-    JsonResult clubList();
+    JsonResult getList();
 
     /**
-     * 查询校内社团对应信息
+     * 查询社团对应信息
      * @param uuId
      * @return
      */
-    JsonResult clubInfo(String uuId);
+    JsonResult getClubInfo(String uuId);
 
     /**
-     * 创建校内社团
+     * 查询所有社团信息
+     * @return
+     */
+    JsonResult getClubLists();
+
+    /**
+     * 创建社团
      * @param clubs
-     * @param levelGroup
+     * @param file
+     * @param levelId
      * @return
      */
     @Transactional
-    JsonResult addClub(Clubs clubs, LevelGroup levelGroup);
+    JsonResult addClub(Clubs clubs, MultipartFile file, String levelId);
 
     /**
-     * 更新校内社团信息
+     * 更新社团信息
+     * @param clubs
+     * @param file
+     * @param levelId
+     * @return
+     */
+    @Transactional
+    JsonResult updateClub(Clubs clubs, MultipartFile file,String levelId);
+
+    /**
+     * 删除社团
      * @param clubs
      * @return
      */
     @Transactional
-    JsonResult updateClub(Clubs clubs,LevelGroup levelGroup);
-
-    /**
-     *获取社团LOGO
-     * @param uuId
-     * @return
-     */
-    List selectClubLogo(String uuId);
-
-    /**
-     * 查询指定社团名称
-     * @param clubsName
-     * @return
-     */
-    List selectClubName(String clubsName);
-
+    JsonResult deleteClub(Clubs clubs);
 }
