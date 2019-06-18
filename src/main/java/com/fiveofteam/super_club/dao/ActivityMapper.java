@@ -19,4 +19,10 @@ public interface ActivityMapper {
     int updateByPrimaryKeySelective(Activity record);
 
     int updateByPrimaryKey(Activity record);
+
+    /**
+     * 获取指定社团的活动列表
+     * @return
+     */
+    List<Activity> selectList (String activityClubId);
 }
