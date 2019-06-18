@@ -80,6 +80,10 @@ public class ActivityController {
      */
     @PostMapping(value = "/getActivityList")
     public JsonResult getActivityList(String clubId) {
+        if (clubId == null || "".equals(clubId)) {
+
+        }
+
         try {
 
         } catch (Exception e) {

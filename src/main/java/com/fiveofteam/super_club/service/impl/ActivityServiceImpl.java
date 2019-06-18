@@ -49,4 +49,13 @@ public class ActivityServiceImpl implements ActivityService {
         }
         return jsonResult;
     }
+
+    /**
+     *获取活动列表
+     * @param clubId
+     */
+    @Override
+    public JsonResult getActivityList() {
+        return null;
+    }
 }
