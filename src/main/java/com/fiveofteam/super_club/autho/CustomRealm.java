@@ -60,7 +60,7 @@ public class CustomRealm extends AuthorizingRealm {
         String password = String.valueOf(userToken.getPassword());//获取用户密码对象（char[]）
         userBean.setUserName(userName);
         userBean.setUserPassword(password);
-        //   logger.info("pass" + password);
+      logger.info("pass" + password);
 
         //  logger.info("从数据库获取对应的userName:{}", userName + "对应的信息!");
         User user = userService.signIn(userBean,true);

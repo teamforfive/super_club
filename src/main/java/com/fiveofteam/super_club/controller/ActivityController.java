@@ -21,27 +21,55 @@ public class ActivityController {
     private ActivityService activityService;
     private JsonResult jsonResult;
 
-    @RequestMapping(value = "/addArticle", method = RequestMethod.POST)
-    public JsonResult addArticle(Activity activity) {
+    /**
+     * 创建活动
+     * @param activity
+     * @return
+     */
+    @RequestMapping(value = "/addActivity", method = RequestMethod.POST)
+    public JsonResult insertActivity(Activity activity) {
+        jsonResult = new JsonResult();
         jsonResult.setStatus("400");
-        jsonResult.setItem(null);
-
+        if (null == activity){
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，传递数据不能为空！");
+            return jsonResult;
+        }
+        if (null == activity.getActivityClubId() || "".equals(activity.getActivityClubId().trim())){
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，社团ID不能为空！");
+            return jsonResult;
+        }
+        if (null == activity.getActivityTitle() || "".equals(activity.getActivityTitle().trim())){
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，活动标题名不能为空！");
+            return jsonResult;
+        }
+        if (null == activity.getActivityStartTime() || "".equals(activity.getActivityStartTime())){
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，活动开始时间不能为空！");
+            return jsonResult;
+        }
+        if (null == activity.getActivityEndTime() || "".equals(activity.getActivityEndTime())){
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，活动结束时间不能为空！");
+            return jsonResult;
+        }
+        if (activity.getActivityStartTime().after(activity.getActivityEndTime())){
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，活动时间格式不正确！");
+            return jsonResult;
+        }
+        if (null == activity.getActivityPlace() || "".equals(activity.getActivityPlace().trim())){
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，活动举办地点不能为空！");
+            return jsonResult;
+        }
+        if (null == activity.getActivityContent() || "".equals(activity.getActivityContent().trim())){
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，活动内容不能为空！");
+            return jsonResult;
+        }
+        if (null == activity.getActivityType() || activity.getActivityType() > 0){
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，活动类型不能为空！");
+            return jsonResult;
+        }
         try {
-            //设置UUID
-            activity.setUuId(CommonStringTool.UUID());
-            //设置活动类型
-            Byte aType = 1;
-            activity.setActivityType(aType);
-            //设置活动状态
-            activity.setActivityStatus(true);
-            //设置活动更新时间
-            activity.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-            //设置活动上传时间
-            activity.setCreateTime(new Timestamp(System.currentTimeMillis()));
-            activityService.addArticle(activity);
-
+            activityService.addActivity(activity);
         } catch (Exception e) {
-            jsonResult.setStatus("400");
+            jsonResult.setStatus("500");
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，系统错误！");
         }
         return jsonResult;

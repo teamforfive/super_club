@@ -110,12 +110,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = false, rollbackFor = {Exception.class})
     public User signIn(UserBean userBean, boolean userType) {
-        if(!userType){
-            adminLogin(userBean);
-        }
+//        if(!userType){
+//            adminLogin(userBean);
+//        }
         User user = null;
         UserBean bean = userBean;
         String passWord = userBean.getUserPassword();
+        logger.error(passWord);
         bean.setUserPassword("");
         try {
             user = userMapper.login(bean);//获取id
@@ -142,10 +143,12 @@ public class UserServiceImpl implements UserService {
 
             logger.info("salt" + salt);
             passWord = MD5.md5(salt + passWord);//密码加密
+            logger.info("passWord" + passWord);
             userBean.setUserPassword(passWord);
             user = userMapper.login(userBean);
         } catch (Exception e) {
-            logger.info(e.getMessage());
+            System.out.println(4555555);
+            logger.error(e.getMessage());
             return null;
         }
         return user;

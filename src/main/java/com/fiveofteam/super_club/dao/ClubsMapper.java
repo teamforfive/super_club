@@ -38,8 +38,28 @@ public interface ClubsMapper {
      */
     List<Clubs> selectClubLogoByPrimaryKey(String uuId);
 
+    /**
+     * 查询指定社团名称数量
+     * @param clubName
+     * @return
+     */
+    int selectClubsByName(String clubName);
 
-    List<Clubs> selectClubNameByName(String clubName);
+    /**
+     * 查询指定社团数量
+     * @param clubs
+     * @return
+     */
+    int selectClubsByNameAndId(Clubs clubs);
+
+    /**
+     * 查询指定社团数量
+     * @param clubId
+     * @return
+     */
+    int selectClubsById(String clubId);
+
+
 
 
 

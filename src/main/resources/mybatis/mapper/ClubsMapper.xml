@@ -42,12 +42,26 @@
     from clubs
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </select>
-  <!--查询指定社团名称-->
-  <select id="selectClubNameByName"  resultMap="BaseResultMap">
+  <!--根据社团名称查询社团数量-->
+  <select id="selectClubsByName"  parameterType="java.lang.String" resultType="java.lang.Integer">
     select
-    uu_id
+    count(uu_id)
     from clubs
-    where clubs_name = #{uuId,jdbcType=VARCHAR}
+    where clubs_name = #{clubsName,jdbcType=VARCHAR}
+  </select>
+  <!--根据社团名称和ID查询社团数量-->
+  <select id="selectClubsByNameAndId" parameterType="com.fiveofteam.super_club.pojo.Clubs" resultType="java.lang.Integer">
+    select
+    count(uu_id)
+    from clubs
+    where clubs_name = #{clubsName,jdbcType=VARCHAR} and uu_id != #{uuId,jdbcType=VARCHAR}
+  </select>
+  <!--根据社团ID查询社团数量-->
+  <select id="selectClubsById"  parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+    count(uu_id)
+    from clubs
+    where uu_id = #{uuId,jdbcType=VARCHAR}
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">

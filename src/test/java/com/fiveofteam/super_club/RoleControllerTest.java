@@ -34,7 +34,7 @@ public class RoleControllerTest {
         try {
             roleService.insertRoleList(list);
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            System.out.println("xxx"+e.getMessage());
         }
 
     }

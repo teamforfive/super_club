@@ -7,4 +7,5 @@ import org.springframework.context.annotation.Configuration;
 public class NameConfig {
     @Value("my.sessionInfoName")
     public String sessionInfoName;
+
 }

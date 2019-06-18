@@ -61,19 +61,19 @@ public class UserController {
             if (!subject.isAuthenticated()) {
                 //检验用户是否存在
                 try {
-                    User user = userService.signIn(userBean,true);//用户信息查找
-                    SessionInfo sessionInfo = new SessionInfo();
-                    /**验证码、权限列表
-                     * todo
-                     * */
-                    sessionInfo.setUserId(user.getUuId());
-                    sessionInfo.setLoginName(user.getUserName());
-                    String sessionName = nameConfig.sessionInfoName;
+//                    User user = userService.signIn(userBean,true);//用户信息查找
+//                    SessionInfo sessionInfo = new SessionInfo();
+//                    /**验证码、权限列表
+//                     * todo
+//                     * */
+//                    sessionInfo.setUserId(user.getUuId());
+//                    sessionInfo.setLoginName(user.getUserName());
+//                    String sessionName = nameConfig.sessionInfoName;
                     // 在认证提交前准备 token（令牌）
                     UsernamePasswordToken token = new UsernamePasswordToken(userBean.getUserName(), userBean.getUserPassword());
                     // 执行认证登陆
                     subject.login(token);
-                    session.setAttribute(sessionName, sessionInfo);
+                  //  session.setAttribute(sessionName, sessionInfo);
                     //根据权限，指定返回数据
 //            String role = userMapper.getRole(username);
 //            if ("user".equals(role)) {
