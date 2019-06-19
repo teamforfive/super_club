@@ -48,7 +48,7 @@
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </delete>
     <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.AuRole">
-    insert into au_role (uu_id, clSub_id, role_id,
+    insert into au_role (uu_id, club_id, role_id,
       au_id, au_type, au_userself_name, 
       create_time)
     values (#{uuId,jdbcType=VARCHAR}, #{clubId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, 

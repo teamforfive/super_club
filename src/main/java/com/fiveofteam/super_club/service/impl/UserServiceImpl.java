@@ -119,7 +119,7 @@ public class UserServiceImpl implements UserService {
         String passWord = userBean.getUserPassword();
         logger.error(passWord);
         bean.setUserPassword("");
-        try {
+//        try {
             user = userMapper.login(bean);//获取id
             logger.info("从数据库获取对应的 userBean.getUserPassword():{}", passWord);
             String id = user.getUuId();
@@ -147,11 +147,10 @@ public class UserServiceImpl implements UserService {
             logger.info("passWord" + passWord);
             userBean.setUserPassword(passWord);
             user = userMapper.login(userBean);
-        } catch (Exception e) {
-            System.out.println(4555555);
-            logger.error(e.getMessage());
-            return null;
-        }
+//        } catch (Exception e) {
+//            logger.info(e.getMessage());
+//            return null;
+//        }
         return user;
     }
 
@@ -171,7 +170,7 @@ public class UserServiceImpl implements UserService {
     public JsonResult retrievePassWord(UserBean userBean) {
         jsonResult = new JsonResult();
         String passWord;
-        try {
+//        try {
             //根据某个条件查询id todo
 //            passWord = new PassWord().getPassWord(userBean.getUuId(), userBean.getUserPassword());
             String id = userBean.getUuId();
@@ -203,9 +202,9 @@ public class UserServiceImpl implements UserService {
             }
             userBean.setUserPassword(passWord);
             //更新密码 todo
-        } catch (Exception e) {
-
-        }
+//        } catch (Exception e) {
+//
+//        }
         return null;
     }
 

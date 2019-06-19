@@ -7,6 +7,25 @@
         <result column="role_comment" jdbcType="VARCHAR" property="roleComment"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
+    <resultMap id="RoleMap" type="com.fiveofteam.super_club.pojo.Role">
+        <id column="uu_id" jdbcType="VARCHAR" property="uuId"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="role_comment" jdbcType="VARCHAR" property="roleComment"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <collection property="auRoleList" ofType="com.fiveofteam.super_club.pojo.AuRole" javaType="ArrayList">
+            <id column="uu_id" jdbcType="VARCHAR" property="uuId"/>
+            <result column="club_id" jdbcType="VARCHAR" property="clubId"/>
+            <result column="role_id" jdbcType="VARCHAR" property="roleId"/>
+            <result column="au_id" jdbcType="VARCHAR" property="auId"/>
+            <result column="au_type" jdbcType="BIT" property="auType"/>
+            <result column="au_userself_name" jdbcType="VARCHAR" property="auUserselfName"/>
+        </collection>
+        <collection property="actionList" ofType="com.fiveofteam.super_club.pojo.RoleAction" javaType="ArrayList">
+            <id column="uu_id" jdbcType="VARCHAR" property="uuId"/>
+            <result column="role_id" jdbcType="VARCHAR" property="roleId"/>
+            <result column="ra_actionid" jdbcType="VARCHAR" property="raActionid"/>
+        </collection>
+    </resultMap>
     <sql id="Base_Column_List">
     uu_id, role_name, role_comment, update_time
   </sql>
@@ -23,8 +42,22 @@
         </if>
     </select>
     <!--<select id="getRole" parameterType="String" resultType="com.fiveofteam.super_club.pojo.Role">-->
-        <!---->
+    <!---->
     <!--</select>-->
+    <select id="selectRoleById" parameterType="String" resultType="Integer">
+        select count(uu_id) from role where
+        <if test="_parameter!=null and _parameter !=''">
+            uu_id = #{_parameter,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <delete id="delRole" parameterType="String">
+    delete from au_role a
+    where a.role_id = #{_parameter,jdbcType=VARCHAR},
+    delete from role_action ra
+    where ra.role_id = #{_parameter,jdbcType=VARCHAR},
+    delete from role r
+    where r.uu_id = #{_parameter,jdbcType=VARCHAR},
+    </delete>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from role
     where uu_id = #{uuId,jdbcType=VARCHAR}
@@ -41,7 +74,16 @@
         <foreach collection="list" index="index" item="item" separator=",">
             (#{item.uuId,jdbcType=VARCHAR},#{item.roleName,jdbcType=VARCHAR},
             #{item.roleComment,jdbcType=VARCHAR},#{item.updateTime,jdbcType=TIMESTAMP})
-        </foreach>
+        </foreach>F
+    </insert>
+    <insert id="addRoleForUser" parameterType="String">
+     insert into au_role (uu_id, club_id, role_id,
+      au_id, au_type, au_userself_name,
+      create_time)
+    values (#{uuId,jdbcType=VARCHAR}, #{clubId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR},
+      #{auId,jdbcType=VARCHAR}, #{auType,jdbcType=BIT}, #{auUserselfName,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP})
+
     </insert>
     <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.Role">
         insert into role

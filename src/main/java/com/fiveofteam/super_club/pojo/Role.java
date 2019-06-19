@@ -1,6 +1,7 @@
 package com.fiveofteam.super_club.pojo;
 
 import java.util.Date;
+import java.util.List;
 
 public class Role {
     private String uuId;
@@ -10,6 +11,10 @@ public class Role {
     private String roleComment;
 
     private Date updateTime;
+
+    private List<AuRole> auRoleList;
+
+    private List<RoleAction> actionList;
 
     public String getUuId() {
         return uuId;
@@ -41,5 +46,21 @@ public class Role {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<AuRole> getAuRoleList() {
+        return auRoleList;
+    }
+
+    public void setAuRoleList(List<AuRole> auRoleList) {
+        this.auRoleList = auRoleList;
+    }
+
+    public List<RoleAction> getActionList() {
+        return actionList;
+    }
+
+    public void setActionList(List<RoleAction> actionList) {
+        this.actionList = actionList;
     }
 }

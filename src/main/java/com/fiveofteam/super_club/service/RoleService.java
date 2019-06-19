@@ -31,10 +31,28 @@ public interface RoleService {
      * 按角色查询id
      */
     JsonResult selectIdByName(@Param("roleName") String name);
+
     /**
      * 获取角色列表
-     * */
+     */
     List<Role> getRoleListById(String id);
+
+    /**
+     * 管理角色：
+     * 删除角色
+     */
+    JsonResult delRoleById(String id);
+
+    /**
+     * 删除用户身上的角色
+     */
+    JsonResult delRoleOfUser(String id, boolean userType);
+
+    /**
+     *为某个用户添加权限
+     *为某个用户添加权限
+     */
+    JsonResult addRoleForUser(String userId, String roleId, boolean userType);
 
 
 }
