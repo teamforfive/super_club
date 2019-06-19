@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fiveofteam.super_club.dao.ActivityCateGroupMapper">
+  <resultMap id="BaseResultMap" type="com.fiveofteam.super_club.pojo.ActivityCateGroup">
+    <id column="uu_id" jdbcType="VARCHAR" property="uuId" />
+    <result column="ac_activityid" jdbcType="VARCHAR" property="acActivityid" />
+    <result column="ac_categoryid" jdbcType="VARCHAR" property="acCategoryid" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    uu_id, ac_activityid, ac_categoryid, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from activity_cate_group
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from activity_cate_group
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.ActivityCateGroup">
+    insert into activity_cate_group (uu_id, ac_activityid, ac_categoryid, 
+      update_time)
+    values (#{uuId,jdbcType=VARCHAR}, #{acActivityid,jdbcType=VARCHAR}, #{acCategoryid,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.ActivityCateGroup">
+    insert into activity_cate_group
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uuId != null">
+        uu_id,
+      </if>
+      <if test="acActivityid != null">
+        ac_activityid,
+      </if>
+      <if test="acCategoryid != null">
+        ac_categoryid,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uuId != null">
+        #{uuId,jdbcType=VARCHAR},
+      </if>
+      <if test="acActivityid != null">
+        #{acActivityid,jdbcType=VARCHAR},
+      </if>
+      <if test="acCategoryid != null">
+        #{acCategoryid,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fiveofteam.super_club.pojo.ActivityCateGroup">
+    update activity_cate_group
+    <set>
+      <if test="acActivityid != null">
+        ac_activityid = #{acActivityid,jdbcType=VARCHAR},
+      </if>
+      <if test="acCategoryid != null">
+        ac_categoryid = #{acCategoryid,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fiveofteam.super_club.pojo.ActivityCateGroup">
+    update activity_cate_group
+    set ac_activityid = #{acActivityid,jdbcType=VARCHAR},
+      ac_categoryid = #{acCategoryid,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where uu_id = #{uuId,jdbcType=VARCHAR}
+  </update>
+</mapper>

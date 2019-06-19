@@ -21,7 +21,10 @@ public interface AuRoleMapper {
      * 按用户id ，组织id 查询 角色
      */
     int selectByIdAndOragnizeId(AuRole auRole);
-
+//    /**
+//     * 按用户id ，组织id 角色id查询 是否存在
+//     */
+//    int selectByAllId(AuRole auRole);
     AuRole selectByPrimaryKey(String uuId);
 
     /**
