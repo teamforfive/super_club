@@ -35,7 +35,7 @@ public interface RoleService {
     /**
      * 获取角色列表
      */
-    List<Role> getRoleListById(String id);
+    List<Role> getRoleListById(String userId, String clubId,boolean userType);
 
     /**
      * 管理角色：

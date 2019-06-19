@@ -24,7 +24,7 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private RoleMapper roleMapper;
     @Autowired
-    AuRoleMapper auRoleMapper;
+    private AuRoleMapper auRoleMapper;
     private static final Logger logger = LoggerFactory.getLogger(RoleServiceImpl.class);
 
     /**
@@ -58,18 +58,18 @@ public class RoleServiceImpl implements RoleService {
         int num;
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
-     //   try {
-            List<Role> rolelist = new ArrayList<>();
-            for (Role role : list) {
-                role.setUuId(CommonStringTool.UUID());
-                role.setUpdateTime(DateTools.currentTime());
-                list.add(role);
-            }
-            num = roleMapper.insertList(rolelist);
-            if (num == 0) {//判断是否更新成功
-                jsonResult.setStatus("更新角色列表失败!");
-                return jsonResult;
-            }
+        //   try {
+        List<Role> rolelist = new ArrayList<>();
+        for (Role role : list) {
+            role.setUuId(CommonStringTool.UUID());
+            role.setUpdateTime(DateTools.currentTime());
+            list.add(role);
+        }
+        num = roleMapper.insertList(rolelist);
+        if (num == 0) {//判断是否更新成功
+            jsonResult.setStatus("更新角色列表失败!");
+            return jsonResult;
+        }
      /*   } catch (Exception e) {
             logger.info(e.getMessage());
             jsonResult.setStatus(FallBackMsg.SysErrorInfo.getValue());
@@ -92,13 +92,8 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     @Transactional
-    public List<Role> getRoleListById(String id) {
-        List<Role> list = null;
-        try {
-            list = auRoleMapper.roleList(id);
-        } catch (Exception e) {
-            logger.info(e.getMessage());
-        }
+    public List<Role> getRoleListById(String userId, String clubId,boolean userType) {
+        List<Role> list = auRoleMapper.roleList(userId);
 
         return list;
     }
@@ -149,22 +144,22 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public JsonResult addRoleForUser(String userId, String roleId, boolean userType) {
         jsonResult = new JsonResult();
-        AuRole auRole=new AuRole();
+        AuRole auRole = new AuRole();
         /**
          * 不能给用户大于自己的角色*/
         auRole.setAuType(userType);
         auRole.setUuId(roleId);
-        auRole.setClubId("!!");//todo
+        auRole.setClubId("!!！");//todo
         auRole.setAuId(userId);
-        int num=auRoleMapper.selectByIdAndOragnizeId(auRole);
-        if(num>0){
+        int num = auRoleMapper.selectByIdAndOragnizeId(auRole);
+        if (num > 0) {
             jsonResult.setStatus("400");
             jsonResult.setMsg("角色已经存在！");
             return jsonResult;
         }
-        num=0;
-        num=roleMapper.addRoleForUser(userId,roleId,userType);
-        if(num<=0){
+        num = 0;
+        num = roleMapper.addRoleForUser(userId, roleId, userType);
+        if (num <= 0) {
             jsonResult.setStatus("400");
             jsonResult.setMsg("角色添加失败！");
             return jsonResult;

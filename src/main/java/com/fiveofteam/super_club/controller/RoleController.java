@@ -4,6 +4,9 @@ import com.fiveofteam.super_club.pojo.Role;
 import com.fiveofteam.super_club.service.RoleService;
 import com.fiveofteam.super_club.tools.FallBackMsg;
 import com.fiveofteam.super_club.tools.JsonResult;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +25,30 @@ public class RoleController {
 
     @PostMapping("/insertRole")
     public JsonResult insertRole() {
+        return jsonResult;
+    }
+
+    /**
+     * 获取角色列表
+     *
+     * @param userId userType
+     */
+    @PostMapping("/getRoleList")
+    @ApiOperation(value = "获取角色列表", notes = "如果用户id不为空，就获取该用户的角色")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "用户ID", required = false, dataType = "String"),
+            @ApiImplicitParam(name = "userType", value = "用户类型", required = true, dataType = "boolean"),
+            @ApiImplicitParam(name = "clubId", value = "社团id", required = false, dataType = "String")})
+    public JsonResult getRoleList(String userId, boolean userType, String clubId) {
+        jsonResult = new JsonResult();
+        try {
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            jsonResult.setMsg(FallBackMsg.SysErrorInfo.getDisplayName());
+            jsonResult.setStatus(FallBackMsg.SysErrorInfo.getValue());
+            return jsonResult;
+        }
         return jsonResult;
     }
 
@@ -46,6 +73,7 @@ public class RoleController {
         }
         return jsonResult;
     }
+
 
     /**
      * 删除某个role
