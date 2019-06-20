@@ -14,4 +14,11 @@ public interface ActivityOrganizerMapper {
     int updateByPrimaryKeySelective(ActivityOrganizer record);
 
     int updateByPrimaryKey(ActivityOrganizer record);
+
+    /**
+     * 查询活动组织者信息
+     * @param activityId
+     * @return
+     */
+    ActivityOrganizer selectByActivityId(String activityId);
 }

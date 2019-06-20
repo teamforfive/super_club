@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,7 @@ public class ActivityServiceImpl implements ActivityService {
     private JsonResult jsonResult;
 
     @Override
-    public JsonResult insertActivity(Activity activity) {
+    public JsonResult insertActivity(Activity activity,String organizerName) {
         jsonResult = new JsonResult();
         String uuId = CommonStringTool.UUID();
         try{
@@ -51,13 +50,13 @@ public class ActivityServiceImpl implements ActivityService {
 
             //实例化ActivityOrganizer对象
             ActivityOrganizer activityOrganizer = new ActivityOrganizer();
-            //设置活动UUID
+            //设置ActivityOrganizer表UUID
             activityOrganizer.setUuId(CommonStringTool.UUID());
-            //设置活动组织者,表结构有问题，先写死----------------------------------------------------
-            activityOrganizer.setOrganizerName("活动组织者");
+            //设置活动组织者
+            activityOrganizer.setOrganizerName(organizerName);
             //设置活动ID
             activityOrganizer.setActivityId(uuId);
-            //插入activityOrganizer表记录
+            //插入ActivityOrganizer表的记录
             activityOrganizerMapper.insert(activityOrganizer);
 
 
@@ -78,12 +77,20 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     public JsonResult selectList(String activityClubId) {
         jsonResult = new JsonResult();
+        jsonResult.setStatus("400");
         try{
             Map map = new HashMap();
+            //查询活动组织者是否存在
+            ActivityOrganizer activityOrganizer = activityOrganizerMapper.selectByActivityId(activityClubId);
+            if (null == activityOrganizer || "".equals(activityOrganizer.getOrganizerName().trim())){
+                jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName() + "，活动组织者不存在！");
+                return jsonResult;
+            }
             //查询活动内容
             List activityList = activityMapper.selectList(activityClubId);
+            //添加组织者名称到List集合
+            activityList.add(activityOrganizer.getOrganizerName());
             map.put("data",activityList);
-            //查询活动创办人
 
             jsonResult.setItem(map);
             jsonResult.setStatus("200");
