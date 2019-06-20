@@ -1,5 +1,6 @@
 package com.fiveofteam.super_club.dao;
 
+import com.fiveofteam.super_club.pojo.AuRole;
 import com.fiveofteam.super_club.pojo.Role;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,9 +32,6 @@ public interface RoleMapper {
      */
     String selectIdByName(@Param("roleName") String name);
 
-    /**
-     * 为某个用户添加角色*/
-    int addRoleForUser(String userId,String roleId,boolean clubId);
 
     Role getRole(String roleId);
 

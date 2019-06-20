@@ -5,10 +5,7 @@ import com.fiveofteam.super_club.dao.RoleMapper;
 import com.fiveofteam.super_club.pojo.AuRole;
 import com.fiveofteam.super_club.pojo.Role;
 import com.fiveofteam.super_club.service.RoleService;
-import com.fiveofteam.super_club.tools.CommonStringTool;
-import com.fiveofteam.super_club.tools.DateTools;
-import com.fiveofteam.super_club.tools.FallBackMsg;
-import com.fiveofteam.super_club.tools.JsonResult;
+import com.fiveofteam.super_club.tools.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,24 +55,24 @@ public class RoleServiceImpl implements RoleService {
         int num;
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
-        //   try {
+        /**
+         * todo 判断数据库是否有这个角色
+         * */
+
         List<Role> rolelist = new ArrayList<>();
-        for (Role role : list) {
+        for (Role role : list) {//为每个角色添加id,创建时间
             role.setUuId(CommonStringTool.UUID());
             role.setUpdateTime(DateTools.currentTime());
-            list.add(role);
+            rolelist.add(role);
         }
+
         num = roleMapper.insertList(rolelist);
         if (num == 0) {//判断是否更新成功
-            jsonResult.setStatus("更新角色列表失败!");
+            jsonResult.setStatus("角色列表插入失败!");
             return jsonResult;
         }
-     /*   } catch (Exception e) {
-            logger.info(e.getMessage());
-            jsonResult.setStatus(FallBackMsg.SysErrorInfo.getValue());
-            jsonResult.setMsg(FallBackMsg.SysErrorInfo.getDisplayName());
-            return jsonResult;
-        }*/
+        jsonResult.setStatus("角色列表插入成功!");
+        jsonResult.setStatus("200");
 
         return jsonResult;
     }
@@ -92,9 +89,13 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     @Transactional
-    public List<Role> getRoleListById(String userId, String clubId,boolean userType) {
-        List<Role> list = auRoleMapper.roleList(userId);
-
+    public List<Role> getRoleListById(String userId, String clubId, int userType) {
+        String str = "";
+        if (userType != 0) {
+            SqlExtends sql = new SqlExtends();
+            str = sql.roleType(userType);
+        }
+        List<Role> list = auRoleMapper.roleList(userId, clubId, str);
         return list;
     }
 
@@ -117,8 +118,7 @@ public class RoleServiceImpl implements RoleService {
             jsonResult.setMsg("角色不存在");
             return jsonResult;
         }
-        num = 0;
-        num = roleMapper.delRole(id);
+        roleMapper.delRole(id);
         /*删除数据库中该角色的权限 todo
          * */
         /*删除用户身上该角色 todo
@@ -126,9 +126,10 @@ public class RoleServiceImpl implements RoleService {
         /*
          * 删除该角色 todo
          * */
-        if (num <= 0) {
-
-            jsonResult.setMsg("角色删除失败");
+        num = 0;
+        num = roleMapper.selectRoleById(id);
+        if (num > 0) {
+            jsonResult.setMsg("角色删除失败！");
             return jsonResult;
         }
         jsonResult.setStatus("200");
@@ -141,31 +142,5 @@ public class RoleServiceImpl implements RoleService {
         return null;
     }
 
-    @Override
-    public JsonResult addRoleForUser(String userId, String roleId, boolean userType) {
-        jsonResult = new JsonResult();
-        AuRole auRole = new AuRole();
-        /**
-         * 不能给用户大于自己的角色*/
-        auRole.setAuType(userType);
-        auRole.setUuId(roleId);
-        auRole.setClubId("!!！");//todo
-        auRole.setAuId(userId);
-        int num = auRoleMapper.selectByIdAndOragnizeId(auRole);
-        if (num > 0) {
-            jsonResult.setStatus("400");
-            jsonResult.setMsg("角色已经存在！");
-            return jsonResult;
-        }
-        num = 0;
-        num = roleMapper.addRoleForUser(userId, roleId, userType);
-        if (num <= 0) {
-            jsonResult.setStatus("400");
-            jsonResult.setMsg("角色添加失败！");
-            return jsonResult;
-        }
-        jsonResult.setStatus("200");
-        jsonResult.setMsg("角色添加成功！");
-        return jsonResult;
-    }
+
 }
