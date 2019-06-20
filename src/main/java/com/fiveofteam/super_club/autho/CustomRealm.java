@@ -94,7 +94,7 @@ public class CustomRealm extends AuthorizingRealm {
         Set<String> roleSet = new HashSet<>();
         Set<String> actionSet = new HashSet<>();
         //从数据库获得该用户角色
-        List<Role> roleList = roleService.getRoleListById((String) session.getAttribute("uuId"),true);
+        List<Role> roleList = roleService.getRoleListById((String) session.getAttribute("uuId"),"111223",1);
         for (Role role : roleList) {
             //根据角色id获取到资源信息
             List<Action> actionList = actionService.getActionList(role.getUuId());

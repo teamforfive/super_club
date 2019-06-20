@@ -10,6 +10,12 @@
         <result column="au_userself_name" jdbcType="VARCHAR" property="auUserselfName"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
+    <resultMap id="RoleListMap" type="com.fiveofteam.super_club.pojo.Role">
+        <id column="uu_id" jdbcType="VARCHAR" property="uuId"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="role_comment" jdbcType="VARCHAR" property="roleComment"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
     <sql id="Base_Column_List">
     uu_id, club_id, role_id, au_id, au_type, au_userself_name, create_time
   </sql>
@@ -20,7 +26,8 @@
         where uu_id = #{uuId,jdbcType=VARCHAR}
     </select>
     <!--查询-->
-    <select id="selectByIdAndOragnizeId" parameterType="com.fiveofteam.super_club.pojo.AuRole" resultType="java.lang.Integer">
+    <select id="selectByIdAndOragnizeId" parameterType="com.fiveofteam.super_club.pojo.AuRole"
+            resultType="java.lang.Integer">
         select count(uu_id) from au_role
         <if test="roleId !=null">
             where
@@ -34,14 +41,22 @@
         </if>
     </select>
     <!--获取权限列表-->
-    <select id="roleList" parameterType="String" resultType="list">
+    <select id="roleList" parameterType="String" resultMap="RoleListMap">
         select * from role
-        where uu_id in
-        <foreach item="item" index="index" collection="list"
-                 open="(" separator="," close=")">
-            select role_id from au_role where au_id=#{_parameter}
-        </foreach>
-
+        <if test="userId !=null and userId !=''">
+            where uu_id
+            in
+            <foreach item="item" index="index" collection="list"
+                     open="(" separator="," close=")">
+                select role_id from au_role where au_id=#{userId}
+                <if test="clubId !=null and clubId !=''">
+                    and club_id=#{clubId}
+                </if>
+                <if test="auType !=null and auType !=''">
+                    ${auType}
+                </if>
+            </foreach>
+        </if>
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from au_role
@@ -55,6 +70,7 @@
       #{auId,jdbcType=VARCHAR}, #{auType,jdbcType=BIT}, #{auUserselfName,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP})
   </insert>
+
     <!--为用户匹配角色-->
     <insert id="patchRole" parameterType="com.fiveofteam.super_club.pojo.AuRole">
         insert into au_role
@@ -75,11 +91,9 @@
                 au_type,
             </if>
             <if test="auUserselfName != null">
-                au_userself_name,
+                au_userself_name
             </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
+
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="uuId != null">
@@ -99,9 +113,6 @@
             </if>
             <if test="auUserselfName != null">
                 #{auUserselfName,jdbcType=VARCHAR},
-            </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>

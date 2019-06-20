@@ -35,7 +35,7 @@ public interface RoleService {
     /**
      * 获取角色列表
      */
-    List<Role> getRoleListById(String userId, String clubId,boolean userType);
+    List<Role> getRoleListById(String userId, String clubId,int userType);
 
     /**
      * 管理角色：
@@ -48,11 +48,7 @@ public interface RoleService {
      */
     JsonResult delRoleOfUser(String id, boolean userType);
 
-    /**
-     *为某个用户添加权限
-     *为某个用户添加权限
-     */
-    JsonResult addRoleForUser(String userId, String roleId, boolean userType);
+
 
 
 }

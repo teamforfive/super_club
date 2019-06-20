@@ -9,6 +9,7 @@ import com.fiveofteam.super_club.service.UserService;
 import com.fiveofteam.super_club.tools.FallBackMsg;
 import com.fiveofteam.super_club.tools.JsonResult;
 
+import io.swagger.annotations.ApiOperation;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -56,6 +57,7 @@ public class UserController {
      * @param userBean
      */
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
+    @ApiOperation(value = "登录")
     public JsonResult singIn(UserBean userBean, HttpSession session, HttpServletRequest request) {
         jsonResult = new JsonResult();
 //        SessionInfo sessionInfos= sessionService.getSessionInfo(request);
@@ -147,6 +149,7 @@ public class UserController {
      * @return
      */
     @RequestMapping("/logout")
+    @ApiOperation(value = "退出登录",notes = "退出登录")
     public String logout(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
         JsonResult jsonResult = new JsonResult();
 
