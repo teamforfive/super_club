@@ -28,30 +28,35 @@ public class AuRoleServiceImpl implements AuRoleService {
     @Override
     @Transactional
     public JsonResult patchRole(AuRole auRole) {
+
+        //   todo       不能给用户大于自己的角色
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
         int num;
-        try {
-            //查询用户是否有该角色
-            // auRole.getRoleId();
-            // auRole.getAuId();
-            // auRole.getClubId();
-            num = auRoleMapper.selectByIdAndOragnizeId(auRole);
-            if (num > 0) {
-                jsonResult.setMsg("角色已经存在！");
-                return jsonResult;
-            }
-            auRole.setUuId(CommonStringTool.UUID());
-            auRole.setCreateTime(DateTools.currentTime());
-            jsonResult.setMsg("角色添加成功！");
-            jsonResult.setStatus("200");
-            auRoleMapper.insertSelective(auRole);
-        } catch (Exception e) {
-            logger.info(e.getMessage());
-            jsonResult.setStatus(FallBackMsg.SysErrorInfo.getValue());
-            jsonResult.setMsg(FallBackMsg.SysErrorInfo.getDisplayName());
+        //查询用户是否有该角色
+        // auRole.getRoleId();
+        // auRole.getAuId();
+        // auRole.getClubId();
+        num = auRoleMapper.selectByIdAndOragnizeId(auRole);
+        if (num > 0) {
+            jsonResult.setMsg("角色已经存在！");
             return jsonResult;
         }
+        /**
+         * 为用户添加角色 ，if clubId 为null，userType为false ，是为系统管理员添加角色
+         * if clubId 不为null，userType为true 是为用户添加角色
+         * */
+
+        auRole.setUuId(CommonStringTool.UUID());
+        num = auRoleMapper.patchRole(auRole);
+        if (num <= 0) {
+            jsonResult.setStatus("400");
+            jsonResult.setMsg("角色添加失败！");
+            return jsonResult;
+        }
+        jsonResult.setStatus("200");
+        jsonResult.setMsg("角色添加成功！");
+
         return jsonResult;
     }
 

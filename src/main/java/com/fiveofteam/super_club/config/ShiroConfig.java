@@ -29,6 +29,10 @@ public class ShiroConfig {
         //用户，需要角色权限 “user”
         //filterChainDefinitionMap.put("/user/**", "roles[user]");
         filterChainDefinitionMap.put("/user/**", "anon");
+
+        //角色管理模块
+        filterChainDefinitionMap.put("/role/**", "anon");
+
         //管理员，需要角色权限 “admin”
         filterChainDefinitionMap.put("/admin/**", "roles[admin]");
         //开放登陆接口
@@ -38,7 +42,13 @@ public class ShiroConfig {
         //开放社团级别接口，测试
         filterChainDefinitionMap.put("/clubLevel/**", "anon");
         //开放社团活动接口,测试
-        filterChainDefinitionMap.put("/activity/**","anon");
+        filterChainDefinitionMap.put("/activity/**", "anon");
+
+        //从这里开始，是我为解决问题增加的，为swagger页面放行
+        filterChainDefinitionMap.put("/swagger-ui.html", "anon");
+        filterChainDefinitionMap.put("/swagger-resources/**", "anon");
+        filterChainDefinitionMap.put("/v2/api-docs", "anon");
+        filterChainDefinitionMap.put("/webjars/springfox-swagger-ui/**", "anon");
         //其余接口一律拦截
         //主要这行代码必须放在所有权限设置的最后，不然会导致所有 url 都被拦截
         filterChainDefinitionMap.put("/**", "authc");
