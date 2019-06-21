@@ -45,7 +45,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/activity/**", "anon");
         //开发活动类型接口，测试
         filterChainDefinitionMap.put("/activityCategory/**","anon");
-
+        // 帖子
+        filterChainDefinitionMap.put("/invitation/*", "anon");
         //从这里开始，是我为解决问题增加的，为swagger页面放行
         filterChainDefinitionMap.put("/swagger-ui.html", "anon");
         filterChainDefinitionMap.put("/swagger-resources/**", "anon");

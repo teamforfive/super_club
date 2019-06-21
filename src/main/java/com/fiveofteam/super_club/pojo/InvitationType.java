@@ -5,6 +5,8 @@ import java.util.Date;
 public class InvitationType {
     private String uuId;
 
+    private String typeId;
+
     private String invitationId;
 
     private String invitationType;
@@ -51,5 +53,13 @@ public class InvitationType {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(String typeId) {
+        this.typeId = typeId;
     }
 }

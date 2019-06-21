@@ -1,50 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fiveofteam.super_club.dao.InvitationMapper">
-  <resultMap id="BaseResultMap" type="com.fiveofteam.super_club.pojo.Invitation">
-    <id column="uu_id" jdbcType="VARCHAR" property="uuId" />
-    <result column="invitation_title" jdbcType="VARCHAR" property="invitationTitle" />
-    <result column="invitation_author_id" jdbcType="VARCHAR" property="invitationAuthorId" />
-    <result column="invitation_content" jdbcType="VARCHAR" property="invitationContent" />
-    <result column="invitation_status" jdbcType="INTEGER" property="invitationStatus" />
-    <result column="invitation_access" jdbcType="INTEGER" property="invitationAccess" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-  </resultMap>
-  <resultMap id="InvitationMap" type="com.fiveofteam.super_club.pojo.Invitation">
-    <id column="uu_id" jdbcType="VARCHAR" property="uuId" />
-    <result column="invitation_title" jdbcType="VARCHAR" property="invitationTitle" />
-    <result column="invitation_author_id" jdbcType="VARCHAR" property="invitationAuthorId" />
-    <result column="invitation_content" jdbcType="VARCHAR" property="invitationContent" />
-    <result column="invitation_status" jdbcType="INTEGER" property="invitationStatus" />
-    <result column="invitation_access" jdbcType="INTEGER" property="invitationAccess" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <!--<collection property=""-->
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.fiveofteam.super_club.pojo.Invitation">
+        <id column="uu_id" jdbcType="VARCHAR" property="uuId"/>
+        <result column="invitation_title" jdbcType="VARCHAR" property="invitationTitle"/>
+        <result column="invitation_author_id" jdbcType="VARCHAR" property="invitationAuthorId"/>
+        <result column="invitation_content" jdbcType="VARCHAR" property="invitationContent"/>
+        <result column="invitation_status" jdbcType="INTEGER" property="invitationStatus"/>
+        <result column="invitation_access" jdbcType="INTEGER" property="invitationAccess"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <resultMap id="InvitationMap" type="com.fiveofteam.super_club.pojo.Invitation">
+        <id column="uu_id" jdbcType="VARCHAR" property="uuId"/>
+        <result column="invitation_title" jdbcType="VARCHAR" property="invitationTitle"/>
+        <result column="invitation_author_id" jdbcType="VARCHAR" property="invitationAuthorId"/>
+        <result column="invitation_content" jdbcType="VARCHAR" property="invitationContent"/>
+        <result column="invitation_status" jdbcType="INTEGER" property="invitationStatus"/>
+        <result column="invitation_access" jdbcType="INTEGER" property="invitationAccess"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <collection property="invitationTypeList" javaType="ArrayList" column="invitation_id"
+                    ofType="com.fiveofteam.super_club.pojo.InvitationType">
+            <id column="typeId" jdbcType="VARCHAR" property="typeId"/>
+            <result column="invitation_id" jdbcType="VARCHAR" property="invitationId"/>
+            <result column="invitation_type" jdbcType="VARCHAR" property="invitationType"/>
+            <result column="sort" jdbcType="INTEGER" property="sort"/>
+            <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        </collection>
+        <collection property="invitationPhotosList" javaType="ArrayList" column="invitation_id"
+                    ofType="com.fiveofteam.super_club.pojo.InvitationPhotos">
+            <id column="photosId" jdbcType="VARCHAR" property="photosId"/>
+            <result column="invitation_id" jdbcType="VARCHAR" property="invitationId"/>
+            <result column="url" jdbcType="VARCHAR" property="url"/>
+            <result column="sort" jdbcType="INTEGER" property="sort"/>
+            <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
     uu_id, invitation_title, invitation_author_id, invitation_content, invitation_status, 
     invitation_access, update_time, create_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from invitation
-    where uu_id = #{uuId,jdbcType=VARCHAR}
-  </select>
-  <select id="getInvitations" parameterType="String" resultType="List">
-    select
-    <include refid="Base_Column_List" />
-    from invitation
-    <if test="_parameter!=null and _parameter''">
-    where invitation_author_id = #{invitationAuthorId,jdbcType=VARCHAR}
-    </if>
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from invitation
+        where uu_id = #{uuId,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getInvitations" parameterType="String" resultMap="InvitationMap">
+        select
+        i.uu_id, i.invitation_title, i.invitation_author_id, i.invitation_content, i.invitation_status,
+        i.invitation_access, i.update_time, i.create_time,p.uu_id as photosId, p.url,
+        p.sort,t.uu_id as typeId, t.invitation_type,
+        t.sort
+        from invitation as i
+        left join invitation_type as t on i.uu_id=t.invitation_id
+        left join invitation_photos as p on i.uu_id=p.invitation_id
+        <if test="invitationId !=null and invitationId !=''">
+            where i.invitation_author_id = #{invitationId,jdbcType=VARCHAR}
+        </if>
+        <if test="authorId !=null and authorId !=''">
+            and i.uu_id = #{authorId,jdbcType=VARCHAR}
+        </if>
+        order by i.update_time
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from invitation
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.Invitation">
+    <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.Invitation">
     insert into invitation (uu_id, invitation_title, invitation_author_id, 
       invitation_content, invitation_status, invitation_access, 
       update_time, create_time)
@@ -52,89 +77,97 @@
       #{invitationContent,jdbcType=VARCHAR}, #{invitationStatus,jdbcType=INTEGER}, #{invitationAccess,jdbcType=INTEGER}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.Invitation">
-    insert into invitation
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="uuId != null">
-        uu_id,
-      </if>
-      <if test="invitationTitle != null">
-        invitation_title,
-      </if>
-      <if test="invitationAuthorId != null">
-        invitation_author_id,
-      </if>
-      <if test="invitationContent != null">
-        invitation_content,
-      </if>
-      <if test="invitationStatus != null">
-        invitation_status,
-      </if>
-      <if test="invitationAccess != null">
-        invitation_access,
-      </if>
-      <if test="updateTime != null">
-        update_time,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="uuId != null">
-        #{uuId,jdbcType=VARCHAR},
-      </if>
-      <if test="invitationTitle != null">
-        #{invitationTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="invitationAuthorId != null">
-        #{invitationAuthorId,jdbcType=VARCHAR},
-      </if>
-      <if test="invitationContent != null">
-        #{invitationContent,jdbcType=VARCHAR},
-      </if>
-      <if test="invitationStatus != null">
-        #{invitationStatus,jdbcType=INTEGER},
-      </if>
-      <if test="invitationAccess != null">
-        #{invitationAccess,jdbcType=INTEGER},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
+    <insert id="addInvitation" parameterType="com.fiveofteam.super_club.pojo.Invitation">
+    insert into invitation (uu_id, invitation_title, invitation_author_id,
+      invitation_content, invitation_status, invitation_access,
+      update_time, create_time)
+    values (#{uuId,jdbcType=VARCHAR}, #{invitationTitle,jdbcType=VARCHAR}, #{invitationAuthorId,jdbcType=VARCHAR},
+      #{invitationContent,jdbcType=VARCHAR}, #{invitationStatus,jdbcType=INTEGER}, #{invitationAccess,jdbcType=INTEGER},
+      #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fiveofteam.super_club.pojo.Invitation">
-    update invitation
-    <set>
-      <if test="invitationTitle != null">
-        invitation_title = #{invitationTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="invitationAuthorId != null">
-        invitation_author_id = #{invitationAuthorId,jdbcType=VARCHAR},
-      </if>
-      <if test="invitationContent != null">
-        invitation_content = #{invitationContent,jdbcType=VARCHAR},
-      </if>
-      <if test="invitationStatus != null">
-        invitation_status = #{invitationStatus,jdbcType=INTEGER},
-      </if>
-      <if test="invitationAccess != null">
-        invitation_access = #{invitationAccess,jdbcType=INTEGER},
-      </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where uu_id = #{uuId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.fiveofteam.super_club.pojo.Invitation">
+    <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.Invitation">
+        insert into invitation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuId != null">
+                uu_id,
+            </if>
+            <if test="invitationTitle != null">
+                invitation_title,
+            </if>
+            <if test="invitationAuthorId != null">
+                invitation_author_id,
+            </if>
+            <if test="invitationContent != null">
+                invitation_content,
+            </if>
+            <if test="invitationStatus != null">
+                invitation_status,
+            </if>
+            <if test="invitationAccess != null">
+                invitation_access,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuId != null">
+                #{uuId,jdbcType=VARCHAR},
+            </if>
+            <if test="invitationTitle != null">
+                #{invitationTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="invitationAuthorId != null">
+                #{invitationAuthorId,jdbcType=VARCHAR},
+            </if>
+            <if test="invitationContent != null">
+                #{invitationContent,jdbcType=VARCHAR},
+            </if>
+            <if test="invitationStatus != null">
+                #{invitationStatus,jdbcType=INTEGER},
+            </if>
+            <if test="invitationAccess != null">
+                #{invitationAccess,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fiveofteam.super_club.pojo.Invitation">
+        update invitation
+        <set>
+            <if test="invitationTitle != null">
+                invitation_title = #{invitationTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="invitationAuthorId != null">
+                invitation_author_id = #{invitationAuthorId,jdbcType=VARCHAR},
+            </if>
+            <if test="invitationContent != null">
+                invitation_content = #{invitationContent,jdbcType=VARCHAR},
+            </if>
+            <if test="invitationStatus != null">
+                invitation_status = #{invitationStatus,jdbcType=INTEGER},
+            </if>
+            <if test="invitationAccess != null">
+                invitation_access = #{invitationAccess,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where uu_id = #{uuId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fiveofteam.super_club.pojo.Invitation">
     update invitation
     set invitation_title = #{invitationTitle,jdbcType=VARCHAR},
       invitation_author_id = #{invitationAuthorId,jdbcType=VARCHAR},

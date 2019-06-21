@@ -4,16 +4,19 @@ import com.fiveofteam.super_club.pojo.Invitation;
 import com.fiveofteam.super_club.service.InvitationService;
 import com.fiveofteam.super_club.tools.FallBackMsg;
 import com.fiveofteam.super_club.tools.JsonResult;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 
 
 @RequestMapping("/invitation")
+@RestController
 public class InvitationController {
     JsonResult jsonResult;
     @Autowired
@@ -56,6 +59,7 @@ public class InvitationController {
      * 获取博客列表
      */
     @PostMapping("/getList")
+    @ApiOperation(value = "获取帖子集合")
     public JsonResult getInvitations(Invitation invitation, String authorId, HttpSession httpSession) {
         jsonResult = new JsonResult();
         // if(){}
@@ -63,6 +67,7 @@ public class InvitationController {
             jsonResult = invitationService.getInvitations(authorId);
         } catch (Exception e) {
             logger.error(e.getMessage());
+            e.printStackTrace();
             jsonResult.setMsg(FallBackMsg.SysErrorInfo.getDisplayName());
             return jsonResult;
         }
