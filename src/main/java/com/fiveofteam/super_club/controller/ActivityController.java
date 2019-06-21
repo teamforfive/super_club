@@ -25,7 +25,7 @@ public class ActivityController {
      */
     @CrossOrigin
     @RequestMapping(value = "/addActivity", method = RequestMethod.POST)
-    public JsonResult insertActivity(Activity activity) {
+    public JsonResult insertActivity(Activity activity,String organizerName,String activityCateId) {
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
         if (null == activity){
@@ -60,12 +60,16 @@ public class ActivityController {
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，活动内容不能为空！");
             return jsonResult;
         }
+        if (null == organizerName || "".equals(organizerName.trim())){
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "活动组织者不能为空！");
+            return jsonResult;
+        }
         /*if (null == activity.getActivityType() || activity.getActivityType() > 0){
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，活动类型不能为空！");
             return jsonResult;
         }*/
         try {
-            jsonResult = activityService.insertActivity(activity);
+            jsonResult = activityService.insertActivity(activity,organizerName,activityCateId);
         } catch (Exception e) {
             jsonResult.setStatus("500");
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，系统错误！");

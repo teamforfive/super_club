@@ -39,7 +39,7 @@
   <select id="selectClubList"  resultMap="BaseResultMap">
     select
     uu_id,clubs_name,club_logo
-    from clubs
+    from clubs order by create_time desc
   </select>
   <!--查询社团LOGO路径-->
   <select id="selectClubLogoByPrimaryKey"  resultMap="BaseResultMap">

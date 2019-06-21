@@ -15,6 +15,7 @@
     from activity_organizer
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from activity_organizer
     where uu_id = #{uuId,jdbcType=VARCHAR}

@@ -1,6 +1,9 @@
 package com.fiveofteam.super_club.dao;
 
+import com.fiveofteam.super_club.pojo.ActivityCateGroup;
 import com.fiveofteam.super_club.pojo.ActivityCategory;
+
+import java.util.List;
 
 public interface ActivityCategoryMapper {
     int deleteByPrimaryKey(String uuId);
@@ -14,4 +17,6 @@ public interface ActivityCategoryMapper {
     int updateByPrimaryKeySelective(ActivityCategory record);
 
     int updateByPrimaryKey(ActivityCategory record);
+
+    List<ActivityCategory> selectAllCategory();
 }
