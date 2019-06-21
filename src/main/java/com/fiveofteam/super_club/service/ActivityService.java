@@ -14,7 +14,7 @@ public interface ActivityService {
      * @return JsonResult
      */
     @Transactional
-    JsonResult insertActivity(Activity activity,String organizerName);
+    JsonResult insertActivity(Activity activity,String organizerName,String activityCateId);
 
     /**
      * 获取指定社团的活动列表

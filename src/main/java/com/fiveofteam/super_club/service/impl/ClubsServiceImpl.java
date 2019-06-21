@@ -1,6 +1,7 @@
 package com.fiveofteam.super_club.service.impl;
 
 
+import com.fiveofteam.super_club.dao.ClubLevelMapper;
 import com.fiveofteam.super_club.dao.ClubsMapper;
 import com.fiveofteam.super_club.dao.LevelGroupMapper;
 import com.fiveofteam.super_club.pojo.Clubs;
@@ -30,6 +31,8 @@ public class ClubsServiceImpl implements ClubsService {
     private ClubsMapper clubsMapper;
     @Autowired
     private LevelGroupMapper levelGroupMapper;
+    @Autowired
+    private ClubLevelMapper clubLevelMapper;
     @Value("${prop.upload-folder}")
     private String UPLOAD_FOLDER; //logo存放路径
     JsonResult jsonResult;
@@ -43,13 +46,14 @@ public class ClubsServiceImpl implements ClubsService {
                 map.put("data",clubs);
                 jsonResult.setItem(map);
                 jsonResult.setStatus("200");
-                jsonResult.setMsg(FallBackMsg.ResultOk.getDisplayName());
+                jsonResult.setMsg(FallBackMsg.ResultOk.getDisplayName() + "，查询社团列表成功！");
             }catch (Exception e){
                 jsonResult.setStatus("400");
-                jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName());
+                jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName() + "，查询社团列表失败！");
             }
         return jsonResult;
     }
+
 
     @Override
     public JsonResult getClubInfo(String uuId) {
@@ -60,10 +64,10 @@ public class ClubsServiceImpl implements ClubsService {
             map.put("data",clubs);
             jsonResult.setItem(map);
             jsonResult.setStatus("200");
-            jsonResult.setMsg(FallBackMsg.ResultOk.getDisplayName());
+            jsonResult.setMsg(FallBackMsg.ResultOk.getDisplayName() + "，查询社团信息成功！");
         }catch (Exception e ){
             jsonResult.setStatus("400");
-            jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName());
+            jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName() + "，查询社团信息失败！");
         }
         return jsonResult;
     }
@@ -168,8 +172,10 @@ public class ClubsServiceImpl implements ClubsService {
     @Override
     public JsonResult updateClub(Clubs clubs,MultipartFile file,String levelId) {
         jsonResult  = new JsonResult();
+        jsonResult.setStatus("400");
         int clubId = 0;
         int clubNameNum = 0;
+        int levelNum = 0;
         Path newPath = null;
         byte[] bytes = null;
         try{
@@ -181,11 +187,16 @@ public class ClubsServiceImpl implements ClubsService {
             }
             //查询社团名称是否已经存在
             clubNameNum = clubsMapper.selectClubsByNameAndId(clubs);
-            System.out.println("clubNameNum=========" + clubNameNum);
             if (clubNameNum > 0){
-                jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，社团名称已存在！");
+                jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + "，社团名称已存在！");
                 return  jsonResult;
             }
+            levelNum = clubLevelMapper.selectClubLevelById(levelId);
+            if (levelNum < 1){
+                jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + "，社团级别不存在！");
+                return  jsonResult;
+            }
+
 
             //根据UUID获取图片文件对应的存储路径
             List<Clubs> clubLogoList = clubsMapper.selectClubLogoByPrimaryKey(clubs.getUuId());

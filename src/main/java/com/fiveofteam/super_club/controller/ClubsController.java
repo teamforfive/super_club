@@ -38,7 +38,6 @@ public class ClubsController {
      * 查询社团列表
      * @return
      */
-    @CrossOrigin//允许跨域，用于前端测试
     @RequestMapping(value = "/selectList" , method = RequestMethod.GET)
     public JsonResult selectClubList(){
         jsonResult = new JsonResult();
@@ -56,7 +55,6 @@ public class ClubsController {
      * 查询社团列表信息
      * @return
      */
-    @CrossOrigin//允许跨域，用于前端测试
     @RequestMapping(value = "/selectLists" , method = RequestMethod.GET)
     public JsonResult selectClubLists(){
         jsonResult = new JsonResult();
@@ -75,7 +73,6 @@ public class ClubsController {
      * @param uuId
      * @return
      */
-    @CrossOrigin //允许跨域，用于前端测试
     @RequestMapping(value = "/selectClubInfo",method = RequestMethod.GET)
     public  JsonResult selectClubInfo(String uuId){
         jsonResult = new JsonResult();
@@ -106,7 +103,6 @@ public class ClubsController {
      * @param session
      * @return
      */
-    @CrossOrigin//允许跨域，用于前端测试
     @RequestMapping(value = "/addClub" , method = RequestMethod.POST)
     public  JsonResult insertClub(Clubs clubs, MultipartFile file, String levelId, HttpSession session){
         jsonResult = new JsonResult();
@@ -174,7 +170,6 @@ public class ClubsController {
      * @param levelId
      * @return
      */
-    @CrossOrigin
     @RequestMapping(value = "/updateClub",method = RequestMethod.POST)
     public JsonResult updateClub(Clubs clubs, MultipartFile file,String levelId){
         jsonResult = new JsonResult();
@@ -237,7 +232,6 @@ public class ClubsController {
      * @param clubs
      * @return
      */
-    @CrossOrigin
     @RequestMapping(value = "/delectClub" , method = RequestMethod.POST)
     public JsonResult delectClub(Clubs clubs){
         jsonResult = new JsonResult();

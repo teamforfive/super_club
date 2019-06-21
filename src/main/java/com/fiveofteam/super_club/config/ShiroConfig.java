@@ -43,6 +43,8 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/clubLevel/**", "anon");
         //开放社团活动接口,测试
         filterChainDefinitionMap.put("/activity/**", "anon");
+        //开发活动类型接口，测试
+        filterChainDefinitionMap.put("/activityCategory/**","anon");
 
         //从这里开始，是我为解决问题增加的，为swagger页面放行
         filterChainDefinitionMap.put("/swagger-ui.html", "anon");

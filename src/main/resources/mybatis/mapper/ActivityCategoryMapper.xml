@@ -15,6 +15,12 @@
     from activity_category
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </select>
+<!--查询所有活动类型-->
+  <select id="selectAllCategory"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from activity_category
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from activity_category
     where uu_id = #{uuId,jdbcType=VARCHAR}

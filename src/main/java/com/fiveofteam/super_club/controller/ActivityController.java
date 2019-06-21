@@ -25,7 +25,7 @@ public class ActivityController {
      */
     @CrossOrigin
     @RequestMapping(value = "/addActivity", method = RequestMethod.POST)
-    public JsonResult insertActivity(Activity activity,String organizerName) {
+    public JsonResult insertActivity(Activity activity,String organizerName,String activityCateId) {
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
         if (null == activity){
@@ -69,7 +69,7 @@ public class ActivityController {
             return jsonResult;
         }*/
         try {
-            jsonResult = activityService.insertActivity(activity,organizerName);
+            jsonResult = activityService.insertActivity(activity,organizerName,activityCateId);
         } catch (Exception e) {
             jsonResult.setStatus("500");
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，系统错误！");
