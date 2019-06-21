@@ -55,12 +55,12 @@
     <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.Activity">
     insert into activity (uu_id, activity_club_id, activity_title, 
       activity_start_time, activity_end_time, 
-      activity_place, activity_content, activity_type, 
+      activity_place, activity_content,
       activity_status, update_time, create_time
       )
     values (#{uuId,jdbcType=VARCHAR}, #{activityClubId,jdbcType=VARCHAR}, #{activityTitle,jdbcType=VARCHAR}, 
       #{activityStartTime,jdbcType=TIMESTAMP}, #{activityEndTime,jdbcType=TIMESTAMP}, 
-      #{activityPlace,jdbcType=VARCHAR}, #{activityContent,jdbcType=VARCHAR}, #{activityType,jdbcType=TINYINT}, 
+      #{activityPlace,jdbcType=VARCHAR}, #{activityContent,jdbcType=VARCHAR},
       #{activityStatus,jdbcType=BIT}, #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>

@@ -10,10 +10,11 @@ public interface ActivityService {
     /**
      * 添加活动页面
      * @param activity
+     * @param organizerName
      * @return JsonResult
      */
     @Transactional
-    JsonResult insertActivity(Activity activity);
+    JsonResult insertActivity(Activity activity,String organizerName,String activityCateId);
 
     /**
      * 获取指定社团的活动列表
