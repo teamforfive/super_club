@@ -63,6 +63,7 @@ public class UserServiceImpl implements UserService {
         if (user.getUserSex() == null || !"".equals(user.getUserSex())) {
             user.setUserSex(Byte.parseByte("0"));//未知性别
         }
+        user.setCreateTime(DateTools.currentTime());
         userMapper.insert(user);
         //插入游客角色-guest
         AuRole auRole = new AuRole();

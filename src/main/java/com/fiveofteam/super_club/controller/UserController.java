@@ -16,10 +16,7 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,7 +55,7 @@ public class UserController {
      */
     @RequestMapping(value = "/signIn", method = RequestMethod.POST)
     @ApiOperation(value = "登录")
-    public JsonResult singIn(UserBean userBean, HttpSession session, HttpServletRequest request) {
+    public JsonResult singIn(@RequestBody UserBean userBean, HttpSession session, HttpServletRequest request) {
         jsonResult = new JsonResult();
 //        SessionInfo sessionInfos= sessionService.getSessionInfo(request);
 //        if(sessionInfos.getLoginName()==userBean.getUserName()){}
@@ -114,7 +111,8 @@ public class UserController {
      * @Time
      */
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
-    public JsonResult signUp(User user, @RequestParam(value = "userType", required = true, defaultValue = "true") boolean userType) {
+    @ResponseBody
+    public JsonResult signUp(@RequestBody User user, @RequestParam(value = "userType", required = true, defaultValue = "true") boolean userType) {
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
         if (user.getUserName() == null || user.getUserName().isEmpty()) {
@@ -127,6 +125,7 @@ public class UserController {
         }
         if (user.getUserRealName() == null || user.getUserRealName() == "") {
             jsonResult.setMsg(FallBackMsg.SignFail.getDisplayName() + "，真实姓名不能为空！");
+            System.out.println(1111111111);
             return jsonResult;
         }
 
