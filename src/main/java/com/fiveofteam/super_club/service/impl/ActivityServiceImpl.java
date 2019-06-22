@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,9 +101,8 @@ public class ActivityServiceImpl implements ActivityService {
         try{
             Map map = new HashMap();
             //查询活动内容
-            List activityList = activityMapper.selectList(activityClubId);
-            map.put("data",activityList);
-
+            List list = activityMapper.selectList(activityClubId);
+            map.put("data",list);
             jsonResult.setItem(map);
             jsonResult.setStatus("200");
             jsonResult.setMsg(FallBackMsg.ResultOk.getDisplayName() + "，查询活动列表成功！");
@@ -113,20 +113,29 @@ public class ActivityServiceImpl implements ActivityService {
         return jsonResult;
     }
 
+
+
     /**
      *获取活动列表
      */
-/*    @Override
-    public JsonResult getActivityList() {
+    @Override
+    public JsonResult selectInfo(String uuId) {
         jsonResult = new JsonResult();
         try{
-
+            Map map = new HashMap();
+            //查询活动信息
+            List activityInfo = activityMapper.selectInfo(uuId);
+            map.put("data",activityInfo);
+            jsonResult.setItem(map);
+            jsonResult.setStatus("200");
+            jsonResult.setMsg(FallBackMsg.ResultOk.getDisplayName() + "，获取活动信息成功！");
         }catch (Exception e){
-            jsonResult.setStatus("500");
-            jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName() + "，系统错误!");
+            System.out.println(e);
+            jsonResult.setStatus("400");
+            jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName() + "，获取活动信息失败!");
         }
         return jsonResult;
-    }*/
+    }
 
 
 }
