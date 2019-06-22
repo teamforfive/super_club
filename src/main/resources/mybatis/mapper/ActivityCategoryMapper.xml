@@ -21,6 +21,13 @@
     <include refid="Base_Column_List" />
     from activity_category
   </select>
+  <!--查询指定活动类型-->
+  <select id="selectCategoryByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select
+    count(uu_id)
+    from activity_category
+    where ac_name = #{acName,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from activity_category
     where uu_id = #{uuId,jdbcType=VARCHAR}

@@ -25,4 +25,12 @@ public interface ActivityMapper {
      * @return
      */
     List<Activity> selectList (String activityClubId);
+
+
+    /**
+     * 查询某个活动信息
+     * @param uuId
+     * @return
+     */
+    List<Activity> selectInfo (String uuId);
 }

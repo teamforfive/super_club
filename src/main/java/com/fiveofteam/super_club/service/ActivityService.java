@@ -23,4 +23,11 @@ public interface ActivityService {
      */
     @Transactional
     JsonResult selectList(String activityClubId);
+
+    /**
+     * 查询某个活动信息
+     * @param uuId
+     * @return
+     */
+    JsonResult selectInfo(String uuId);
 }

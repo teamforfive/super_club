@@ -60,6 +60,8 @@ public class ClubsServiceImpl implements ClubsService {
         jsonResult  = new JsonResult();
         try {
             Map map = new HashMap();
+            List List = new ArrayList();
+
             Clubs clubs = clubsMapper.selectByPrimaryKey(uuId);
             map.put("data",clubs);
             jsonResult.setItem(map);
