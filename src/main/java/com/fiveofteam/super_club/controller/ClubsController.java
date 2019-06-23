@@ -10,6 +10,7 @@ import com.fiveofteam.super_club.tools.CommonStringTool;
 import com.fiveofteam.super_club.tools.FallBackMsg;
 import com.fiveofteam.super_club.tools.JsonResult;
 import org.apache.shiro.session.Session;
+import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -98,13 +99,13 @@ public class ClubsController {
     /**
      * 创建社团
      * @param clubs
-     * @param file
+     * @param clubLogo
      * @param levelId
      * @param session
      * @return
      */
-    @RequestMapping(value = "/addClub" , method = RequestMethod.POST)
-    public  JsonResult insertClub(Clubs clubs, MultipartFile file, String levelId, HttpSession session){
+    @RequestMapping(value = "/insertClub" , method = RequestMethod.POST)
+    public  JsonResult insertClub(Clubs clubs, String levelId,String clubLogo, HttpSession session){
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
         if (null == clubs){
@@ -143,9 +144,10 @@ public class ClubsController {
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + ",社团联系号码格式不正确！");
             return jsonResult;
         }
-        if (null == file || "".equals(file)){
-            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，图片为空，请重新上传！");
-            return  jsonResult;
+
+        if (null == clubLogo || "".equals(clubLogo.trim())){
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，社团Logo路径不能为空！");
+            return jsonResult;
         }
         if (null == levelId || "".equals(levelId.trim())){
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，社团级别不能为空！");
@@ -153,7 +155,8 @@ public class ClubsController {
         }
 
         try{
-            jsonResult = clubsService.addClub(clubs,file,levelId);
+
+            jsonResult = clubsService.addClub(clubs,clubLogo,levelId);
         }catch (Exception e){
             jsonResult.setStatus("500");
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "系统错误！");
@@ -166,12 +169,12 @@ public class ClubsController {
     /**
      * 更新社团信息
      * @param clubs
-     * @param file
+     * @param clubLogo
      * @param levelId
      * @return
      */
     @RequestMapping(value = "/updateClub",method = RequestMethod.POST)
-    public JsonResult updateClub(Clubs clubs, MultipartFile file,String levelId){
+    public JsonResult updateClub(Clubs clubs, String clubLogo,String levelId){
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
         if (null == clubs){
@@ -218,8 +221,13 @@ public class ClubsController {
             jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + "，社团ID不能为空！");
             return  jsonResult;
         }
+        if (null ==clubLogo || "".equals(clubLogo.trim())){
+            jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + "，社团Logo路径不能为空！");
+            return  jsonResult;
+        }
         try{
-                jsonResult = clubsService.updateClub(clubs,file,levelId);
+            ;
+                jsonResult = clubsService.updateClub(clubs,clubLogo,levelId);
         }catch (Exception e){
             jsonResult.setStatus("500");
             jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + "系统错误！");
@@ -253,6 +261,25 @@ public class ClubsController {
 
         }catch (Exception e ){
             jsonResult.setMsg(FallBackMsg.SysErrorInfo.getDisplayName());
+        }
+        return jsonResult;
+    }
+
+
+    @RequestMapping(value = "/file/upload",method = RequestMethod.POST)
+    public JsonResult uploadFile (MultipartFile file,String logo){
+        jsonResult = new JsonResult();
+        jsonResult.setStatus("400");
+        if (null == file || "".equals(file)){
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，图片为空，请重新上传！");
+            return  jsonResult;
+        }
+        try{
+            jsonResult = clubsService.uploadFile(file,logo);
+            jsonResult.setStatus("200");
+            jsonResult.setMsg("文件上传成功!");
+        }catch (Exception e){
+            jsonResult.setMsg("文件上传失败！");
         }
         return jsonResult;
     }

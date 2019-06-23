@@ -19,9 +19,31 @@
     <id column="uu_id" jdbcType="VARCHAR" property="uuId" />
     <result column="clubs_name" jdbcType="VARCHAR" property="clubsName" />
   </resultMap>
+  <resultMap id="ClubsInfoMap" type="com.fiveofteam.super_club.pojo.bean.ClubsBean">
+      <id column="uu_id" jdbcType="VARCHAR" property="uuId" />
+      <result column="clubs_name" jdbcType="VARCHAR" property="clubsName" />
+      <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+      <result column="child_id" jdbcType="INTEGER" property="childId" />
+      <result column="club_code" jdbcType="VARCHAR" property="clubCode" />
+      <result column="club_profile" jdbcType="VARCHAR" property="clubProfile" />
+      <result column="club_location" jdbcType="VARCHAR" property="clubLocation" />
+      <result column="club_status" jdbcType="BIT" property="clubStatus" />
+      <result column="club_tel" jdbcType="VARCHAR" property="clubTel" />
+      <result column="club_logo" jdbcType="VARCHAR" property="clubLogo" />
+      <result column="club_create_id" jdbcType="VARCHAR" property="clubCreateId" />
+      <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <!--<collection property="levelGroupList" ofType="com.fiveofteam.super_club.pojo.LevelGroup" javaType="ArrayList">-->
+      <result column="lg_clubid" jdbcType="VARCHAR" property="lgClubid" />
+      <result column="lg_levelid" jdbcType="VARCHAR" property="lgLevelid" />
+    <!--</collection>-->
+  </resultMap>
   <sql id="Base_Column_List">
     uu_id, clubs_name, parent_id, child_id, club_code, club_profile, club_location, club_status, 
     club_tel, club_logo, club_create_id, create_time
+  </sql>
+  <sql id="Clubs_Info_List">
+    c.uu_id, c.clubs_name, c.parent_id, c.child_id, c.club_code, c.club_profile, c.club_location, c.club_status,
+    c.club_tel, c.club_logo, c.club_create_id, c.create_time , lg.lg_clubid , lg.lg_levelid
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -29,11 +51,19 @@
     from clubs
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </select>
-  <!--查询所有社团信息-->
-  <select id="selectClubLists"  resultMap="BaseResultMap">
+  <!--查询社团信息返回-->
+  <select id="selectClubInfoById" parameterType="java.lang.String" resultMap="ClubsInfoMap">
     select
-    <include refid="Base_Column_List" />
-    from clubs
+    <include refid="Clubs_Info_List" />
+    from clubs c
+    inner join level_group lg ON c.uu_id = lg.lg_clubid  and c.uu_id = #{uuId,jdbcType=VARCHAR}
+  </select>
+  <!--查询所有社团信息-->
+  <select id="selectClubLists"  resultMap="ClubsInfoMap">
+    select
+    <include refid="Clubs_Info_List" />
+    from clubs c
+    left join level_group lg ON c.uu_id = lg.lg_clubid
   </select>
   <!--查询所有社团列表-->
   <select id="selectClubList"  resultMap="BaseResultMap">

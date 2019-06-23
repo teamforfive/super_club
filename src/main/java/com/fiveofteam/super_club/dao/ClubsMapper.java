@@ -18,6 +18,8 @@ public interface ClubsMapper {
 
     int updateByPrimaryKey(Clubs record);
 
+
+    List selectClubInfoById(String uuId);
     /**
      * 查询所有社团列表
      * @return

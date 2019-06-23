@@ -2,6 +2,8 @@ package com.fiveofteam.super_club.dao;
 
 import com.fiveofteam.super_club.pojo.LevelGroup;
 
+import java.util.List;
+
 public interface LevelGroupMapper {
     int deleteByPrimaryKey(String uuId);
 
@@ -21,5 +23,12 @@ public interface LevelGroupMapper {
      * @return
      */
     int updateLevelByClubId(LevelGroup levelGroup);
+
+    /**
+     * 查询社团级别ID
+     * @param clubid
+     * @return
+     */
+    List<LevelGroup> selectByClubid(String clubid);
 
 }

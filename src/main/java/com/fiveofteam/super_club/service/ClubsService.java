@@ -22,33 +22,34 @@ public interface ClubsService {
      * @param uuId
      * @return
      */
+    @Transactional
     JsonResult getClubInfo(String uuId);
 
     /**
      * 查询所有社团信息
      * @return
      */
+    @Transactional
     JsonResult getClubLists();
 
     /**
      * 创建社团
      * @param clubs
-     * @param file
      * @param levelId
      * @return
      */
     @Transactional
-    JsonResult addClub(Clubs clubs, MultipartFile file, String levelId);
+    JsonResult addClub(Clubs clubs,String clubLogo, String levelId);
 
     /**
      * 更新社团信息
      * @param clubs
-     * @param file
+     * @param clubLogo
      * @param levelId
      * @return
      */
     @Transactional
-    JsonResult updateClub(Clubs clubs, MultipartFile file,String levelId);
+    JsonResult updateClub(Clubs clubs, String clubLogo,String levelId);
 
     /**
      * 删除社团
@@ -57,4 +58,7 @@ public interface ClubsService {
      */
     @Transactional
     JsonResult deleteClub(Clubs clubs);
+
+    JsonResult uploadFile(MultipartFile file,String logo);
+
 }
