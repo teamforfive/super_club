@@ -23,7 +23,7 @@ public class ActivityController {
      * @param activity
      * @return
      */
-    @RequestMapping(value = "/addActivity", method = RequestMethod.POST)
+    @RequestMapping(value = "/insertActivity", method = RequestMethod.POST)
     public JsonResult insertActivity(Activity activity,String organizerName,String activityCateId) {
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
@@ -85,10 +85,6 @@ public class ActivityController {
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，传递数据不能为空！");
             return jsonResult;
         }
-        if (null == activity.getActivityClubId() || "".equals(activity.getActivityClubId().trim())){
-            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，社团ID不能为空！");
-            return jsonResult;
-        }
         if (null == activity.getActivityTitle() || "".equals(activity.getActivityTitle().trim())){
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，活动标题名不能为空！");
             return jsonResult;
@@ -118,7 +114,7 @@ public class ActivityController {
             return jsonResult;
         }
         try {
-
+            jsonResult = activityService.updateActivity(activity,organizerName,activityCateId);
         } catch (Exception e) {
             jsonResult.setStatus("500");
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，系统错误！");
@@ -139,6 +135,23 @@ public class ActivityController {
         }
         try {
             jsonResult = activityService.selectList(activityClubId);
+        } catch (Exception e) {
+            jsonResult.setStatus("500");
+            jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName() + "，系统错误！");
+        }
+
+        return jsonResult;
+    }
+
+    /**
+     * 获取所有活动信息列表
+     */
+    @RequestMapping(value = "/selectLists" ,method = RequestMethod.GET)
+    public JsonResult selectActivityLists() {
+        jsonResult = new JsonResult();
+        jsonResult.setStatus("400");
+        try {
+            jsonResult = activityService.selectLists();
         } catch (Exception e) {
             jsonResult.setStatus("500");
             jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName() + "，系统错误！");

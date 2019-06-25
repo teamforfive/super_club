@@ -69,4 +69,11 @@
       activity_id = #{activityId,jdbcType=VARCHAR}
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </update>
+
+  <!--更新活动组织人信息-->
+  <update id="updateOrganizerNameByActivityId" parameterType="com.fiveofteam.super_club.pojo.ActivityOrganizer">
+    update activity_organizer
+    set organizer_name = #{organizerName,jdbcType=VARCHAR}
+    where  activity_id = #{activityId,jdbcType=VARCHAR}
+  </update>
 </mapper>

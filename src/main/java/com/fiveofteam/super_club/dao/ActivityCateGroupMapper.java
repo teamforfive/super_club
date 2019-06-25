@@ -14,4 +14,7 @@ public interface ActivityCateGroupMapper {
     int updateByPrimaryKeySelective(ActivityCateGroup record);
 
     int updateByPrimaryKey(ActivityCateGroup record);
+
+
+    int updateCateByActivityId(ActivityCateGroup activityCateGroup);
 }

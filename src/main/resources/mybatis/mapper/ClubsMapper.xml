@@ -51,7 +51,7 @@
     from clubs
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </select>
-  <!--查询社团信息返回-->
+  <!--查询社团信息返回ClubsInfoMap-->
   <select id="selectClubInfoById" parameterType="java.lang.String" resultMap="ClubsInfoMap">
     select
     <include refid="Clubs_Info_List" />
