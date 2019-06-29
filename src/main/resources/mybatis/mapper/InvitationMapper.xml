@@ -47,7 +47,7 @@
         from invitation
         where uu_id = #{uuId,jdbcType=VARCHAR}
     </select>
-
+<!--获取帖子集合-->
     <select id="getInvitations" parameterType="String" resultMap="InvitationMap">
         select
         i.uu_id, i.invitation_title, i.invitation_author_id, i.invitation_content, i.invitation_status,
@@ -77,6 +77,7 @@
       #{invitationContent,jdbcType=VARCHAR}, #{invitationStatus,jdbcType=INTEGER}, #{invitationAccess,jdbcType=INTEGER}, 
       #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
+    <!--添加帖子-->
     <insert id="addInvitation" parameterType="com.fiveofteam.super_club.pojo.Invitation">
     insert into invitation (uu_id, invitation_title, invitation_author_id,
       invitation_content, invitation_status, invitation_access,
@@ -85,6 +86,8 @@
       #{invitationContent,jdbcType=VARCHAR}, #{invitationStatus,jdbcType=INTEGER}, #{invitationAccess,jdbcType=INTEGER},
       #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
+
+
     <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.Invitation">
         insert into invitation
         <trim prefix="(" suffix=")" suffixOverrides=",">

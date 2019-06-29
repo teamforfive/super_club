@@ -13,6 +13,11 @@ public interface InvitationMapper {
 
     List<Invitation> getInvitations(String authorId);
 
+    /**
+     *添加帖子
+     */
+    int addInvitation(Invitation invitation);
+
     Invitation selectByPrimaryKey(String uuId);
 
     int updateByPrimaryKeySelective(Invitation record);

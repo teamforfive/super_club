@@ -1,10 +1,11 @@
 package com.fiveofteam.super_club.dao;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fiveofteam.super_club.pojo.Action;
 
 import java.util.List;
 
-public interface ActionMapper {
+public interface ActionMapper extends BaseMapper<Action> {
     int deleteByPrimaryKey(String uuId);
 
     int insert(Action record);

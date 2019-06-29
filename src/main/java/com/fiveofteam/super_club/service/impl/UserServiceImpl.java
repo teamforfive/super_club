@@ -121,33 +121,33 @@ public class UserServiceImpl implements UserService {
         logger.error(passWord);
         bean.setUserPassword("");
 //        try {
-            user = userMapper.login(bean);//获取id
-            logger.info("从数据库获取对应的 userBean.getUserPassword():{}", passWord);
-            String id = user.getUuId();
-            if (id == null || id.isEmpty()) {
-                logger.info("PassWord.class:{}", "id为空");
-                return null;
-            }
+        user = userMapper.login(bean);//获取id
+        logger.info("从数据库获取对应的 userBean.getUserPassword():{}", passWord);
 
-            if (passWord == null || passWord.isEmpty()) {
-                logger.info("PassWord.class:{}", "passWord为空");
-                return null;
-            }
-            String salt = null;
-            logger.info("id>>" + id);
-            salt = userMapper.selectSalt(id);//查询盐值
-            logger.info("PassWord.class:{}", "salt" + salt);
-            if (salt == null || salt.isEmpty()) {
-                logger.info("PassWord.class:{}", "salt为空");
-                return null;
-            }
-            logger.info("PassWord.class:{}", "salt为空" + salt);
+        if (user == null || "".equals(user)) {
+            logger.info("PassWord.class:{}", "id为空");
+            return null;
+        }
+        String id = user.getUuId();
+        if (passWord == null || passWord.isEmpty()) {
+            logger.info("PassWord.class:{}", "passWord为空");
+            return null;
+        }
+        String salt = null;
+        logger.info("id>>" + id);
+        salt = userMapper.selectSalt(id);//查询盐值
+        logger.info("PassWord.class:{}", "salt" + salt);
+        if (salt == null || salt.isEmpty()) {
+            logger.info("PassWord.class:{}", "salt为空");
+            return null;
+        }
+        logger.info("PassWord.class:{}", "salt为空" + salt);
 
-            logger.info("salt" + salt);
-            passWord = MD5.md5(salt + passWord);//密码加密
-            logger.info("passWord" + passWord);
-            userBean.setUserPassword(passWord);
-            user = userMapper.login(userBean);
+        logger.info("salt" + salt);
+        passWord = MD5.md5(salt + passWord);//密码加密
+        logger.info("passWord" + passWord);
+        userBean.setUserPassword(passWord);
+        user = userMapper.login(userBean);
 //        } catch (Exception e) {
 //            logger.info(e.getMessage());
 //            return null;
@@ -172,37 +172,37 @@ public class UserServiceImpl implements UserService {
         jsonResult = new JsonResult();
         String passWord;
 //        try {
-            //根据某个条件查询id todo
+        //根据某个条件查询id todo
 //            passWord = new PassWord().getPassWord(userBean.getUuId(), userBean.getUserPassword());
-            String id = userBean.getUuId();
-            if (id == null || id.isEmpty()) {
-                logger.info("PassWord.class:{}", "id为空");
-                return null;
-            }
+        String id = userBean.getUuId();
+        if (id == null || id.isEmpty()) {
+            logger.info("PassWord.class:{}", "id为空");
+            return null;
+        }
 
-            if (userBean.getUserPassword() == null || userBean.getUserPassword().isEmpty()) {
-                logger.info("PassWord.class:{}", "passWord为空");
-                return null;
-            }
-            String salt = null;
-            logger.info("id>>" + id);
-            salt = userMapper.selectSalt(id);//查询盐值
-            logger.info("PassWord.class:{}", "salt" + salt);
-            if (salt == null || salt.isEmpty()) {
-                logger.info("PassWord.class:{}", "salt为空");
-                return null;
-            }
-            logger.info("PassWord.class:{}", "salt为空" + salt);
+        if (userBean.getUserPassword() == null || userBean.getUserPassword().isEmpty()) {
+            logger.info("PassWord.class:{}", "passWord为空");
+            return null;
+        }
+        String salt = null;
+        logger.info("id>>" + id);
+        salt = userMapper.selectSalt(id);//查询盐值
+        logger.info("PassWord.class:{}", "salt" + salt);
+        if (salt == null || salt.isEmpty()) {
+            logger.info("PassWord.class:{}", "salt为空");
+            return null;
+        }
+        logger.info("PassWord.class:{}", "salt为空" + salt);
 
-            logger.info("salt" + salt);
-            passWord = MD5.md5(salt + userBean.getUserPassword());//密码加密
-            if (passWord == null || passWord.isEmpty()) {
-                jsonResult.setStatus("400");
-                jsonResult.setMsg("用户不存在!去注册或者再试一次!");
-                return jsonResult;
-            }
-            userBean.setUserPassword(passWord);
-            //更新密码 todo
+        logger.info("salt" + salt);
+        passWord = MD5.md5(salt + userBean.getUserPassword());//密码加密
+        if (passWord == null || passWord.isEmpty()) {
+            jsonResult.setStatus("400");
+            jsonResult.setMsg("用户不存在!去注册或者再试一次!");
+            return jsonResult;
+        }
+        userBean.setUserPassword(passWord);
+        //更新密码 todo
 //        } catch (Exception e) {
 //
 //        }
