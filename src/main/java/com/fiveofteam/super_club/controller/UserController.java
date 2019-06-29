@@ -1,5 +1,7 @@
 package com.fiveofteam.super_club.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.fiveofteam.super_club.config.NameConfig;
 import com.fiveofteam.super_club.pojo.User;
 import com.fiveofteam.super_club.pojo.bean.SessionInfo;
@@ -71,6 +73,11 @@ public class UserController {
                     /**验证码、权限列表
                      * todo
                      * */
+                    if(user==null){
+                        jsonResult.setMsg("用户不存在，登陆失败!");
+                        jsonResult.setStatus("400");
+                        return jsonResult;
+                    }
                     sessionInfo.setUserId(user.getUuId());
                     sessionInfo.setLoginName(user.getUserName());
                     String sessionName = nameConfig.sessionInfoName;
@@ -89,6 +96,7 @@ public class UserController {
 //            }
 
                 } catch (Exception e) {
+                    e.printStackTrace();
                     logger.info(e.getMessage());
                     jsonResult.setMsg("登录，发生未知错误！");
                     return jsonResult;

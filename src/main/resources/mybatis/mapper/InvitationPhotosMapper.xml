@@ -27,6 +27,16 @@
     values (#{uuId,jdbcType=VARCHAR}, #{invitationId,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
       #{sort,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
+  <!--插入照片组-->
+  <insert id="insertPhotos" parameterType="List">
+    insert into invitation_photos (uu_id, invitation_id, url,
+      sort)  values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.uuId,jdbcType=VARCHAR}, #{item.invitationId,jdbcType=VARCHAR}, #{item.url,jdbcType=VARCHAR},
+        #{item.sort,jdbcType=INTEGER})
+      </foreach>
+
+  </insert>
   <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.InvitationPhotos">
     insert into invitation_photos
     <trim prefix="(" suffix=")" suffixOverrides=",">

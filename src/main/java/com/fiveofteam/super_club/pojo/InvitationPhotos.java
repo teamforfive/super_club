@@ -5,6 +5,8 @@ import java.util.Date;
 public class InvitationPhotos {
     private String uuId;
 
+    private String photosId;
+
     private String invitationId;
 
     private String url;

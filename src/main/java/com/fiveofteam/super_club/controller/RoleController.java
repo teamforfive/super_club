@@ -9,7 +9,6 @@ import com.fiveofteam.super_club.tools.JsonResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class RoleController {
     private final Logger logger = LoggerFactory.getLogger(RoleService.class);
     JsonResult jsonResult;
 
-    @PostMapping("/insertRole")
+    @RequestMapping(value = "/insertRole", method = RequestMethod.POST)
     public JsonResult insertRole() {
         return jsonResult;
     }
@@ -39,14 +38,30 @@ public class RoleController {
      *
      * @param userId userType
      */
-    @PostMapping("/getRoleList")
+    @RequestMapping(value = "/getRoleList", method = RequestMethod.POST)
+    @ResponseBody
     @ApiOperation(value = "获取角色列表", notes = "如果用户id不为空，就获取该用户的角色")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户ID", required = false, dataType = "String"),
-            @ApiImplicitParam(name = "userType", value = "用户类型,0=所有类型，1=用户，2,=管理员", required = true, dataType = "boolean"),
+            @ApiImplicitParam(name = "userType", value = "用户类型,0=所有类型，1=用户，2,=管理员", required = true, dataType = "int"),
             @ApiImplicitParam(name = "clubId", value = "社团id", required = false, dataType = "String")})
-    public JsonResult getRoleList(String userId, int userType, String clubId) {
+    public JsonResult getRoleList(@RequestBody Map<String, Object> params) {
+        String userId="";
+        int userType;
+        String clubId="";
         jsonResult = new JsonResult();
+        if(params==null){
+            jsonResult.setStatus("400");
+            jsonResult.setMsg("用户类型不为空");
+            return jsonResult;
+        }
+        if(params.get("clubId")!=null&&!"".equals(params.get("clubId"))){
+            clubId=params.get("clubId").toString();
+        }
+        if(params.get("userId")!=null&&!"".equals(params.get("userId"))){
+            userId=params.get("userId").toString();
+        }
+        userType=Integer.parseInt(params.get("userType").toString());
         try {
             Map<String, Object> map = new HashMap<>();
             List<Role> list = roleService.getRoleListById(userId, clubId, userType);
@@ -66,7 +81,8 @@ public class RoleController {
     /**
      * 插入角色列表
      */
-    @PostMapping("/insertRoleList")
+    @RequestMapping(value = "/insertRoleList", method = RequestMethod.POST)
+    @ResponseBody
     @ApiOperation(value = "插入角色列表", notes = "插入一个List<Role>")
     @ApiImplicitParam(name = "list", value = "角色集合", required = true, dataType = "List<Role>")
     public JsonResult insertRoleList(@RequestBody List<Role> list) {
@@ -96,8 +112,9 @@ public class RoleController {
      */
     @ApiOperation(value = "删除某个角色", notes = "根据角色id删除某个角色")
     @ApiImplicitParam(name = "id", value = "某个角色的id", required = true, dataType = "String")
-    @PostMapping("/delRole")
-    public JsonResult delRole(@RequestParam(value = "id") String id) {
+    @RequestMapping(value = "/delRole", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult delRole(@RequestParam String id) {
         jsonResult = new JsonResult();
         if (id == null || "".equals(id)) {
             jsonResult.setMsg("id为空或者未选中角色！");
@@ -118,22 +135,24 @@ public class RoleController {
     /**
      * 为用户添加角色
      * 只有管理员和社团能使用该角色
+     *
      * @param roleId
      * @param userType
      * @param userId
      */
-    @PostMapping(value = "/addRoleForUser")
+    @RequestMapping(value = "/addRoleForUser", method = RequestMethod.POST)
+    @ResponseBody
     @ApiImplicitParams(
             {@ApiImplicitParam(name = "userId", value = "用户id", dataType = "String", required = true),
                     @ApiImplicitParam(name = "roleId", value = "角色id", dataType = "String", required = true),
                     @ApiImplicitParam(name = "userType", value = "用户类型", dataType = "boolean", required = true),
                     @ApiImplicitParam(name = "clubId", value = "社团id", dataType = "String", required = false)})
     @ApiOperation(value = "为用户添加角色", notes = "为用户添加角色 ，1.if clubId 为null，userType为false ，是为系统管理员添加角色;" +
-                                                                     "2.if clubId 不为null，userType为true 是为用户添加角色")
-    public JsonResult addRoleForUser(@RequestParam(value = "userId") String userId,
-                                     @RequestParam(value = "roleId") String roleId,
+            "2.if clubId 不为null，userType为true 是为用户添加角色")
+    public JsonResult addRoleForUser(@RequestParam String userId,
+                                     @RequestParam String roleId,
                                      @RequestParam(value = "clubId", required = false) String clubId,
-                                     @RequestParam(value = "userType") boolean userType) {
+                                     @RequestParam boolean userType) {
         jsonResult = new JsonResult();
         AuRole auRole = new AuRole();
         auRole.setAuId(userId);

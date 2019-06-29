@@ -47,8 +47,7 @@
             user_name=#{userName,jdbcType=VARCHAR}
         </if>
         <if test="userPassword !=null and userPassword!=''">
-            and
-            user_password=#{userPassword,jdbcType=VARCHAR}
+            and user_password=#{userPassword,jdbcType=VARCHAR}
         </if>
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">

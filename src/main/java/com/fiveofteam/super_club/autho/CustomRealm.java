@@ -87,6 +87,7 @@ public class CustomRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+
         logger.info("----权限认证---");
         String username = (String) SecurityUtils.getSubject().getPrincipal();
         Subject currentUser = SecurityUtils.getSubject();
@@ -98,13 +99,17 @@ public class CustomRealm extends AuthorizingRealm {
         for (Role role : roleList) {
             //根据角色id获取到资源信息
             List<Action> actionList = actionService.getActionList(role.getUuId());
-            for (Action action : actionList) {
-                if (action != null && !action.getActionName().isEmpty()) {
-                    actionSet.add(action.getActionName());
-                }
+            if(actionList!=null){
+                for (Action action : actionList) {
+                    if (action != null && !action.getActionName().isEmpty()) {
+                        actionSet.add(action.getActionName());
+                    }
+            }
+
             }
             //查询角色信息
             if (role != null && !role.getRoleName().isEmpty()) {
+                logger.info("role:"+role.getRoleName());
                 roleSet.add(role.getRoleName());
             }
         }

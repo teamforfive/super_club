@@ -1,88 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fiveofteam.super_club.dao.InvitationTypeMapper">
-  <resultMap id="BaseResultMap" type="com.fiveofteam.super_club.pojo.InvitationType">
-    <id column="uu_id" jdbcType="VARCHAR" property="uuId" />
-    <result column="invitation_id" jdbcType="VARCHAR" property="invitationId" />
-    <result column="invitation_type" jdbcType="VARCHAR" property="invitationType" />
-    <result column="sort" jdbcType="INTEGER" property="sort" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.fiveofteam.super_club.pojo.InvitationType">
+        <id column="uu_id" jdbcType="VARCHAR" property="uuId"/>
+        <result column="invitation_id" jdbcType="VARCHAR" property="invitationId"/>
+        <result column="invitation_type" jdbcType="VARCHAR" property="invitationType"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     uu_id, invitation_id, invitation_type, sort, create_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from invitation_type
-    where uu_id = #{uuId,jdbcType=VARCHAR}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from invitation_type
+        where uu_id = #{uuId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from invitation_type
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.InvitationType">
+    <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.InvitationType">
     insert into invitation_type (uu_id, invitation_id, invitation_type, 
       sort, create_time)
     values (#{uuId,jdbcType=VARCHAR}, #{invitationId,jdbcType=VARCHAR}, #{invitationType,jdbcType=VARCHAR}, 
       #{sort,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.InvitationType">
-    insert into invitation_type
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="uuId != null">
-        uu_id,
-      </if>
-      <if test="invitationId != null">
-        invitation_id,
-      </if>
-      <if test="invitationType != null">
-        invitation_type,
-      </if>
-      <if test="sort != null">
-        sort,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="uuId != null">
-        #{uuId,jdbcType=VARCHAR},
-      </if>
-      <if test="invitationId != null">
-        #{invitationId,jdbcType=VARCHAR},
-      </if>
-      <if test="invitationType != null">
-        #{invitationType,jdbcType=VARCHAR},
-      </if>
-      <if test="sort != null">
-        #{sort,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fiveofteam.super_club.pojo.InvitationType">
-    update invitation_type
-    <set>
-      <if test="invitationId != null">
-        invitation_id = #{invitationId,jdbcType=VARCHAR},
-      </if>
-      <if test="invitationType != null">
-        invitation_type = #{invitationType,jdbcType=VARCHAR},
-      </if>
-      <if test="sort != null">
-        sort = #{sort,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where uu_id = #{uuId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.fiveofteam.super_club.pojo.InvitationType">
+    <!--添加类型表-->
+    <insert id="insertTypes" parameterType="List">
+        insert into invitation_type (uu_id, invitation_id, invitation_type,
+        sort)values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.uuId,jdbcType=VARCHAR}, #{item.invitationId,jdbcType=VARCHAR},
+            #{item.invitationType,jdbcType=VARCHAR},
+            #{item.sort,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.InvitationType">
+        insert into invitation_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuId != null">
+                uu_id,
+            </if>
+            <if test="invitationId != null">
+                invitation_id,
+            </if>
+            <if test="invitationType != null">
+                invitation_type,
+            </if>
+            <if test="sort != null">
+                sort,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuId != null">
+                #{uuId,jdbcType=VARCHAR},
+            </if>
+            <if test="invitationId != null">
+                #{invitationId,jdbcType=VARCHAR},
+            </if>
+            <if test="invitationType != null">
+                #{invitationType,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fiveofteam.super_club.pojo.InvitationType">
+        update invitation_type
+        <set>
+            <if test="invitationId != null">
+                invitation_id = #{invitationId,jdbcType=VARCHAR},
+            </if>
+            <if test="invitationType != null">
+                invitation_type = #{invitationType,jdbcType=VARCHAR},
+            </if>
+            <if test="sort != null">
+                sort = #{sort,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where uu_id = #{uuId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fiveofteam.super_club.pojo.InvitationType">
     update invitation_type
     set invitation_id = #{invitationId,jdbcType=VARCHAR},
       invitation_type = #{invitationType,jdbcType=VARCHAR},

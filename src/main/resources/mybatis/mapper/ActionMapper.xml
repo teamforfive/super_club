@@ -24,7 +24,7 @@
     <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.Action">
     insert into action (uu_id, action_name, action_code,
       action_remarks, update_time)
-    values (#{uuId,jdbcType=VARCHAR}, #{actionName,jdbcType=VARCHAR}, #{actionCode,jdbcType=VARCHAR}, 
+    values (#{uuId,jdbcType=VARCHAR}, #{actionName,jdbcType=VARCHAR}, #{actionCode,jdbcType=VARCHAR},
       #{actionRemarks,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
     <insert id="insertActionList" parameterType="list">

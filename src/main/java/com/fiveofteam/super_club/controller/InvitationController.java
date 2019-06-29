@@ -4,27 +4,38 @@ import com.fiveofteam.super_club.pojo.Invitation;
 import com.fiveofteam.super_club.service.InvitationService;
 import com.fiveofteam.super_club.tools.FallBackMsg;
 import com.fiveofteam.super_club.tools.JsonResult;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 
 
 @RequestMapping("/invitation")
+@RestController
 public class InvitationController {
     JsonResult jsonResult;
     @Autowired
     InvitationService invitationService;
-    private Logger logger= LoggerFactory.getLogger(InvitationController.class);
+    private Logger logger = LoggerFactory.getLogger(InvitationController.class);
 
     @PostMapping("/add")
+    @ResponseBody
+    @ApiOperation(value = "添加帖子集合")
     public JsonResult addInvitation(Invitation invitation, HttpSession httpSession) {
         jsonResult = new JsonResult();
+        if(invitation !=null&&"".equals(invitation)){
+            jsonResult.setMsg("内容不能为空");
+            jsonResult.setStatus("400");
+            return jsonResult;
+        }
         try {
-
+            jsonResult = invitationService.addInvitation(invitation);
         } catch (Exception e) {
             return jsonResult;
         }
@@ -56,6 +67,8 @@ public class InvitationController {
      * 获取博客列表
      */
     @PostMapping("/getList")
+    @ResponseBody
+    @ApiOperation(value = "获取帖子集合")
     public JsonResult getInvitations(Invitation invitation, String authorId, HttpSession httpSession) {
         jsonResult = new JsonResult();
         // if(){}
@@ -63,6 +76,7 @@ public class InvitationController {
             jsonResult = invitationService.getInvitations(authorId);
         } catch (Exception e) {
             logger.error(e.getMessage());
+            e.printStackTrace();
             jsonResult.setMsg(FallBackMsg.SysErrorInfo.getDisplayName());
             return jsonResult;
         }

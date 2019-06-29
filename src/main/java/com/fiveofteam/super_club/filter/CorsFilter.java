@@ -22,11 +22,12 @@ public class CorsFilter implements Filter {
 
         HttpServletResponse response = (HttpServletResponse) res;
         // 允许所有域进行访问
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Origin", "http://localhost:63342");
+
         // 允许的方法
         response.setHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,OPTIONS");
-        response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Cache-Control,token,authorization");
+        response.setHeader("Access-Control-Max-Age", "63342");
+        response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type ,Accept, Cache-Control,token,authorization");
         response.setHeader("Access-Control-Allow-Credentials", "true");
 
         chain.doFilter(req, res);
