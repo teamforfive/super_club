@@ -60,5 +60,6 @@ public interface ClubsService {
     JsonResult deleteClub(Clubs clubs);
 
     JsonResult uploadFile(MultipartFile file,String logo);
+    JsonResult getLogo(String clubId);
 
 }

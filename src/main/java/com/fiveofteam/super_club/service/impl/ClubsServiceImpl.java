@@ -257,5 +257,16 @@ public class ClubsServiceImpl implements ClubsService {
         return jsonResult;
     }
 
+    @Override
+    public JsonResult getLogo(String clubId) {
+        jsonResult=new JsonResult();
+        String logoName=clubsMapper.getLogo(clubId);
+        jsonResult.setMsg("查询成功！");
+        Map<String,Object> map=new HashMap<>();
+        map.put("logoName",logoName);
+        jsonResult.setItem(map);
+        return jsonResult;
+    }
+
 
 }

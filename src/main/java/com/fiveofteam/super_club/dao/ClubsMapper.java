@@ -20,6 +20,8 @@ public interface ClubsMapper {
 
 
     List selectClubInfoById(String uuId);
+
+    String  getLogo(String clubsId);
     /**
      * 查询所有社团列表
      * @return
