@@ -21,4 +21,6 @@ public interface ActivityOrganizerMapper {
      * @return
      */
     ActivityOrganizer selectByActivityId(String activityId);
+
+    int updateOrganizerNameByActivityId(ActivityOrganizer activityOrganizer);
 }

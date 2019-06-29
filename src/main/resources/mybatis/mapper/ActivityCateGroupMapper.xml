@@ -79,4 +79,11 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </update>
+<!--更新活动类型-->
+  <update id="updateCateByActivityId"  parameterType="com.fiveofteam.super_club.pojo.ActivityCateGroup">
+    update activity_cate_group
+    set ac_categoryid = #{acCategoryid,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where ac_activityid = #{acActivityid,jdbcType=VARCHAR}
+  </update>
 </mapper>
