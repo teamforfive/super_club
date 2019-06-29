@@ -1,0 +1,149 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+li{
+    list-style: none    ;
+}
+
+/* 头部修改 */
+.mint-header{
+ height: 46px;
+}
+/* 头部修改结束 */
+/* 搜索框修改 */
+.mint-searchbar{
+    background-color: #ffffff;
+}
+.club-seach .mint-searchbar-core
+{
+    margin: 0;
+    background: #F1F7FD;
+    border-radius: 180px;
+}
+.mint-searchbar-core::-webkit-input-placeholder {
+    color: #939090;
+    padding-left: 10px;
+}
+/* 搜索框结束 */
+.mint-searchbar-inner .mintui-search{
+    font-size: 26px;
+    position: absolute;
+    right: 31px;
+}
+.mint-searchbar-cancel{
+    margin-left: 1px; 
+}
+.mint-search{
+        height:0vh;
+        height:100%;
+}
+/* 热门社团 */
+.con-hec  {
+    background-color: #fff;
+    color: #3a3a3a;
+    border-left:5px  solid #26a2ff;
+    padding-left: 20px;
+}
+.Hotclub .mui-icon{
+    font-size: 13px;
+    line-height: 4;
+}
+
+/* 底部 */
+.topac .mui-slider{
+    height: 254px;
+}
+/* 创建社团界面 */
+/* 表单格式 */
+.Cclub .mint-field-core,.Lg .mint-field-core{
+    width: 100%;
+    line-height: inherit;
+    outline: 0;
+    border: 0;
+    border-radius: 0;
+    margin-bottom: 0px;
+    padding: 0px;
+   }
+
+ 
+
+.Crifo .mint-cell-wrapper{
+    align-items:unset;
+}
+.Crifo .mint-field.is-textarea .mint-cell-title {
+    padding: 20px 0;
+}
+.Crifo .mint-field.is-textarea .mint-cell-value{
+    padding-top: 20px;
+   
+}
+ textarea::-webkit-input-placeholder{ /*WebKit browsers*/
+
+    color: #c1c1c1;
+    
+    }
+    
+ textarea::-moz-input-placeholder{ /*Mozilla Firefox*/
+    
+    color: #c1c1c1;
+    
+    }
+ textarea::-ms-input-placeholder{ /*Internet Explorer*/ 
+    
+    color: #c1c1c1;
+    
+    }
+input::-webkit-input-placeholder{ /*WebKit browsers*/
+
+        color: #c1c1c1;
+        
+        }
+        
+    input::-moz-input-placeholder{ /*Mozilla Firefox*/
+        
+        color: #c1c1c1;
+        
+        }
+    input::-ms-input-placeholder{ /*Internet Explorer*/ 
+        
+        color: #c1c1c1;
+        
+        }
+/* 创建社团界面结束 */
+
+/* 登录界面开始*/
+
+/* 登录界面结束*/
+/* 公共部分 */
+.paddbotoom{
+    padding-bottom: 50px;
+}
+.mint-cell-wrapper{
+    background: #fff;
+}
+/* 我的列表 */
+.myclub .mint-cell-title{
+    margin-top: 10px;
+}
+.myclub .mint-cell-allow-right::after{
+    top: 61%;
+}
+/* 活动发布页面 */
+.block i{
+    height: 0;
+}
+.el-tag .el-icon-close{
+    font-size: 15px;
+}
+.el-tag .el-icon-close{
+    height: 18px;
+    width: 18px;
+    line-height: 18px;
+}
+.el-tag--danger {
+    background-color: rgba(243, 236, 236, 0.1);
+    border-color: rgba(239, 235, 235, 0.2);
+    color: #e8e7e7;
+}
+/*  活动发布页面结束*/

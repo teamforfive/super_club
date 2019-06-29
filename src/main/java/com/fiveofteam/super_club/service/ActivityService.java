@@ -8,13 +8,17 @@ public interface ActivityService {
 
 
     /**
-     * 添加活动页面
+     * 创建活动页面
      * @param activity
      * @param organizerName
      * @return JsonResult
      */
     @Transactional
     JsonResult insertActivity(Activity activity,String organizerName,String activityCateId);
+
+
+    @Transactional
+    JsonResult updateActivity(Activity activity,String organizerName,String activityCateId);
 
     /**
      * 获取指定社团的活动列表
@@ -23,6 +27,13 @@ public interface ActivityService {
      */
     @Transactional
     JsonResult selectList(String activityClubId);
+
+    /**
+     * 获取所有活动信息列表
+     * @return
+     */
+    @Transactional
+    JsonResult selectLists();
 
     /**
      * 查询某个活动信息

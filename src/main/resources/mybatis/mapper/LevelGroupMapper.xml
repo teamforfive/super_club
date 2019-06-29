@@ -16,7 +16,13 @@
     from level_group
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </select>
-
+<!--查询社团级别ID-->
+  <select id="selectByClubid" parameterType="com.fiveofteam.super_club.pojo.LevelGroup" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from level_group
+    where lg_clubid = #{lgClubid,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from level_group
     where uu_id = #{uuId,jdbcType=VARCHAR}

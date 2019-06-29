@@ -5,6 +5,10 @@ server:
     session:
       timeout: 3600s
 spring:
+#  mvc:
+#    static-path-pattern: /image/**
+#  resources:
+#    static-locations:file: f://Project/mypicture/
   application:
     name: SuperClub
   datasource:

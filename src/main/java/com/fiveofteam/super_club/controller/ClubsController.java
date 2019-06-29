@@ -10,6 +10,7 @@ import com.fiveofteam.super_club.tools.CommonStringTool;
 import com.fiveofteam.super_club.tools.FallBackMsg;
 import com.fiveofteam.super_club.tools.JsonResult;
 import org.apache.shiro.session.Session;
+import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -36,58 +37,61 @@ public class ClubsController {
 
     /**
      * 查询社团列表
+     *
      * @return
      */
-    @RequestMapping(value = "/selectList" , method = RequestMethod.GET)
-    public JsonResult selectClubList(){
+    @RequestMapping(value = "/selectList", method = RequestMethod.GET)
+    public JsonResult selectClubList() {
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
         try {
             jsonResult = clubsService.getList();
-        }catch (Exception e){
+        } catch (Exception e) {
             jsonResult.setStatus("500");
             jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName() + "，系统错误！");
         }
-        return  jsonResult ;
+        return jsonResult;
     }
 
     /**
      * 查询社团列表信息
+     *
      * @return
      */
-    @RequestMapping(value = "/selectLists" , method = RequestMethod.GET)
-    public JsonResult selectClubLists(){
+    @RequestMapping(value = "/selectLists", method = RequestMethod.GET)
+    public JsonResult selectClubLists() {
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
         try {
             jsonResult = clubsService.getClubLists();
-        }catch (Exception e){
+        } catch (Exception e) {
             jsonResult.setStatus("500");
             jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName() + "，系统错误！");
         }
-        return  jsonResult ;
+        return jsonResult;
     }
 
     /**
      * 查询社团信息
+     *
      * @param uuId
      * @return
      */
-    @RequestMapping(value = "/selectClubInfo",method = RequestMethod.GET)
-    public  JsonResult selectClubInfo(String uuId){
+    @RequestMapping(value = "/selectClubInfo", method = RequestMethod.GET)
+    public JsonResult selectClubInfo(String uuId) {
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
-        if ( null == uuId|| "".equals(uuId.trim())){
-            jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName()+ ",社团ID不能为空");
+        if (null == uuId || "".equals(uuId.trim())) {
+            jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName() + ",社团ID不能为空");
             return jsonResult;
         }
-        if (uuId.equals("0")){
-            jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName()+ ",社团ID不能为零");
+        if (uuId.equals("0")) {
+            jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName() + ",社团ID不能为零");
             return jsonResult;
         }
-        try{
-            jsonResult  = clubsService.getClubInfo(uuId);
-        }catch (Exception e ){
+        try {
+            jsonResult = clubsService.getClubInfo(uuId);
+        } catch (Exception e) {
             jsonResult.setStatus("500");
             jsonResult.setMsg(FallBackMsg.ResultFail.getDisplayName() + "，系统错误！");
             return jsonResult;
@@ -97,67 +101,70 @@ public class ClubsController {
 
     /**
      * 创建社团
+     *
      * @param clubs
-     * @param file
+     * @param clubLogo
      * @param levelId
      * @param session
      * @return
      */
-    @RequestMapping(value = "/addClub" , method = RequestMethod.POST)
-    public  JsonResult insertClub(Clubs clubs, MultipartFile file, String levelId, HttpSession session){
+    @RequestMapping(value = "/insertClub", method = RequestMethod.POST)
+    public JsonResult insertClub(Clubs clubs, String levelId, String clubLogo, HttpSession session) {
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
-        if (null == clubs){
+        if (null == clubs) {
             jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + "，传递数据不能为空！");
             return jsonResult;
         }
-        if ( null == clubs.getClubsName()|| "".equals(clubs.getClubsName().trim())){
-            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName()+ ",社团名称不能为空！");
-            return  jsonResult;
+        if (null == clubs.getClubsName() || "".equals(clubs.getClubsName().trim())) {
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + ",社团名称不能为空！");
+            return jsonResult;
         }
-        if (clubs.getClubsName().length() >10){
-            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName()+ ",社团名称要求10字以内！");
-            return  jsonResult;
+        if (clubs.getClubsName().length() > 10) {
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + ",社团名称要求10字以内！");
+            return jsonResult;
         }
-        if ( null == clubs.getClubProfile() || "".equals(clubs.getClubProfile().trim())){
-            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName()+ ",社团简介不能为空！");
-            return  jsonResult;
+        if (null == clubs.getClubProfile() || "".equals(clubs.getClubProfile().trim())) {
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + ",社团简介不能为空！");
+            return jsonResult;
         }
-        if (clubs.getClubProfile().length() > 100 ){
+        if (clubs.getClubProfile().length() > 100) {
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + ",社团简介要求100字以内！");
-            return  jsonResult;
+            return jsonResult;
         }
-        if ( null == clubs.getClubLocation() || "".equals(clubs.getClubLocation().trim())){
-            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName()+ ",社团地址不能为空！");
-            return  jsonResult;
+        if (null == clubs.getClubLocation() || "".equals(clubs.getClubLocation().trim())) {
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + ",社团地址不能为空！");
+            return jsonResult;
         }
-        if (clubs.getClubLocation().length() > 100){
+        if (clubs.getClubLocation().length() > 100) {
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + ",社团地址要求100字以内！");
-            return  jsonResult;
+            return jsonResult;
         }
-        if (null == clubs.getClubTel() || "".equals(clubs.getClubTel().trim())){
+        if (null == clubs.getClubTel() || "".equals(clubs.getClubTel().trim())) {
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + ",社团联系号码不能为空！");
             return jsonResult;
         }
-        if (clubs.getClubTel().length() != 11){
+        if (clubs.getClubTel().length() != 11) {
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + ",社团联系号码格式不正确！");
             return jsonResult;
         }
-        if (null == file || "".equals(file)){
-            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，图片为空，请重新上传！");
-            return  jsonResult;
+
+        if (null == clubLogo || "".equals(clubLogo.trim())) {
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，社团Logo路径不能为空！");
+            return jsonResult;
         }
-        if (null == levelId || "".equals(levelId.trim())){
+        if (null == levelId || "".equals(levelId.trim())) {
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，社团级别不能为空！");
             return jsonResult;
         }
 
-        try{
-            jsonResult = clubsService.addClub(clubs,file,levelId);
-        }catch (Exception e){
+        try {
+
+            jsonResult = clubsService.addClub(clubs, clubLogo, levelId);
+        } catch (Exception e) {
             jsonResult.setStatus("500");
             jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "系统错误！");
-            return  jsonResult;
+            return jsonResult;
         }
         return jsonResult;
     }
@@ -165,95 +172,140 @@ public class ClubsController {
 
     /**
      * 更新社团信息
+     *
      * @param clubs
-     * @param file
+     * @param clubLogo
      * @param levelId
      * @return
      */
-    @RequestMapping(value = "/updateClub",method = RequestMethod.POST)
-    public JsonResult updateClub(Clubs clubs, MultipartFile file,String levelId){
+    @RequestMapping(value = "/updateClub", method = RequestMethod.POST)
+    public JsonResult updateClub(Clubs clubs, String clubLogo, String levelId) {
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
-        if (null == clubs){
+        if (null == clubs) {
             jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + "，数据不能为空！");
             return jsonResult;
         }
-        if ( null == clubs.getClubsName()|| "".equals(clubs.getClubsName().trim())){
-            jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName()+ ",社团名称不能为空！");
-            return  jsonResult;
+        if (null == clubs.getClubsName() || "".equals(clubs.getClubsName().trim())) {
+            jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + ",社团名称不能为空！");
+            return jsonResult;
         }
-        if (clubs.getClubsName().length() >10){
-            jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName()+ ",社团名称要求10字以内！");
-            return  jsonResult;
+        if (clubs.getClubsName().length() > 10) {
+            jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + ",社团名称要求10字以内！");
+            return jsonResult;
         }
-        if (null == clubs.getClubProfile() ||"".equals(clubs.getClubProfile().trim())){
-            jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName()+ ",社团简介不能为空！");
-            return  jsonResult;
+        if (null == clubs.getClubProfile() || "".equals(clubs.getClubProfile().trim())) {
+            jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + ",社团简介不能为空！");
+            return jsonResult;
         }
-        if (clubs.getClubProfile().length() > 100 ){
+        if (clubs.getClubProfile().length() > 100) {
             jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + ",社团简介要求100字以内！");
-            return  jsonResult;
+            return jsonResult;
         }
-        if (null == clubs.getClubLocation()|| "".equals(clubs.getClubLocation().trim())){
-            jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName()+ ",社团地址不能为空！");
-            return  jsonResult;
+        if (null == clubs.getClubLocation() || "".equals(clubs.getClubLocation().trim())) {
+            jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + ",社团地址不能为空！");
+            return jsonResult;
         }
-        if (clubs.getClubLocation().length() > 100){
+        if (clubs.getClubLocation().length() > 100) {
             jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + ",社团地址要求100字以内！");
-            return  jsonResult;
+            return jsonResult;
         }
-        if (null == clubs.getClubTel() || "".equals(clubs.getClubTel().trim())){
+        if (null == clubs.getClubTel() || "".equals(clubs.getClubTel().trim())) {
             jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + ",社团联系号码不能为空！");
             return jsonResult;
         }
-        if (clubs.getClubTel().length() != 11){
+        if (clubs.getClubTel().length() != 11) {
             jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + ",社团联系号码格式不正确！");
             return jsonResult;
         }
-        if ( null == levelId || "".equals(levelId.trim())){
+        if (null == levelId || "".equals(levelId.trim())) {
             jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + "，社团级别不能为空！");
             return jsonResult;
         }
-        if (null == clubs.getUuId() || "".equals(clubs.getUuId().trim())){
+        if (null == clubs.getUuId() || "".equals(clubs.getUuId().trim())) {
             jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + "，社团ID不能为空！");
-            return  jsonResult;
+            return jsonResult;
         }
-        try{
-                jsonResult = clubsService.updateClub(clubs,file,levelId);
-        }catch (Exception e){
+        if (null == clubLogo || "".equals(clubLogo.trim())) {
+            jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + "，社团Logo路径不能为空！");
+            return jsonResult;
+        }
+        try {
+            ;
+            jsonResult = clubsService.updateClub(clubs, clubLogo, levelId);
+        } catch (Exception e) {
             jsonResult.setStatus("500");
             jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + "系统错误！");
         }
-        return  jsonResult;
+        return jsonResult;
     }
 
     /**
      * 删除社团
+     *
      * @param clubs
      * @return
      */
-    @RequestMapping(value = "/delectClub" , method = RequestMethod.POST)
-    public JsonResult delectClub(Clubs clubs){
+    @RequestMapping(value = "/delectClub", method = RequestMethod.POST)
+    public JsonResult delectClub(Clubs clubs) {
         jsonResult = new JsonResult();
         jsonResult.setStatus("400");
-        if (null == clubs){
+        if (null == clubs) {
             jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + "，传递数据不能为空！");
             return jsonResult;
         }
-        if (null == clubs.getUuId() || "".equals(clubs.getUuId().trim())){
+        if (null == clubs.getUuId() || "".equals(clubs.getUuId().trim())) {
             jsonResult.setMsg(FallBackMsg.UpdateFail.getDisplayName() + "，社团ID不能为空！");
-            return  jsonResult;
+            return jsonResult;
         }
         int clubsNum = 0;
-        try{
+        try {
             //查询指定社团是否存在
             //删除关联数据
             //删除category_group关联数据
             //删除level_group关联数据
 
-        }catch (Exception e ){
+        } catch (Exception e) {
             jsonResult.setMsg(FallBackMsg.SysErrorInfo.getDisplayName());
         }
+        return jsonResult;
+    }
+
+
+    @RequestMapping(value = "/file/upload", method = RequestMethod.POST)
+    public JsonResult uploadFile(MultipartFile file, String logo) {
+        jsonResult = new JsonResult();
+        jsonResult.setStatus("400");
+        if (null == file || "".equals(file)) {
+            jsonResult.setMsg(FallBackMsg.AddFail.getDisplayName() + "，图片为空，请重新上传！");
+            return jsonResult;
+        }
+        try {
+            jsonResult = clubsService.uploadFile(file, logo);
+            jsonResult.setStatus("200");
+            jsonResult.setMsg("文件上传成功!");
+        } catch (Exception e) {
+            jsonResult.setMsg("文件上传失败！");
+        }
+        return jsonResult;
+    }
+
+    @RequestMapping(value = "/file/getLogo", method = RequestMethod.POST)
+    public JsonResult getLogo(String clubId) {
+        jsonResult = new JsonResult();
+        jsonResult.setStatus("400");
+        if(clubId==null|| "".equals(clubId)){
+            jsonResult.setMsg("社团id 不能为空");
+            return jsonResult;
+        }
+        try {
+            jsonResult=clubsService.getLogo(clubId);
+            jsonResult.setStatus("200");
+            jsonResult.setMsg(FallBackMsg.ResultOk.getDisplayName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         return jsonResult;
     }
 

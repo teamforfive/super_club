@@ -1,80 +1,118 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fiveofteam.super_club.dao.ClubsMapper">
-  <resultMap id="BaseResultMap" type="com.fiveofteam.super_club.pojo.Clubs">
-    <id column="uu_id" jdbcType="VARCHAR" property="uuId" />
-    <result column="clubs_name" jdbcType="VARCHAR" property="clubsName" />
-    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
-    <result column="child_id" jdbcType="INTEGER" property="childId" />
-    <result column="club_code" jdbcType="VARCHAR" property="clubCode" />
-    <result column="club_profile" jdbcType="VARCHAR" property="clubProfile" />
-    <result column="club_location" jdbcType="VARCHAR" property="clubLocation" />
-    <result column="club_status" jdbcType="BIT" property="clubStatus" />
-    <result column="club_tel" jdbcType="VARCHAR" property="clubTel" />
-    <result column="club_logo" jdbcType="VARCHAR" property="clubLogo" />
-    <result column="club_create_id" jdbcType="VARCHAR" property="clubCreateId" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-  </resultMap>
-  <resultMap id="ClubListNameResultMap" type="com.fiveofteam.super_club.pojo.Clubs">
-    <id column="uu_id" jdbcType="VARCHAR" property="uuId" />
-    <result column="clubs_name" jdbcType="VARCHAR" property="clubsName" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.fiveofteam.super_club.pojo.Clubs">
+        <id column="uu_id" jdbcType="VARCHAR" property="uuId"/>
+        <result column="clubs_name" jdbcType="VARCHAR" property="clubsName"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="child_id" jdbcType="INTEGER" property="childId"/>
+        <result column="club_code" jdbcType="VARCHAR" property="clubCode"/>
+        <result column="club_profile" jdbcType="VARCHAR" property="clubProfile"/>
+        <result column="club_location" jdbcType="VARCHAR" property="clubLocation"/>
+        <result column="club_status" jdbcType="BIT" property="clubStatus"/>
+        <result column="club_tel" jdbcType="VARCHAR" property="clubTel"/>
+        <result column="club_logo" jdbcType="VARCHAR" property="clubLogo"/>
+        <result column="club_create_id" jdbcType="VARCHAR" property="clubCreateId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <resultMap id="ClubListNameResultMap" type="com.fiveofteam.super_club.pojo.Clubs">
+        <id column="uu_id" jdbcType="VARCHAR" property="uuId"/>
+        <result column="clubs_name" jdbcType="VARCHAR" property="clubsName"/>
+    </resultMap>
+    <resultMap id="ClubsInfoMap" type="com.fiveofteam.super_club.pojo.bean.ClubsBean">
+        <id column="uu_id" jdbcType="VARCHAR" property="uuId"/>
+        <result column="clubs_name" jdbcType="VARCHAR" property="clubsName"/>
+        <result column="parent_id" jdbcType="INTEGER" property="parentId"/>
+        <result column="child_id" jdbcType="INTEGER" property="childId"/>
+        <result column="club_code" jdbcType="VARCHAR" property="clubCode"/>
+        <result column="club_profile" jdbcType="VARCHAR" property="clubProfile"/>
+        <result column="club_location" jdbcType="VARCHAR" property="clubLocation"/>
+        <result column="club_status" jdbcType="BIT" property="clubStatus"/>
+        <result column="club_tel" jdbcType="VARCHAR" property="clubTel"/>
+        <result column="club_logo" jdbcType="VARCHAR" property="clubLogo"/>
+        <result column="club_create_id" jdbcType="VARCHAR" property="clubCreateId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <!--<collection property="levelGroupList" ofType="com.fiveofteam.super_club.pojo.LevelGroup" javaType="ArrayList">-->
+        <result column="lg_clubid" jdbcType="VARCHAR" property="lgClubid"/>
+        <result column="lg_levelid" jdbcType="VARCHAR" property="lgLevelid"/>
+        <!--</collection>-->
+    </resultMap>
+    <sql id="Base_Column_List">
     uu_id, clubs_name, parent_id, child_id, club_code, club_profile, club_location, club_status, 
     club_tel, club_logo, club_create_id, create_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from clubs
-    where uu_id = #{uuId,jdbcType=VARCHAR}
-  </select>
-  <!--查询所有社团信息-->
-  <select id="selectClubLists"  resultMap="BaseResultMap">
+    <sql id="Clubs_Info_List">
+    c.uu_id, c.clubs_name, c.parent_id, c.child_id, c.club_code, c.club_profile, c.club_location, c.club_status,
+    c.club_tel, c.club_logo, c.club_create_id, c.create_time , lg.lg_clubid , lg.lg_levelid
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from clubs
+        where uu_id = #{uuId,jdbcType=VARCHAR}
+    </select>
+    <!--获取logo-->
+    <select id="getLogo" parameterType="java.lang.String" resultType="String">
     select
-    <include refid="Base_Column_List" />
+   club_logo
     from clubs
+    where uu_id = #{_parameter,jdbcType=VARCHAR}
   </select>
-  <!--查询所有社团列表-->
-  <select id="selectClubList"  resultMap="BaseResultMap">
+    <!--查询社团信息返回ClubsInfoMap-->
+    <select id="selectClubInfoById" parameterType="java.lang.String" resultMap="ClubsInfoMap">
+        select
+        <include refid="Clubs_Info_List"/>
+        from clubs c
+        inner join level_group lg ON c.uu_id = lg.lg_clubid and c.uu_id = #{uuId,jdbcType=VARCHAR}
+    </select>
+    <!--查询所有社团信息-->
+    <select id="selectClubLists" resultMap="ClubsInfoMap">
+        select
+        <include refid="Clubs_Info_List"/>
+        from clubs c
+        left join level_group lg ON c.uu_id = lg.lg_clubid
+    </select>
+    <!--查询所有社团列表-->
+    <select id="selectClubList" resultMap="BaseResultMap">
     select
     uu_id,clubs_name,club_logo
     from clubs order by create_time desc
   </select>
-  <!--查询社团LOGO路径-->
-  <select id="selectClubLogoByPrimaryKey"  resultMap="BaseResultMap">
+    <!--查询社团LOGO路径-->
+    <select id="selectClubLogoByPrimaryKey" resultMap="BaseResultMap">
     select
     uu_id,club_logo
     from clubs
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </select>
-  <!--根据社团名称查询社团数量-->
-  <select id="selectClubsByName"  parameterType="java.lang.String" resultType="java.lang.Integer">
+    <!--根据社团名称查询社团数量-->
+    <select id="selectClubsByName" parameterType="java.lang.String" resultType="java.lang.Integer">
     select
     count(uu_id)
     from clubs
     where clubs_name = #{clubsName,jdbcType=VARCHAR}
   </select>
-  <!--根据社团名称和ID查询社团数量-->
-  <select id="selectClubsByNameAndId" parameterType="com.fiveofteam.super_club.pojo.Clubs" resultType="java.lang.Integer">
+    <!--根据社团名称和ID查询社团数量-->
+    <select id="selectClubsByNameAndId" parameterType="com.fiveofteam.super_club.pojo.Clubs"
+            resultType="java.lang.Integer">
     select
     count(uu_id)
     from clubs
     where clubs_name = #{clubsName,jdbcType=VARCHAR} and uu_id != #{uuId,jdbcType=VARCHAR}
   </select>
-  <!--根据社团ID查询社团数量-->
-  <select id="selectClubsById"  parameterType="java.lang.String" resultType="java.lang.Integer">
+    <!--根据社团ID查询社团数量-->
+    <select id="selectClubsById" parameterType="java.lang.String" resultType="java.lang.Integer">
     select
     count(uu_id)
     from clubs
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from clubs
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.Clubs">
+    <insert id="insert" parameterType="com.fiveofteam.super_club.pojo.Clubs">
     insert into clubs (uu_id, clubs_name, parent_id, 
       child_id, club_code, club_profile, 
       club_location, club_status, club_tel, 
@@ -86,125 +124,125 @@
       #{clubLogo,jdbcType=VARCHAR}, #{clubCreateId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.Clubs">
-    insert into clubs
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="uuId != null">
-        uu_id,
-      </if>
-      <if test="clubsName != null">
-        clubs_name,
-      </if>
-      <if test="parentId != null">
-        parent_id,
-      </if>
-      <if test="childId != null">
-        child_id,
-      </if>
-      <if test="clubCode != null">
-        club_code,
-      </if>
-      <if test="clubProfile != null">
-        club_profile,
-      </if>
-      <if test="clubLocation != null">
-        club_location,
-      </if>
-      <if test="clubStatus != null">
-        club_status,
-      </if>
-      <if test="clubTel != null">
-        club_tel,
-      </if>
-      <if test="clubLogo != null">
-        club_logo,
-      </if>
-      <if test="clubCreateId != null">
-        club_create_id,
-      </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="uuId != null">
-        #{uuId,jdbcType=VARCHAR},
-      </if>
-      <if test="clubsName != null">
-        #{clubsName,jdbcType=VARCHAR},
-      </if>
-      <if test="parentId != null">
-        #{parentId,jdbcType=INTEGER},
-      </if>
-      <if test="childId != null">
-        #{childId,jdbcType=INTEGER},
-      </if>
-      <if test="clubCode != null">
-        #{clubCode,jdbcType=VARCHAR},
-      </if>
-      <if test="clubProfile != null">
-        #{clubProfile,jdbcType=VARCHAR},
-      </if>
-      <if test="clubLocation != null">
-        #{clubLocation,jdbcType=VARCHAR},
-      </if>
-      <if test="clubStatus != null">
-        #{clubStatus,jdbcType=BIT},
-      </if>
-      <if test="clubTel != null">
-        #{clubTel,jdbcType=VARCHAR},
-      </if>
-      <if test="clubLogo != null">
-        #{clubLogo,jdbcType=VARCHAR},
-      </if>
-      <if test="clubCreateId != null">
-        #{clubCreateId,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.fiveofteam.super_club.pojo.Clubs">
-    update clubs
-    <set>
-      <if test="clubsName != null">
-        clubs_name = #{clubsName,jdbcType=VARCHAR},
-      </if>
-      <if test="parentId != null">
-        parent_id = #{parentId,jdbcType=INTEGER},
-      </if>
-      <if test="childId != null">
-        child_id = #{childId,jdbcType=INTEGER},
-      </if>
-      <if test="clubCode != null">
-        club_code = #{clubCode,jdbcType=VARCHAR},
-      </if>
-      <if test="clubProfile != null">
-        club_profile = #{clubProfile,jdbcType=VARCHAR},
-      </if>
-      <if test="clubLocation != null">
-        club_location = #{clubLocation,jdbcType=VARCHAR},
-      </if>
-      <if test="clubStatus != null">
-        club_status = #{clubStatus,jdbcType=BIT},
-      </if>
-      <if test="clubTel != null">
-        club_tel = #{clubTel,jdbcType=VARCHAR},
-      </if>
-      <if test="clubLogo != null">
-        club_logo = #{clubLogo,jdbcType=VARCHAR},
-      </if>
-      <if test="clubCreateId != null">
-        club_create_id = #{clubCreateId,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where uu_id = #{uuId,jdbcType=VARCHAR}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.fiveofteam.super_club.pojo.Clubs">
+    <insert id="insertSelective" parameterType="com.fiveofteam.super_club.pojo.Clubs">
+        insert into clubs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuId != null">
+                uu_id,
+            </if>
+            <if test="clubsName != null">
+                clubs_name,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="childId != null">
+                child_id,
+            </if>
+            <if test="clubCode != null">
+                club_code,
+            </if>
+            <if test="clubProfile != null">
+                club_profile,
+            </if>
+            <if test="clubLocation != null">
+                club_location,
+            </if>
+            <if test="clubStatus != null">
+                club_status,
+            </if>
+            <if test="clubTel != null">
+                club_tel,
+            </if>
+            <if test="clubLogo != null">
+                club_logo,
+            </if>
+            <if test="clubCreateId != null">
+                club_create_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuId != null">
+                #{uuId,jdbcType=VARCHAR},
+            </if>
+            <if test="clubsName != null">
+                #{clubsName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="childId != null">
+                #{childId,jdbcType=INTEGER},
+            </if>
+            <if test="clubCode != null">
+                #{clubCode,jdbcType=VARCHAR},
+            </if>
+            <if test="clubProfile != null">
+                #{clubProfile,jdbcType=VARCHAR},
+            </if>
+            <if test="clubLocation != null">
+                #{clubLocation,jdbcType=VARCHAR},
+            </if>
+            <if test="clubStatus != null">
+                #{clubStatus,jdbcType=BIT},
+            </if>
+            <if test="clubTel != null">
+                #{clubTel,jdbcType=VARCHAR},
+            </if>
+            <if test="clubLogo != null">
+                #{clubLogo,jdbcType=VARCHAR},
+            </if>
+            <if test="clubCreateId != null">
+                #{clubCreateId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fiveofteam.super_club.pojo.Clubs">
+        update clubs
+        <set>
+            <if test="clubsName != null">
+                clubs_name = #{clubsName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="childId != null">
+                child_id = #{childId,jdbcType=INTEGER},
+            </if>
+            <if test="clubCode != null">
+                club_code = #{clubCode,jdbcType=VARCHAR},
+            </if>
+            <if test="clubProfile != null">
+                club_profile = #{clubProfile,jdbcType=VARCHAR},
+            </if>
+            <if test="clubLocation != null">
+                club_location = #{clubLocation,jdbcType=VARCHAR},
+            </if>
+            <if test="clubStatus != null">
+                club_status = #{clubStatus,jdbcType=BIT},
+            </if>
+            <if test="clubTel != null">
+                club_tel = #{clubTel,jdbcType=VARCHAR},
+            </if>
+            <if test="clubLogo != null">
+                club_logo = #{clubLogo,jdbcType=VARCHAR},
+            </if>
+            <if test="clubCreateId != null">
+                club_create_id = #{clubCreateId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where uu_id = #{uuId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fiveofteam.super_club.pojo.Clubs">
     update clubs
     set clubs_name = #{clubsName,jdbcType=VARCHAR},
       parent_id = #{parentId,jdbcType=INTEGER},
@@ -219,8 +257,8 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where uu_id = #{uuId,jdbcType=VARCHAR}
   </update>
-  <!--更新社团信息-->
-  <update id="updateClubInfo" parameterType="com.fiveofteam.super_club.pojo.Clubs">
+    <!--更新社团信息-->
+    <update id="updateClubInfo" parameterType="com.fiveofteam.super_club.pojo.Clubs">
     update clubs
     set clubs_name = #{clubsName,jdbcType=VARCHAR},
       club_profile = #{clubProfile,jdbcType=VARCHAR},
